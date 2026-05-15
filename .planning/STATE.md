@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 Phase: 1 of 5 (Foundation + Setup)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-05-16 — Roadmap and requirements initialised; ready for Phase 1 planning
+Last activity: 2026-05-16 — Phase 1 UI design contract approved (01-UI-SPEC.md); ready for Phase 1 planning
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -71,5 +71,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-16
-Stopped at: Roadmap created; REQUIREMENTS.md traceability updated; ready for `/gsd:plan-phase 1`
-Resume file: None
+Stopped at: Phase 1 UI-SPEC approved; ready for `/gsd:plan-phase 1`
+Resume file: .planning/phase-01/01-UI-SPEC.md
