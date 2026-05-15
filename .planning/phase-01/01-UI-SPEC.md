@@ -134,7 +134,7 @@ Two font families only. Two weights only. Four named styles.
 |------------|------|-----------|--------|-------------|-------|
 | `displayNumeric` | JetBrains Mono | 28 | 700 (Bold) | 1.2 | Handicap index value display; not used in Phase 1 input |
 | `bodyNumeric` | JetBrains Mono | 16 | 400 (Regular) | 1.5 | Course rating/slope values in course card |
-| `labelLarge` | Barlow Condensed | 18 | 600 (SemiBold) | 1.2 | CTA button text; section headings |
+| `labelLarge` | Barlow Condensed | 18 | 700 (Bold) | 1.2 | CTA button text; section headings |
 | `bodyLabel` | Barlow Condensed | 14 | 400 (Regular) | 1.5 | Input labels, list tile subtitles, helper text, muted copy |
 
 **Mapping to Flutter `TextTheme`:**
@@ -144,14 +144,14 @@ Two font families only. Two weights only. Four named styles.
 static TextTheme get textTheme => TextTheme(
   displaySmall: _jetBrains(28, FontWeight.w700, 1.2),   // displayNumeric
   bodyMedium:   _jetBrains(16, FontWeight.w400, 1.5),   // bodyNumeric
-  labelLarge:   _barlow(18, FontWeight.w600, 1.2),       // labelLarge (buttons)
+  labelLarge:   _barlow(18, FontWeight.w700, 1.2),       // labelLarge (buttons)
   bodySmall:    _barlow(14, FontWeight.w400, 1.5),       // bodyLabel
 );
 ```
 
-**Handicap index input field:** Barlow Condensed 18dp SemiBold for the entered value (matches `labelLarge`). JetBrains Mono is for displayed numeric output, not input.
+**Handicap index input field:** Barlow Condensed 18dp Bold for the entered value (matches `labelLarge`). JetBrains Mono is for displayed numeric output, not input.
 
-**Course name in loaded card:** Barlow Condensed 18dp SemiBold (`labelLarge`) in accent color (`#E8520A`).
+**Course name in loaded card:** Barlow Condensed 18dp Bold (`labelLarge`) in accent color (`#E8520A`).
 
 **Rating/slope values in loaded card:** JetBrains Mono 16dp Regular (`bodyNumeric`) in `onSurface`.
 
@@ -169,7 +169,7 @@ No other type sizes or weights are permitted in Phase 1.
 |----------|-------|
 | Label text | `HANDICAP INDEX` |
 | Label style | `bodyLabel` (Barlow Condensed 14dp Regular, `onSurfaceMuted`) |
-| Input value style | `labelLarge` (Barlow Condensed 18dp SemiBold, `onSurface`) |
+| Input value style | `labelLarge` (Barlow Condensed 18dp Bold, `onSurface`) |
 | Keyboard type | `TextInputType.numberWithOptions(decimal: true)` |
 | Input formatter | Allow digits and one decimal point; max 4 chars (e.g. `54.0`) |
 | Valid range | 0.0 – 54.0 (WHS maximum handicap index) |
@@ -193,9 +193,10 @@ No other type sizes or weights are permitted in Phase 1.
 |----------|-------|
 | Label text | `SEARCH COURSES` |
 | Label style | `bodyLabel` (Barlow Condensed 14dp Regular, `onSurfaceMuted`) |
-| Input style | `labelLarge` (Barlow Condensed 18dp SemiBold, `onSurface`) |
+| Input style | `labelLarge` (Barlow Condensed 18dp Bold, `onSurface`) |
 | Leading icon | `Icons.search` (Material), size 20dp, color `onSurfaceMuted` |
 | Trailing clear icon | `Icons.close` (Material), size 20dp, color `onSurfaceMuted`; visible only when field is non-empty |
+| Trailing clear icon semantic label | `"Clear search"` (set via `Semantics(label:)` or `IconButton(tooltip:)`) |
 | Background fill | `surface` (#1A1A1A) |
 | Border (idle) | 1dp `divider` (#2A2A2A) |
 | Border (focused) | 2dp `accent` (#E8520A) |
@@ -228,7 +229,7 @@ No other type sizes or weights are permitted in Phase 1.
 | Top/bottom divider | 1dp `divider` (#2A2A2A) |
 | Horizontal padding | 16dp (internal) |
 | Vertical padding | 12dp top + 12dp bottom |
-| Course name | `labelLarge` (Barlow Condensed 18dp SemiBold, `onSurface`) |
+| Course name | `labelLarge` (Barlow Condensed 18dp Bold, `onSurface`) |
 | Location subtitle | `bodyLabel` (Barlow Condensed 14dp Regular, `onSurfaceMuted`); format: `{city}, {country}` |
 | Rating/slope badge | JetBrains Mono 12dp Regular, `onSurfaceMuted`; format: `CR {rating} / SL {slope}` — shown only if both present in search result |
 | Trailing chevron | `Icons.chevron_right` (Material), 20dp, `onSurfaceMuted` |
@@ -248,7 +249,7 @@ Appears below the search field once a course has been selected and loaded. Repla
 | Border | 1dp `accent` (#E8520A) on all 4 sides — signals selected/loaded state |
 | Border radius | 0dp |
 | Padding | 16dp all sides |
-| Course name | `labelLarge` (Barlow Condensed 18dp SemiBold, `accent` #E8520A) |
+| Course name | `labelLarge` (Barlow Condensed 18dp Bold, `accent` #E8520A) |
 | Par | `bodyLabel` (Barlow Condensed 14dp Regular, `onSurfaceMuted`); format: `PAR {n}` |
 | Course Rating | `bodyNumeric` (JetBrains Mono 16dp Regular, `onSurface`); label: `RATING` in `bodyLabel` |
 | Slope | `bodyNumeric` (JetBrains Mono 16dp Regular, `onSurface`); label: `SLOPE` in `bodyLabel` |
@@ -268,7 +269,7 @@ Triggered by SETUP-05. Shown inside the Course Card when either `courseRating` o
 | Border-left | 3dp solid `destructive` (#CC2200) |
 | Text | `bodyLabel` Barlow Condensed 14dp Regular, `destructive` (#CC2200) |
 | Copy | See Copywriting Contract |
-| CTA | `bodyLabel` SemiBold underlined in `destructive`; tap opens manual entry inline form |
+| CTA | `bodyLabel` Bold underlined in `destructive`; tap opens manual entry inline form |
 
 **Manual Entry Inline Form** (opened by banner CTA tap):
 
@@ -279,7 +280,7 @@ Two `TextFormField` widgets appear inline below the banner, within the Course Ca
 | Course Rating | `COURSE RATING` | `numberWithOptions(decimal: true)` | 55.0 – 80.0; 1 decimal place |
 | Slope Rating | `SLOPE RATING` | `number` | 55 – 155; integer |
 
-Confirm button: `SAVE` in `labelLarge` style. On tap: writes values to `selectedCourseProvider` and removes the warning banner. Does not call the API.
+Confirm button: `SAVE RATING` in `labelLarge` style. On tap: writes values to `selectedCourseProvider` and removes the warning banner. Does not call the API.
 
 ---
 
@@ -288,10 +289,11 @@ Confirm button: `SAVE` in `labelLarge` style. On tap: writes values to `selected
 | Property | Value |
 |----------|-------|
 | Text | `START ROUND` |
-| Text style | `labelLarge` (Barlow Condensed 18dp SemiBold, `onAccent` #0A0A0A) |
+| Text style | `labelLarge` (Barlow Condensed 18dp Bold, `onAccent` #0A0A0A) |
 | Background | `accent` (#E8520A) |
 | Pressed state | `accent` at 85% opacity |
 | Disabled state | `surface` (#1A1A1A) background, `onSurfaceMuted` (#A0A0A0) text |
+| Disabled helper text | `"Search and select a course to start"` shown as a tooltip or helper text below the button when no course is loaded |
 | Border radius | 0dp |
 | Width | Full width of screen (minus 16dp padding each side) |
 | Height | 56dp (minimum tap target; not a score button — 64×80dp reserved for Phase 2 outcome buttons) |
@@ -317,7 +319,7 @@ Full-screen error surface (replaces Setup screen content, not a modal).
 |----------|-------|
 | Background | `background` (#0A0A0A) |
 | Icon | `Icons.wifi_off` or `Icons.key_off` (Material), 48dp, `destructive` |
-| Heading | `labelLarge` 18dp SemiBold, `onSurface` |
+| Heading | `labelLarge` 18dp Bold, `onSurface` |
 | Body copy | `bodyLabel` 14dp Regular, `onSurfaceMuted` |
 | Copy | See Copywriting Contract |
 | Retry button | `labelLarge` style, `surface` background, `onSurface` text, 0dp radius, full-width, 48dp height |
@@ -402,7 +404,7 @@ The screen is a single `CustomScrollView` (or `SingleChildScrollView`) with the 
 | Search Field | `divider` border | `accent` 2dp border | Accent linear progress below | `destructive` border + snackbar | — |
 | Result Tile | `surface` bg | — | Accent 2dp progress at tile bottom | — | — |
 | Course Card | `accent` 1dp border | — | — | Warning banner inline | — |
-| START ROUND | `accent` bg | — | Accent spinner | Error snackbar | `surface` bg, `onSurfaceMuted` text |
+| START ROUND | `accent` bg | — | Accent spinner | Error snackbar | `surface` bg, `onSurfaceMuted` text, helper text: `"Search and select a course to start"` |
 
 **InkWell ripple color:** White at 8% opacity (`Colors.white.withOpacity(0.08)`) for all interactive tiles and buttons on dark surfaces.
 
@@ -416,6 +418,7 @@ The screen is a single `CustomScrollView` (or `SingleChildScrollView`) with the 
 | App wordmark | `BRDY.01` | All caps; static label |
 | HI input label | `HANDICAP INDEX` | All caps label |
 | Search field label | `SEARCH COURSES` | All caps label |
+| Search clear button semantic label | `"Clear search"` | Semantics label for screen reader; set via `Semantics(label:)` or `IconButton(tooltip:)` |
 | Search empty state (< 2 chars) | *(no copy shown — field is just empty)* | Silent; no prompt needed |
 | Search empty state (no results) | Heading: `NO COURSES FOUND` / Body: `Try a different spelling or check your connection.` | `labelLarge` heading, `bodyLabel` body |
 | Search error (network) | `Could not reach the course database. Check your connection and try again.` | Snackbar, 6s, no action button |
@@ -428,7 +431,8 @@ The screen is a single `CustomScrollView` (or `SingleChildScrollView`) with the 
 | API key 401 error | Heading: `API KEY INVALID` / Body: `The Golf Course API key was rejected. Check the key and restart the app.` | Full-screen error state |
 | Retry button (API error) | `RETRY` | All caps |
 | HI validation error | `Handicap index must be between 0.0 and 54.0` | Sentence case; inline below field |
-| Rating manual save CTA | `SAVE` | All caps |
+| Rating manual save CTA | `SAVE RATING` | All caps |
+| START ROUND disabled helper text | `Search and select a course to start` | Shown as tooltip or helper text below button when no course loaded |
 | Missing rating (START ROUND allowed) | *(no separate warning — covered by Course Card warning banner)* | CTA still enabled; WHS calc will show N/A in Phase 3 |
 | Change course link | `change course` | Lowercase; underlined |
 
@@ -470,6 +474,7 @@ No `PopScope` needed — Setup is the root of the stack. Android back exits the 
 |-------------|----------------|
 | Minimum tap target | 48dp for all interactive elements (Phase 1). 64×80dp reserved for score buttons Phase 2. |
 | Semantic labels | All `IconButton` and icon-only widgets must have `Semantics(label: '...')` or `tooltip:` set |
+| Search clear button | `Semantics(label: 'Clear search')` or `IconButton(tooltip: 'Clear search')` — announced by screen readers |
 | Screen reader | `TextField` label text must be set via `InputDecoration.labelText` not a separate `Text` widget — ensures label is announced correctly |
 | Contrast | All text meets 7:1 ratio target (verified in Color section above). `onAccent` on `accent` meets AA for large text only — do not use for small text |
 | Error announcements | Validation errors and snackbars must use `ScaffoldMessenger` (automatically announced by screen readers) |
