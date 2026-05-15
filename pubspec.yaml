@@ -1,0 +1,85 @@
+name: brdy01
+description: BRDY.01 — Golf shot tracking, scoring and handicap app.
+publish_to: none
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── State management ──────────────────────────────────────────
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # ── Navigation ────────────────────────────────────────────────
+  go_router: ^14.2.0
+
+  # ── Local storage ─────────────────────────────────────────────
+  # Hive for fast key-value persistence (player prefs, cached courses)
+  hive_flutter: ^1.1.0
+  # Drift (SQLite) for relational round / hole / shot data
+  drift: ^2.18.0
+  sqlite3_flutter_libs: ^0.5.24
+  path_provider: ^2.1.3
+  path: ^1.9.0
+
+  # ── GPS & maps ────────────────────────────────────────────────
+  geolocator: ^12.0.0
+  permission_handler: ^11.3.1
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  # OpenStreetMap tile provider (no API key needed for base tiles)
+  flutter_map_tile_caching: ^9.1.1
+
+  # ── Voice ─────────────────────────────────────────────────────
+  speech_to_text: ^6.6.2
+  flutter_tts: ^4.0.2          # TTS for voice feedback / confirmations
+
+  # ── HTTP / API ────────────────────────────────────────────────
+  dio: ^5.4.3+1                # golfcourseapi.com requests
+  retrofit: ^4.1.0
+  json_annotation: ^4.9.0
+
+  # ── Wear OS ───────────────────────────────────────────────────
+  wear_plus: ^1.2.4            # Wear OS companion channel
+
+  # ── UI helpers ────────────────────────────────────────────────
+  google_fonts: ^6.2.1         # JetBrains Mono for numerics
+  gap: ^3.0.1                  # Semantic spacing widget
+  flutter_animate: ^4.5.0      # Micro-animations (pulse dot, toasts)
+  haptic_feedback: ^0.5.0+2    # Shot record haptic
+  share_plus: ^9.0.0           # Share round summary card
+  screenshot: ^2.3.0           # Capture round summary as image
+
+  # ── Utilities ─────────────────────────────────────────────────
+  freezed_annotation: ^2.4.4   # Immutable data classes
+  equatable: ^2.0.5
+  collection: ^1.18.0
+  intl: ^0.19.0                # Date / number formatting
+  logger: ^2.3.0
+  connectivity_plus: ^6.0.3    # Offline detection
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+  # Code generation
+  build_runner: ^2.4.11
+  riverpod_generator: ^2.4.3
+  drift_dev: ^2.18.0
+  retrofit_generator: ^8.1.0
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+
