@@ -100,49 +100,47 @@ Infrastructure requirements that underpin every user-facing feature.
 
 ## Traceability
 
-*Populated during roadmap creation.*
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | — | Pending |
-| FOUND-02 | — | Pending |
-| FOUND-03 | — | Pending |
-| FOUND-04 | — | Pending |
-| FOUND-05 | — | Pending |
-| SETUP-01 | — | Pending |
-| SETUP-02 | — | Pending |
-| SETUP-03 | — | Pending |
-| SETUP-04 | — | Pending |
-| SETUP-05 | — | Pending |
-| SHOT-01 | — | Pending |
-| SHOT-02 | — | Pending |
-| SHOT-03 | — | Pending |
-| SHOT-04 | — | Pending |
-| SHOT-05 | — | Pending |
-| SHOT-06 | — | Pending |
-| SHOT-07 | — | Pending |
-| SHOT-08 | — | Pending |
-| SHOT-09 | — | Pending |
-| SHOT-10 | — | Pending |
-| SHOT-11 | — | Pending |
-| SHOT-12 | — | Pending |
-| SHOT-13 | — | Pending |
-| REV-01 | — | Pending |
-| REV-02 | — | Pending |
-| REV-03 | — | Pending |
-| REV-04 | — | Pending |
-| REV-05 | — | Pending |
-| REV-06 | — | Pending |
-| REV-07 | — | Pending |
-| WEAR-01 | — | Pending |
-| WEAR-02 | — | Pending |
-| WEAR-03 | — | Pending |
+| FOUND-01 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Pending |
+| FOUND-03 | Phase 1 | Pending |
+| FOUND-04 | Phase 1 | Pending |
+| FOUND-05 | Phase 1 | Pending |
+| SETUP-01 | Phase 1 | Pending |
+| SETUP-02 | Phase 1 | Pending |
+| SETUP-03 | Phase 1 | Pending |
+| SETUP-04 | Phase 1 | Pending |
+| SETUP-05 | Phase 1 | Pending |
+| SHOT-01 | Phase 2 | Pending |
+| SHOT-02 | Phase 2 | Pending |
+| SHOT-03 | Phase 2 | Pending |
+| SHOT-04 | Phase 2 | Pending |
+| SHOT-05 | Phase 2 | Pending |
+| SHOT-06 | Phase 2 | Pending |
+| SHOT-07 | Phase 2 | Pending |
+| SHOT-08 | Phase 5 | Pending |
+| SHOT-09 | Phase 5 | Pending |
+| SHOT-10 | Phase 2 | Pending |
+| SHOT-11 | Phase 2 | Pending |
+| SHOT-12 | Phase 2 | Pending |
+| SHOT-13 | Phase 3 | Pending |
+| REV-01 | Phase 3 | Pending |
+| REV-02 | Phase 3 | Pending |
+| REV-03 | Phase 3 | Pending |
+| REV-04 | Phase 3 | Pending |
+| REV-05 | Phase 3 | Pending |
+| REV-06 | Phase 3 | Pending |
+| REV-07 | Phase 3 | Pending |
+| WEAR-01 | Phase 4 | Pending |
+| WEAR-02 | Phase 4 | Pending |
+| WEAR-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 33 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 33 ⚠️
+- Mapped to phases: 33
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-16*
-*Last updated: 2026-05-16 after initial definition*
+*Last updated: 2026-05-16 after roadmap creation*
