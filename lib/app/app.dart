@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../features/setup/setup_screen.dart';
+import 'router.dart';
+import '../theme/brdy_theme.dart';
 
 class BrdyApp extends ConsumerWidget {
   const BrdyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'BRDY.01',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFFE8520A)),
-        useMaterial3: true,
-      ),
-      home: const SetupScreen(),
+      theme: BrdyTheme.themeData,
+      routerConfig: ref.watch(routerProvider),
     );
   }
 }
