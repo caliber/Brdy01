@@ -30,7 +30,29 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A loaded course is available offline on next app open — no network request needed
   3. If the app is killed mid-round and relaunched, it returns automatically to the correct hole on Shot Capture without data loss
   4. If Course Rating or Slope is missing, the user sees a warning with an option to enter both values manually
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+
+**Wave 1**
+- [ ] 01-01-PLAN.md — Theme bootstrap, GoRouter shell, splash, keepAlive providers, fixed widget test
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 01-02-PLAN.md — Domain models, Drift schema v1 (rounds+holes+shots), Hive wrappers, FMTC init, DB providers
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 01-03-PLAN.md — Retrofit GolfCourseApi, AuthInterceptor, CourseRepositoryImpl, Setup screen UI (handicap, search, CourseCard, API key error)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+- [ ] 01-04-PLAN.md — RoundRepositoryImpl, RoundSetupNotifier, START ROUND flow, crash-recovery human-verify
+
+**Wave 5** *(blocked on Wave 4 completion)*
+- [ ] 01-05-PLAN.md — FMTC tile pre-cache (Z14–17), MissingRatingBanner + ManualRatingForm, SETUP-05 human-verify
+
+**Cross-cutting constraints:**
+- All CLAUDE.md keepAlive providers MUST use `@Riverpod(keepAlive: true)`
+- Write-through to Drift on every data entry — no Riverpod-only state
+- `context.go()` exclusively for main screen transitions
 **UI hint**: yes
 
 ### Phase 2: Shot Capture
@@ -89,7 +111,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Setup | 0/TBD | Not started | - |
+| 1. Foundation + Setup | 0/5 | Planned | - |
 | 2. Shot Capture | 0/TBD | Not started | - |
 | 3. Round Review | 0/TBD | Not started | - |
 | 4. Wear OS | 0/TBD | Not started | - |
