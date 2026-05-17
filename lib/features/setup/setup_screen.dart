@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import '../../theme/brdy_colors.dart';
 import '../../theme/brdy_spacing.dart';
 import '../../data/local/preferences/hive_player_prefs_provider.dart';
 import '../../data/local/preferences/hive_course_box_provider.dart';
 import 'providers/course_search_results_provider.dart';
+import 'providers/round_setup_notifier.dart';
 import 'providers/selected_course_provider.dart';
 import 'widgets/handicap_input.dart';
 import 'widgets/course_search_field.dart';
@@ -159,14 +161,48 @@ class _StartRoundButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final course = ref.watch(selectedCourseProvider).valueOrNull;
+    final roundSetupAsync = ref.watch(roundSetupNotifierProvider);
+    final isLoading = roundSetupAsync.isLoading;
+    final isEnabled = course != null && !isLoading;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ElevatedButton(
-          // Plan 04 replaces null with createRound + context.go('/shot-capture/$roundId')
-          onPressed: course != null ? () {} : null,
-          child: const Text('START ROUND'),
+          onPressed: isEnabled
+              ? () async {
+                  await HapticFeedback.mediumImpact();
+                  final handicap =
+                      ref.read(hivePlayerPrefsProvider).handicapIndex ?? 0.0;
+                  try {
+                    final roundId = await ref
+                        .read(roundSetupNotifierProvider.notifier)
+                        .createRound(course, handicap);
+                    if (!context.mounted) return;
+                    context.go('/shot-capture/$roundId');
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Could not load course details. Tap to retry.'),
+                        backgroundColor: BrdyColors.surface,
+                        duration: Duration(seconds: 6),
+                      ),
+                    );
+                  }
+                }
+              : null,
+          child: isLoading
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: BrdyColors.onAccent,
+                  ),
+                )
+              : const Text('START ROUND'),
         ),
         if (course == null) ...[
           const Gap(BrdySpacing.xs),
