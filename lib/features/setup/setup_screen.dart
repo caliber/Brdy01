@@ -11,10 +11,12 @@ import '../../data/local/preferences/hive_course_box_provider.dart';
 import 'providers/course_search_results_provider.dart';
 import 'providers/round_setup_notifier.dart';
 import 'providers/selected_course_provider.dart';
+import 'providers/tile_cache_progress_provider.dart' hide TileCacheProgress;
 import 'widgets/handicap_input.dart';
 import 'widgets/course_search_field.dart';
 import 'widgets/course_result_tile.dart';
 import 'widgets/course_card.dart';
+import 'widgets/tile_cache_progress.dart';
 import 'widgets/api_key_error_state.dart';
 
 class SetupScreen extends ConsumerStatefulWidget {
@@ -52,12 +54,15 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Fire haptic when a course loads successfully
+    // Fire haptic + trigger tile pre-cache when a course loads
     ref.listen(selectedCourseProvider, (prev, next) {
       final wasNull = prev?.valueOrNull == null;
-      final isLoaded = next.valueOrNull != null;
-      if (wasNull && isLoaded) {
+      final nowLoaded = next.valueOrNull;
+      if (wasNull && nowLoaded != null) {
         HapticFeedback.lightImpact();
+        ref
+            .read(tileCacheProgressProvider.notifier)
+            .start(nowLoaded.holes);
       }
     });
 
@@ -91,6 +96,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
                       ),
                     ),
               ),
+              const TileCacheProgress(),
               const Gap(BrdySpacing.x2l),
               const _StartRoundButton(),
               const Gap(BrdySpacing.md),

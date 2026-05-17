@@ -4,15 +4,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
 import '../providers/selected_course_provider.dart';
+import 'missing_rating_banner.dart';
+import 'manual_rating_form.dart';
 
-class CourseCard extends ConsumerWidget {
+class CourseCard extends ConsumerStatefulWidget {
   const CourseCard({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CourseCard> createState() => _CourseCardState();
+}
+
+class _CourseCardState extends ConsumerState<CourseCard> {
+  bool _manualFormOpen = false;
+
+  @override
+  Widget build(BuildContext context) {
     return ref.watch(selectedCourseProvider).when(
           data: (course) {
             if (course == null) return const SizedBox.shrink();
+            final missingRating =
+                course.courseRating == null || course.slope == null;
+
             return Container(
               decoration: BoxDecoration(
                 color: BrdyColors.surface,
@@ -76,10 +88,24 @@ class CourseCard extends ConsumerWidget {
                       ),
                     ],
                   ),
+                  if (missingRating) ...[
+                    const SizedBox(height: BrdySpacing.sm),
+                    if (!_manualFormOpen)
+                      MissingRatingBanner(
+                        onEnterManuallyTap: () =>
+                            setState(() => _manualFormOpen = true),
+                      )
+                    else
+                      ManualRatingForm(
+                        onSaved: () => setState(() => _manualFormOpen = false),
+                      ),
+                  ],
                   const SizedBox(height: BrdySpacing.sm),
                   GestureDetector(
-                    onTap: () =>
-                        ref.read(selectedCourseProvider.notifier).clear(),
+                    onTap: () {
+                      setState(() => _manualFormOpen = false);
+                      ref.read(selectedCourseProvider.notifier).clear();
+                    },
                     child: Text(
                       'change course',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -93,7 +119,8 @@ class CourseCard extends ConsumerWidget {
             )
                 .animate()
                 .fadeIn(duration: 200.ms, curve: Curves.easeOut)
-                .slideY(begin: 0.1, end: 0, duration: 200.ms, curve: Curves.easeOut);
+                .slideY(
+                    begin: 0.1, end: 0, duration: 200.ms, curve: Curves.easeOut);
           },
           loading: () => const SizedBox.shrink(),
           error: (_, __) => const SizedBox.shrink(),
