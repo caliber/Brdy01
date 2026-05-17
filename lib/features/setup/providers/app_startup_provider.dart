@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../data/local/database/app_database_provider.dart';
 
 part 'app_startup_provider.g.dart';
 
-// Auto-dispose: runs once on startup; router redirect consumes it then discards.
-// TODO(plan-02): query roundDao.findIncompleteRoundId() once Drift is wired.
 @riverpod
 Future<int?> appStartup(Ref ref) async {
-  return null;
+  final db = ref.watch(appDatabaseProvider);
+  return db.roundDao.findIncompleteRoundId();
 }

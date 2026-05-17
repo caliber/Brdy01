@@ -6,4 +6,5 @@ abstract class AppConstants {
   static const int maxRoundHoles = 18;
   static const int whsDifferentialsToStore = 20;
   static const int whsBestDifferentials = 8;
+  static const String tileCacheStoreName = 'brdy_tiles';
 }
