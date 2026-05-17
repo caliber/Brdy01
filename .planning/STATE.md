@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 ## Current Position
 
 Phase: 1 of 5 (Foundation + Setup)
-Plan: 1 of 5 in current phase
-Status: In progress — Plan 01-01 complete; Plan 01-02 next
-Last activity: 2026-05-17 — Plan 01-01 complete (theme, shell, router, providers, widget test green)
+Plan: 2 of 5 in current phase
+Status: In progress — Plan 01-02 complete; Plan 01-03 next
+Last activity: 2026-05-17 — Plan 01-02 complete (Drift schema v1, Hive wrappers, FMTC init, keepAlive providers, appStartupProvider wired)
 
-Progress: [██░░░░░░░░] 20%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -71,5 +71,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Plan 01-01 complete — theme module, MaterialApp.router shell, GoRouter with crash-recovery redirect, three placeholder providers (appStartupProvider stub, activeRoundIdProvider, activeHoleIndexProvider), SplashScreen, widget test passing, build_runner clean.
-Resume file: .planning/phase-01/01-02-PLAN.md
+Stopped at: Plan 01-02 complete — Drift schema v1 (rounds+holes+shots), RoundDao (findIncompleteRoundId, insert, complete), HivePlayerPrefs, HiveCourseBox (JSON-string D-05), three keepAlive providers (appDatabase, hivePlayerPrefs, hiveCourseBox), FMTC init in main() (P-03), appStartupProvider now queries real Drift. build_runner clean, analyze clean, test passing.
+Resume file: .planning/phase-01/01-03-PLAN.md
