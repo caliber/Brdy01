@@ -12,7 +12,7 @@ BRDY.01 delivers frictionless strokeplay scoring in five vertical slices. Phase 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation + Setup** - User can load a course and start a round
+- [x] **Phase 1: Foundation + Setup** - User can load a course and start a round
 - [ ] **Phase 2: Shot Capture** - User can score a full 18-hole round
 - [ ] **Phase 3: Round Review** - User can see their scorecard and stats
 - [ ] **Phase 4: Wear OS** - User can score from the watch
@@ -70,7 +70,7 @@ Plans:
 Plans:
 
 **Wave 1**
-- [ ] 02-01-PLAN.md — HoleDao upsert, 6 providers (HoleScoreNotifier, holeList, runningScore, courseForRound, highestScoredHoleIndex, roundComplete), build_runner
+- [x] 02-01-PLAN.md — HoleDao upsert, 6 providers (HoleScoreNotifier, holeList, runningScore, courseForRound, highestScoredHoleIndex, roundComplete), build_runner
 
 **Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 02-02-PLAN.md — HoleHeader, ScoreBar, OutcomeButtonGrid (EAGLE double-tap), ShotCaptureScreen (undo toast, NEXT, round completion)
@@ -128,8 +128,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Setup | 0/5 | Planned | - |
-| 2. Shot Capture | 0/3 | Not started | - |
+| 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
+| 2. Shot Capture | 1/3 | 🔄 In progress | - |
 | 3. Round Review | 0/TBD | Not started | - |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. Polish | 0/TBD | Not started | - |

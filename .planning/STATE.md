@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 
 ## Current Position
 
-Phase: 2 of 5 (Shot Capture) — **PLANNED** ✅ Ready to execute
-Plan: 0 of 3 complete
-Status: Phase 2 planned — 3 plans across 3 waves. Ready for `/gsd:execute-phase 2`
-Last activity: 2026-05-17 — Phase 2 plans created (02-01..03). Pattern mapping complete (15 analogs). Plan checker passed after 3 blocker fixes.
+Phase: 2 of 5 (Shot Capture) — **IN PROGRESS** 🔄
+Plan: 1 of 3 complete
+Status: Phase 2 executing — 02-01 complete (HoleDao + 6 providers). 02-02 (UI) and 02-03 (extras) pending.
+Last activity: 2026-05-17 — 02-01 complete. HoleDao upsert, HoleScoreNotifier, holeList, runningScore, courseForRound, highestScoredHoleIndex, roundComplete providers.
 
-Progress: [██████████] 100% (Phase 1)
+Progress: [██████████] 100% (Phase 1) | [███░░░░░░░] 33% (Phase 2)
 
 ## Performance Metrics
 
@@ -28,10 +28,10 @@ Progress: [██████████] 100% (Phase 1)
 | Phase | Plans | Status |
 |-------|-------|--------|
 | Phase 1 | 5/5 | ✅ Complete |
-| Phase 2 | TBD | Not started |
+| Phase 2 | 1/3 | 🔄 In progress |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓
+- Last 6 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓ 02-01 ✓
 - Trend: All on track
 
 *Updated after each plan completion*
@@ -48,6 +48,9 @@ Recent decisions affecting current work:
 - [Pre-Phase 1]: `flutter_map_tile_caching` is a dead dependency — must be initialised in `main()` before Phase 2 map work
 - [Pre-Phase 1]: Write-through to Drift on every score entry; never accumulate state in Riverpod alone
 - [Pre-Phase 1]: Hole navigation is internal `StateProvider` change, not a go_router push; back-stack must not reach 18 levels
+- [02-01]: HoleDao upsert uses SELECT-then-branch (Option A) — no schema version bump, no DoUpdate
+- [02-01]: courseForRoundProvider reads from Drift rounds.courseJson (not Hive) — survives crash recovery
+- [02-01]: HoleScoreNotifier does NOT advance activeHoleIndexProvider — screen widget's responsibility
 
 ### Pending Todos
 
@@ -73,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Phase 1 complete. Plan 01-05 done — TileCacheRepository (RectangleRegion Z14-17, skipSeaTiles), TileCacheProgressProvider (StreamSubscription, onDispose cancel), TileCacheProgress widget, MissingRatingBanner (0x26CC2200, 3dp destructive border, slideY animate), ManualRatingForm (CR 55-80, SLOPE 55-155, overrideRating). All 10 requirements satisfied (FOUND-01..05, SETUP-01..05).
-Next: `/gsd:verify-work` to confirm Phase 1 goal delivery, then `/gsd:plan-phase 2` for Shot Capture.
+Stopped at: Phase 2 — 02-01 complete. HoleDao upsert + 6 shot-capture providers (HoleScoreNotifier, holeList, runningScore, courseForRound, highestScoredHoleIndex, roundComplete). SHOT-01, SHOT-10, SHOT-11, SHOT-12 satisfied. build_runner clean, flutter analyze 0 issues.
+Next: `/gsd:execute-phase 2` for 02-02 (Shot Capture UI) — Wave 2.
