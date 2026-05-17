@@ -73,7 +73,7 @@ Plans:
 - [x] 02-01-PLAN.md — HoleDao upsert, 6 providers (HoleScoreNotifier, holeList, runningScore, courseForRound, highestScoredHoleIndex, roundComplete), build_runner
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 02-02-PLAN.md — HoleHeader, ScoreBar, OutcomeButtonGrid (EAGLE double-tap), ShotCaptureScreen (undo toast, NEXT, round completion)
+- [x] 02-02-PLAN.md — HoleHeader, ScoreBar, OutcomeButtonGrid (EAGLE double-tap), ShotCaptureScreen (undo toast, NEXT, round completion)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 02-03-PLAN.md — FairwayGirToggles, HoleNavDrawer, full screen assembly, P2-08 fix, human-verify
@@ -129,7 +129,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
-| 2. Shot Capture | 1/3 | 🔄 In progress | - |
+| 2. Shot Capture | 2/3 | 🔄 In progress | - |
 | 3. Round Review | 0/TBD | Not started | - |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. Polish | 0/TBD | Not started | - |
