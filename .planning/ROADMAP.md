@@ -13,7 +13,7 @@ BRDY.01 delivers frictionless strokeplay scoring in five vertical slices. Phase 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Setup** - User can load a course and start a round
-- [ ] **Phase 2: Shot Capture** - User can score a full 18-hole round
+- [x] **Phase 2: Shot Capture** - User can score a full 18-hole round
 - [ ] **Phase 3: Round Review** - User can see their scorecard and stats
 - [ ] **Phase 4: Wear OS** - User can score from the watch
 - [ ] **Phase 5: Polish** - GPS pins, voice, and edge-case hardening
@@ -129,7 +129,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
-| 2. Shot Capture | 3/3 | ⏸ Human verify | - |
+| 2. Shot Capture | 3/3 | ✅ Complete | 2026-05-17 |
 | 3. Round Review | 0/TBD | Not started | - |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. Polish | 0/TBD | Not started | - |
@@ -138,3 +138,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 *Roadmap created: 2026-05-16*
 *Coverage: 33/33 v1 requirements mapped*
 *Phase 2 planned: 2026-05-17*
+*Phase 2 complete: 2026-05-17*

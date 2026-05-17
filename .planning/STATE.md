@@ -5,21 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-05-16)
 
 **Core value:** A golfer finishes a hole, taps one button, and the round stays accurate — frictionless hole-by-hole scoring on the course.
-**Current focus:** Phase 2 — Shot Capture (SHOT-01..07, SHOT-10..12) — PLANNED ✓ (3 plans, 3 waves)
+**Current focus:** Phase 3 — Round Review (SHOT-13, REV-01..07)
 
 ## Current Position
 
-Phase: 2 of 5 (Shot Capture) — **AWAITING HUMAN VERIFY** ⏸
-Plan: 3 of 3 implemented — human-verify checkpoint pending
-Status: Phase 2 all 3 plans implemented. 02-01 (HoleDao + 6 providers). 02-02 (Shot Capture UI). 02-03 (FairwayGirToggles, HoleNavDrawer, P2-08 fix) complete. Awaiting device test.
-Last activity: 2026-05-17 — 02-03 complete. FairwayGirToggles (par3 gate, Drift writes), HoleNavDrawer (18 chips, outcome colours, NOW chip), P2-08 fix, full screen assembly. flutter analyze 0 issues. flutter test passes.
+Phase: 2 of 5 (Shot Capture) — **COMPLETE** ✅
+Plan: 3 of 3 complete
+Status: Phase 2 complete — all 10 requirements satisfied (SHOT-01..07, SHOT-10..12). Human-verify approved. Ready for `/gsd:verify-work` then `/gsd:plan-phase 3`
+Last activity: 2026-05-17 — Phase 2 complete. Human-verify approved. FairwayGirToggles (par3 gate), HoleNavDrawer (18 chips + NOW chip), P2-08 reset fix, full ShotCaptureScreen assembly. All 13 device checks passed.
 
-Progress: [██████████] 100% (Phase 1) | [█████████░] 95% (Phase 2 — awaiting device verify)
+Progress: [██████████] 100% (Phase 1) | [██████████] 100% (Phase 2)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5 (Phase 1 complete)
+- Total plans completed: 8 (Phase 1 + Phase 2 complete)
 - Average duration: —
 - Total execution time: 2026-05-17 (single session)
 
@@ -28,10 +28,11 @@ Progress: [██████████] 100% (Phase 1) | [██████�
 | Phase | Plans | Status |
 |-------|-------|--------|
 | Phase 1 | 5/5 | ✅ Complete |
-| Phase 2 | 3/3 | ⏸ Human verify |
+| Phase 2 | 3/3 | ✅ Complete |
+| Phase 3 | TBD | Not started |
 
 **Recent Trend:**
-- Last 6 plans: 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓ 02-03 ✓ (all on track)
+- Last 8 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓ 02-03 ✓
 - Trend: All on track
 
 *Updated after each plan completion*
@@ -82,5 +83,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Phase 2 — 02-03 implemented. FairwayGirToggles (par3 gate, Drift writes), HoleNavDrawer (18 chips, outcome colours, NOW chip), P2-08 hole-index-reset fix, ShotCaptureScreen full assembly. All SHOT-01..07, SHOT-10..12 requirements implemented. flutter analyze 0 issues. flutter test 1/1 passing. Awaiting human-verify on device.
-Next: Device test — flutter run --dart-define=GOLF_API_KEY=<key>; type "approved" when all 13 checks pass.
+Stopped at: Phase 2 complete. Human-verify approved (all 13 device checks passed). FairwayGirToggles (par3 gate), HoleNavDrawer (18 chips + NOW chip), P2-08 reset fix, full ShotCaptureScreen assembly. All 10 Phase 2 requirements satisfied (SHOT-01..07, SHOT-10..12).
+Next: `/gsd:verify-work` to confirm Phase 2 goal delivery, then `/gsd:plan-phase 3` for Round Review.
