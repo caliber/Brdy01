@@ -95,7 +95,24 @@ Plans:
   2. User sees stat cards covering strokes, score vs par, net score, all outcome counts, putts, GIR%, and fairways hit
   3. WHS differential is shown for a complete 18-hole round; an indicative differential with a clear label is shown for incomplete rounds; "N/A" is shown when Rating or Slope is missing
   4. User can share the scorecard via the native share sheet, or start a new round and return to Setup
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+
+**Wave 1**
+- [ ] 03-01-PLAN.md — ScorecardData/StatsData/WhsDifferential models + scorecardProvider, statsProvider, whsDifferentialProvider; build_runner
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 03-02-PLAN.md — ScorecardTable, WhsBlock, StatCard, StatsSection widgets
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 03-03-PLAN.md — RoundReviewScreen assembly, ShareService, SHOT-13 in ShotCaptureScreen, human-verify
+
+**Cross-cutting constraints:**
+- All new providers are auto-dispose (@riverpod lowercase) — never keepAlive in Phase 3
+- No new packages — use screenshot + share_plus already in pubspec
+- schema stays at v1 — no Drift schema changes in Phase 3
+- context.go('/setup') for Start New Round; PopScope(canPop: false) to block back from Round Review
 **UI hint**: yes
 
 ### Phase 4: Wear OS
@@ -130,7 +147,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
 | 2. Shot Capture | 3/3 | ✅ Complete | 2026-05-17 |
-| 3. Round Review | 0/TBD | Not started | - |
+| 3. Round Review | 0/3 | Not started | - |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. Polish | 0/TBD | Not started | - |
 
@@ -139,3 +156,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 *Coverage: 33/33 v1 requirements mapped*
 *Phase 2 planned: 2026-05-17*
 *Phase 2 complete: 2026-05-17*
+*Phase 3 planned: 2026-05-18*
