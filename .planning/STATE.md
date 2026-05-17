@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-05-16)
 
 **Core value:** A golfer finishes a hole, taps one button, and the round stays accurate — frictionless hole-by-hole scoring on the course.
-**Current focus:** Phase 1 — Foundation + Setup
+**Current focus:** Phase 2 — Shot Capture (SHOT-01..07, SHOT-10..12)
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation + Setup)
-Plan: 4 of 5 in current phase
-Status: In progress — Plan 01-04 complete (human-verify approved); Plan 01-05 next
-Last activity: 2026-05-17 — Walking Skeleton complete. createRound wired to Drift, context.go navigation, crash-recovery redirect functional. Human-verify approved (architecture review; device test deferred to Android Studio install).
+Phase: 1 of 5 (Foundation + Setup) — **COMPLETE** ✅
+Plan: 5 of 5 complete
+Status: Phase 1 complete — all 10 requirements satisfied. Ready for `/gsd:verify-work` then `/gsd:plan-phase 2`
+Last activity: 2026-05-17 — Plan 01-05 complete. FMTC tile pre-cache (FOUND-05) + MissingRatingBanner + ManualRatingForm (SETUP-05). Human-verify approved (architecture review; device test deferred to Android Studio install).
 
-Progress: [████████░░] 80%
+Progress: [██████████] 100% (Phase 1)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
+- Total plans completed: 5 (Phase 1 complete)
 - Average duration: —
-- Total execution time: —
+- Total execution time: 2026-05-17 (single session)
 
 **By Phase:**
 
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| Phase 1 | 1/5 | — | — |
+| Phase | Plans | Status |
+|-------|-------|--------|
+| Phase 1 | 5/5 | ✅ Complete |
+| Phase 2 | TBD | Not started |
 
 **Recent Trend:**
-- Last 5 plans: Plan 01-01 ✓
-- Trend: —
+- Last 5 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓
+- Trend: All on track
 
 *Updated after each plan completion*
 
@@ -72,5 +73,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Plan 01-04 complete (Walking Skeleton). RoundRepositoryImpl + roundRepositoryProvider (keepAlive) + RoundSetupNotifier wired. _StartRoundButton calls createRound → Drift insert → context.go('/shot-capture/$roundId'). ShotCaptureScreen reads activeRoundIdProvider. Human-verify checkpoint approved (architecture review; end-to-end device test deferred to Android Studio install). Web target excluded (Drift FFI incompatible with dart2js).
-Resume file: .planning/phase-01/01-05-PLAN.md
+Stopped at: Phase 1 complete. Plan 01-05 done — TileCacheRepository (RectangleRegion Z14-17, skipSeaTiles), TileCacheProgressProvider (StreamSubscription, onDispose cancel), TileCacheProgress widget, MissingRatingBanner (0x26CC2200, 3dp destructive border, slideY animate), ManualRatingForm (CR 55-80, SLOPE 55-155, overrideRating). All 10 requirements satisfied (FOUND-01..05, SETUP-01..05).
+Next: `/gsd:verify-work` to confirm Phase 1 goal delivery, then `/gsd:plan-phase 2` for Shot Capture.
