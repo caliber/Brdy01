@@ -76,7 +76,7 @@ Plans:
 - [x] 02-02-PLAN.md — HoleHeader, ScoreBar, OutcomeButtonGrid (EAGLE double-tap), ShotCaptureScreen (undo toast, NEXT, round completion)
 
 **Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 02-03-PLAN.md — FairwayGirToggles, HoleNavDrawer, full screen assembly, P2-08 fix, human-verify
+- [x] 02-03-PLAN.md — FairwayGirToggles, HoleNavDrawer, full screen assembly, P2-08 fix, human-verify
 
 **Cross-cutting constraints:**
 - Drift write-through on every tap — no Riverpod buffering
@@ -129,7 +129,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
-| 2. Shot Capture | 2/3 | 🔄 In progress | - |
+| 2. Shot Capture | 3/3 | ⏸ Human verify | - |
 | 3. Round Review | 0/TBD | Not started | - |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. Polish | 0/TBD | Not started | - |

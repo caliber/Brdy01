@@ -29,14 +29,14 @@ Infrastructure requirements that underpin every user-facing feature.
 - [x] **SHOT-02**: User can record EAGLE outcome by double-tapping the BIRDIE button (displayed as distinct from birdie in all stats)
 - [x] **SHOT-03**: App auto-advances to the next hole immediately after an outcome button is tapped
 - [x] **SHOT-04**: User can undo the last score entry within 4 seconds via an auto-dismissing toast ("BIRDIE — Hole 7 [UNDO]")
-- [ ] **SHOT-05**: User can record putts per hole via a +/− counter
-- [ ] **SHOT-06**: User can toggle fairway hit per hole (toggle is hidden / marked N/A on par 3s)
-- [ ] **SHOT-07**: User can toggle GIR (Green in Regulation) per hole
+- [x] **SHOT-05**: User can record putts per hole via a +/− counter
+- [x] **SHOT-06**: User can toggle fairway hit per hole (toggle is hidden / marked N/A on par 3s)
+- [x] **SHOT-07**: User can toggle GIR (Green in Regulation) per hole
 - [ ] **SHOT-08**: User can drop GPS shot pins on the map overlay by tapping the map (pins stored in Drift, not used in scoring)
 - [ ] **SHOT-09**: User can record hole outcome by voice command ("eagle", "birdie", "par", "bogey", "double", "pickup"); voice confirmation shown as toast with undo option
 - [x] **SHOT-10**: Running score vs par is always visible during the round (persists across hole transitions, no tap required)
 - [x] **SHOT-11**: Each hole displays its hole number, par, and Stroke Index prominently
-- [ ] **SHOT-12**: User can navigate back to any previously scored hole to correct an entry (internal state change, not route back-stack)
+- [x] **SHOT-12**: User can navigate back to any previously scored hole to correct an entry (internal state change, not route back-stack)
 - [ ] **SHOT-13**: Voice recognition shows "Voice unavailable" state when network is absent or `speech_to_text.initialize()` fails; outcome buttons remain fully functional
 
 ### Round Review

@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 
 ## Current Position
 
-Phase: 2 of 5 (Shot Capture) — **IN PROGRESS** 🔄
-Plan: 2 of 3 complete
-Status: Phase 2 executing — 02-01 complete (HoleDao + 6 providers). 02-02 complete (Shot Capture UI). 02-03 (extras) pending.
-Last activity: 2026-05-17 — 02-02 complete. ShotCaptureScreen two-zone layout, OutcomeButtonGrid, HoleHeader, ScoreBar, undo toast, EAGLE double-tap, round completion navigation.
+Phase: 2 of 5 (Shot Capture) — **AWAITING HUMAN VERIFY** ⏸
+Plan: 3 of 3 implemented — human-verify checkpoint pending
+Status: Phase 2 all 3 plans implemented. 02-01 (HoleDao + 6 providers). 02-02 (Shot Capture UI). 02-03 (FairwayGirToggles, HoleNavDrawer, P2-08 fix) complete. Awaiting device test.
+Last activity: 2026-05-17 — 02-03 complete. FairwayGirToggles (par3 gate, Drift writes), HoleNavDrawer (18 chips, outcome colours, NOW chip), P2-08 fix, full screen assembly. flutter analyze 0 issues. flutter test passes.
 
-Progress: [██████████] 100% (Phase 1) | [██████░░░░] 67% (Phase 2)
+Progress: [██████████] 100% (Phase 1) | [█████████░] 95% (Phase 2 — awaiting device verify)
 
 ## Performance Metrics
 
@@ -28,10 +28,10 @@ Progress: [██████████] 100% (Phase 1) | [██████�
 | Phase | Plans | Status |
 |-------|-------|--------|
 | Phase 1 | 5/5 | ✅ Complete |
-| Phase 2 | 2/3 | 🔄 In progress |
+| Phase 2 | 3/3 | ⏸ Human verify |
 
 **Recent Trend:**
-- Last 6 plans: 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓
+- Last 6 plans: 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓ 02-03 ✓ (all on track)
 - Trend: All on track
 
 *Updated after each plan completion*
@@ -55,6 +55,8 @@ Recent decisions affecting current work:
 - [02-02]: completeRound(roundId, DateTime.now()) called at holeIndex==17 BEFORE roundCompleteProvider fires — ensures completedAt set for crash recovery
 - [02-02]: BIRDIE uses GestureDetector with onDoubleTap; all others use InkWell — prevents 300ms tap delay on entire grid
 - [02-02]: persist: false omitted (not in Flutter 3.24.5); add when upgrading to Flutter 3.38+
+- [02-03]: FairwayGirToggles extracted as separate ConsumerWidget; _navStripOpen lives in screen state (not a provider)
+- [02-03]: P2-08 fix: activeHoleIndexProvider.set(0) synchronous inside createRound() before return — ordering guaranteed
 
 ### Pending Todos
 
@@ -80,5 +82,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Phase 2 — 02-02 complete. ShotCaptureScreen full UI (two-zone layout, undo toast, EAGLE double-tap, round completion navigation), OutcomeButtonGrid (4+4 buttons, dot indicators, putts controls, NEXT, pagination, toggle strip), HoleHeader (giant hole number, score badge, course info), ScoreBar (reactive accent pill). SHOT-01..04, SHOT-10, SHOT-11 satisfied. flutter analyze 0 issues.
-Next: `/gsd:execute-phase 2` for 02-03 (fairway/GIR toggles, voice stub, hole nav strip) — Wave 3.
+Stopped at: Phase 2 — 02-03 implemented. FairwayGirToggles (par3 gate, Drift writes), HoleNavDrawer (18 chips, outcome colours, NOW chip), P2-08 hole-index-reset fix, ShotCaptureScreen full assembly. All SHOT-01..07, SHOT-10..12 requirements implemented. flutter analyze 0 issues. flutter test 1/1 passing. Awaiting human-verify on device.
+Next: Device test — flutter run --dart-define=GOLF_API_KEY=<key>; type "approved" when all 13 checks pass.
