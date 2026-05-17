@@ -116,7 +116,7 @@ ScorecardData? scorecard(Ref ref, int roundId) {
     }).toList();
 
     // Helper: compute subtotal for a slice of rows.
-    ScorecardSubtotal _subtotal(List<HoleRow> slice, String label) {
+    ScorecardSubtotal subtotal(List<HoleRow> slice, String label) {
       int totalStrokes = 0;
       int scoreToPar = 0;
 
@@ -142,8 +142,8 @@ ScorecardData? scorecard(Ref ref, int roundId) {
       );
     }
 
-    final front9 = _subtotal(rows.take(9).toList(), 'FRONT 9');
-    final back9 = _subtotal(rows.skip(9).toList(), 'BACK 9');
+    final front9 = subtotal(rows.take(9).toList(), 'FRONT 9');
+    final back9 = subtotal(rows.skip(9).toList(), 'BACK 9');
 
     return ScorecardData(rows: rows, front9: front9, back9: back9);
   }).value;
