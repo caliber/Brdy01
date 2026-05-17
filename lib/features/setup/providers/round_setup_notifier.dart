@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../domain/models/course_model.dart';
 import '../../../infrastructure/repositories/round_repository_provider.dart';
 import 'active_round_id_provider.dart';
+import '../../shot_capture/providers/active_hole_index_provider.dart';
 
 part 'round_setup_notifier.g.dart';
 
@@ -23,6 +24,8 @@ class RoundSetupNotifier extends _$RoundSetupNotifier {
         courseJson: jsonEncode(course.toJson()),
       );
       ref.read(activeRoundIdProvider.notifier).set(roundId);
+      // Reset hole index to 0 — prevents new round starting on hole 18 (Pitfall P2-08)
+      ref.read(activeHoleIndexProvider.notifier).set(0);
       state = const AsyncData(null);
       return roundId;
     } catch (e, st) {
