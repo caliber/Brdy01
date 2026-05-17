@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 ## Current Position
 
 Phase: 1 of 5 (Foundation + Setup)
-Plan: 3 of 5 in current phase
-Status: In progress — Plan 01-03 complete; Plan 01-04 next
-Last activity: 2026-05-17 — Plan 01-03 complete (API layer, CourseRepositoryImpl, search providers, Setup screen UI with all 5 widgets)
+Plan: 4 of 5 in current phase
+Status: In progress — Plan 01-04 complete (human-verify approved); Plan 01-05 next
+Last activity: 2026-05-17 — Walking Skeleton complete. createRound wired to Drift, context.go navigation, crash-recovery redirect functional. Human-verify approved (architecture review; device test deferred to Android Studio install).
 
-Progress: [██████░░░░] 60%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -54,7 +54,8 @@ None yet.
 
 ### Blockers/Concerns
 
-- [Research] Verify Golf Course API returns Stroke Index per hole before implementing pickup scoring (Phase 1 gate)
+- [Research] Verify Golf Course API returns Stroke Index per hole before implementing pickup scoring (Phase 1 gate) — A3 unverified, needs real API key + device
+- [Decision] Web target excluded from project: Drift FFI + sqlite3_flutter_libs incompatible with dart2js
 - [Research] Release keystore must be generated before Wear OS Data Layer work begins (Phase 4 gate)
 - [Research] `wear_plus` version compatibility with current Flutter must be verified before Phase 4
 - [Research] Test voice recognition with airplane mode on non-Pixel Android before shipping Phase 5
@@ -71,5 +72,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Plan 01-03 complete — Retrofit GolfCourseApi + DTOs + AuthInterceptor, CourseRepositoryImpl (D-04 write-through), debounced search results provider (400ms + min 2 chars), SelectedCourseProvider (loadCourse, loadFromCache, overrideRating), all 5 Setup widgets + SetupScreen rebuilt as ConsumerStatefulWidget (SETUP-01/02/03/04, FOUND-04). Live API verification deferred (no API key in CI) — A3 gate (stroke_index) unverified. START ROUND button rendered with placeholder onPressed.
-Resume file: .planning/phase-01/01-04-PLAN.md
+Stopped at: Plan 01-04 complete (Walking Skeleton). RoundRepositoryImpl + roundRepositoryProvider (keepAlive) + RoundSetupNotifier wired. _StartRoundButton calls createRound → Drift insert → context.go('/shot-capture/$roundId'). ShotCaptureScreen reads activeRoundIdProvider. Human-verify checkpoint approved (architecture review; end-to-end device test deferred to Android Studio install). Web target excluded (Drift FFI incompatible with dart2js).
+Resume file: .planning/phase-01/01-05-PLAN.md
