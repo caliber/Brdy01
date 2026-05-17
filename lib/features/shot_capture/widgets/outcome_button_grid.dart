@@ -7,6 +7,7 @@ import '../../../domain/enums/hole_outcome.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
 import '../providers/hole_score_notifier.dart';
+import 'fairway_gir_toggles.dart';
 
 class OutcomeButtonGrid extends ConsumerWidget {
   final int roundId;
@@ -45,10 +46,6 @@ class OutcomeButtonGrid extends ConsumerWidget {
     final int currentPutts = holeState?.putts ?? 0;
     final bool hasOutcome = currentOutcome != null;
     final bool isEagle = currentOutcome == HoleOutcome.eagle;
-
-    // Fairway/GIR state
-    final bool? fairwayHit = holeState?.fairwayHit;
-    final bool? gir = holeState?.greenInRegulation;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -184,49 +181,11 @@ class OutcomeButtonGrid extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: BrdySpacing.sm),
-        // Bottom toggle strip
-        Row(
-          children: [
-            if (holePar != 3) ...[
-              Expanded(
-                child: _ToggleButton(
-                  activeLabel: 'HIT',
-                  inactiveLabel: 'MISS',
-                  descriptor: 'FAIRWAY',
-                  isActive: fairwayHit == true,
-                  activeFill: BrdyColors.accent,
-                  activeLabelColor: BrdyColors.onAccent,
-                  // TODO(02-03): Wire fairway toggle to holeScoreNotifierProvider
-                  onTap: null,
-                ),
-              ),
-              const SizedBox(width: BrdySpacing.sm),
-            ],
-            Expanded(
-              child: _ToggleButton(
-                activeLabel: 'GREEN',
-                inactiveLabel: 'MISS',
-                descriptor: 'REG',
-                isActive: gir == true,
-                activeFill: BrdyColors.background,
-                activeLabelColor: BrdyColors.onSurface,
-                // TODO(02-03): Wire GIR toggle to holeScoreNotifierProvider
-                onTap: null,
-              ),
-            ),
-            const SizedBox(width: BrdySpacing.sm),
-            const Expanded(
-              child: _ToggleButton(
-                activeLabel: 'ON',
-                inactiveLabel: 'OFF',
-                descriptor: 'VOICE',
-                isActive: false,
-                activeFill: BrdyColors.background,
-                activeLabelColor: BrdyColors.onSurface,
-                onTap: null,
-              ),
-            ),
-          ],
+        // Bottom toggle strip — fairway/GIR/voice toggles wired to Drift
+        FairwayGirToggles(
+          roundId: roundId,
+          holeIndex: holeIndex,
+          holePar: holePar,
         ),
       ],
     );
@@ -682,76 +641,3 @@ class _PaginationDot extends StatelessWidget {
   }
 }
 
-// ── _ToggleButton ──────────────────────────────────────────────────────────────
-
-class _ToggleButton extends StatelessWidget {
-  final String activeLabel;
-  final String inactiveLabel;
-  final String descriptor;
-  final bool isActive;
-  final Color activeFill;
-  final Color activeLabelColor;
-  final VoidCallback? onTap;
-
-  const _ToggleButton({
-    required this.activeLabel,
-    required this.inactiveLabel,
-    required this.descriptor,
-    required this.isActive,
-    required this.activeFill,
-    required this.activeLabelColor,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final Color fill = isActive ? activeFill : const Color(0xFFD0D0D0);
-    final Color labelColor =
-        isActive ? activeLabelColor : BrdyColors.background;
-
-    return InkWell(
-      splashColor: Colors.black.withOpacity(0.08),
-      highlightColor: Colors.black.withOpacity(0.04),
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(4),
-      child: Container(
-        constraints: const BoxConstraints(minHeight: 48),
-        decoration: BoxDecoration(
-          color: fill,
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 3,
-              offset: const Offset(0, 1),
-            ),
-          ],
-        ),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              isActive ? activeLabel : inactiveLabel,
-              style: GoogleFonts.barlowCondensed(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: labelColor,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              descriptor,
-              style: GoogleFonts.barlowCondensed(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: BrdyColors.background,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

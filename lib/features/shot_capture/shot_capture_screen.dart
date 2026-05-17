@@ -14,6 +14,7 @@ import 'providers/highest_scored_hole_index_provider.dart';
 import 'providers/hole_score_notifier.dart';
 import 'providers/round_complete_provider.dart';
 import 'widgets/hole_header.dart';
+import 'widgets/hole_nav_drawer.dart';
 import 'widgets/outcome_button_grid.dart';
 
 class ShotCaptureScreen extends ConsumerStatefulWidget {
@@ -27,6 +28,7 @@ class ShotCaptureScreen extends ConsumerStatefulWidget {
 
 class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
   int? _lastScoredHoleIndex;
+  bool _navStripOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,9 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
               child: _TopZone(
                 roundId: roundId,
                 highestScoredHoleIndex: highestIndex,
+                navStripOpen: _navStripOpen,
+                onHoleNumberTap: () =>
+                    setState(() => _navStripOpen = !_navStripOpen),
               ),
             ),
             Container(height: 1, color: BrdyColors.divider),
@@ -170,19 +175,31 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
 class _TopZone extends StatelessWidget {
   final int roundId;
   final int highestScoredHoleIndex;
+  final bool navStripOpen;
+  final VoidCallback onHoleNumberTap;
 
   const _TopZone({
     required this.roundId,
     required this.highestScoredHoleIndex,
+    required this.navStripOpen,
+    required this.onHoleNumberTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: HoleHeader(
-        roundId: roundId,
-        highestScoredHoleIndex: highestScoredHoleIndex,
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        HoleHeader(
+          roundId: roundId,
+          highestScoredHoleIndex: highestScoredHoleIndex,
+          onHoleNumberTap: onHoleNumberTap,
+        ),
+        HoleNavDrawer(
+          roundId: roundId,
+          isOpen: navStripOpen,
+        ),
+      ],
     );
   }
 }

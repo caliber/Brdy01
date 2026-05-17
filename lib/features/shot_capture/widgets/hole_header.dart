@@ -15,10 +15,14 @@ class HoleHeader extends ConsumerWidget {
   final int roundId;
   final int highestScoredHoleIndex;
 
+  /// Called when the giant hole number is tapped — used to toggle the nav strip.
+  final VoidCallback? onHoleNumberTap;
+
   const HoleHeader({
     super.key,
     required this.roundId,
     required this.highestScoredHoleIndex,
+    this.onHoleNumberTap,
   });
 
   @override
@@ -196,31 +200,40 @@ class HoleHeader extends ConsumerWidget {
                         },
                 ),
               ),
-              // Hole number stack with score badge
+              // Hole number stack with score badge — tappable to toggle nav strip
               Semantics(
                 label: 'HOLE ${holeIndex + 1} OF 18 — TAP TO NAVIGATE HOLES',
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Text(
-                      (holeIndex + 1).toString().padLeft(2, '0'),
-                      style: GoogleFonts.jetBrainsMono(
-                        fontSize: 96,
-                        fontWeight: FontWeight.w700,
-                        height: 1.0,
-                        color: BrdyColors.onSurface,
+                button: onHoleNumberTap != null,
+                child: GestureDetector(
+                  onTap: onHoleNumberTap != null
+                      ? () {
+                          HapticFeedback.selectionClick();
+                          onHoleNumberTap!();
+                        }
+                      : null,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Text(
+                        (holeIndex + 1).toString().padLeft(2, '0'),
+                        style: GoogleFonts.jetBrainsMono(
+                          fontSize: 96,
+                          fontWeight: FontWeight.w700,
+                          height: 1.0,
+                          color: BrdyColors.onSurface,
+                        ),
+                      )
+                          .animate(key: ValueKey(holeIndex))
+                          .fadeOut(duration: 50.ms, curve: Curves.easeOut)
+                          .then()
+                          .fadeIn(duration: 100.ms, curve: Curves.easeOut),
+                      Positioned(
+                        right: -8,
+                        top: 0,
+                        child: ScoreBar(roundId: roundId),
                       ),
-                    )
-                        .animate(key: ValueKey(holeIndex))
-                        .fadeOut(duration: 50.ms, curve: Curves.easeOut)
-                        .then()
-                        .fadeIn(duration: 100.ms, curve: Curves.easeOut),
-                    Positioned(
-                      right: -8,
-                      top: 0,
-                      child: ScoreBar(roundId: roundId),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               // Right chevron
