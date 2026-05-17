@@ -65,7 +65,24 @@ Plans:
   2. Each hole displays its number, par, and Stroke Index; running score vs par is always visible across all hole transitions
   3. User can record putts, toggle fairway hit (hidden on par 3s), and toggle GIR for each hole
   4. User can navigate back to any previously scored hole, correct the entry, and return to the current hole
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+
+**Wave 1**
+- [ ] 02-01-PLAN.md — HoleDao upsert, 6 providers (HoleScoreNotifier, holeList, runningScore, courseForRound, highestScoredHoleIndex, roundComplete), build_runner
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 02-02-PLAN.md — HoleHeader, ScoreBar, OutcomeButtonGrid (EAGLE double-tap), ShotCaptureScreen (undo toast, NEXT, round completion)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 02-03-PLAN.md — PuttsCounter, FairwayGirToggles, HoleNavDrawer, full screen assembly, P2-08 fix, human-verify
+
+**Cross-cutting constraints:**
+- Drift write-through on every tap — no Riverpod buffering
+- Hole navigation is internal state only — never context.go/push for hole changes
+- Schema stays at v1 — no schemaVersion bump in Phase 2
+- All new providers are auto-dispose (@riverpod lowercase)
 **UI hint**: yes
 
 ### Phase 3: Round Review
@@ -112,7 +129,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 0/5 | Planned | - |
-| 2. Shot Capture | 0/TBD | Not started | - |
+| 2. Shot Capture | 0/3 | Not started | - |
 | 3. Round Review | 0/TBD | Not started | - |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. Polish | 0/TBD | Not started | - |
@@ -120,3 +137,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 ---
 *Roadmap created: 2026-05-16*
 *Coverage: 33/33 v1 requirements mapped*
+*Phase 2 planned: 2026-05-17*
