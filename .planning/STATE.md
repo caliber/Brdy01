@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 ## Current Position
 
 Phase: 1 of 5 (Foundation + Setup)
-Plan: 0 of 5 in current phase
-Status: Ready to execute
-Last activity: 2026-05-17 — Phase 1 planned (5 plans, 5 waves); ready for `/gsd:execute-phase 1`
+Plan: 1 of 5 in current phase
+Status: In progress — Plan 01-01 complete; Plan 01-02 next
+Last activity: 2026-05-17 — Plan 01-01 complete (theme, shell, router, providers, widget test green)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
+- Total plans completed: 1
 - Average duration: —
 - Total execution time: —
 
@@ -27,10 +27,10 @@ Progress: [░░░░░░░░░░] 0%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| Phase 1 | 1/5 | — | — |
 
 **Recent Trend:**
-- Last 5 plans: —
+- Last 5 plans: Plan 01-01 ✓
 - Trend: —
 
 *Updated after each plan completion*
@@ -71,5 +71,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Phase 1 planned — 5 plans across 5 sequential waves (theme→data→API+UI→round+recovery→tiles+warnings). Verification passed.
-Resume file: .planning/phase-01/01-01-PLAN.md
+Stopped at: Plan 01-01 complete — theme module, MaterialApp.router shell, GoRouter with crash-recovery redirect, three placeholder providers (appStartupProvider stub, activeRoundIdProvider, activeHoleIndexProvider), SplashScreen, widget test passing, build_runner clean.
+Resume file: .planning/phase-01/01-02-PLAN.md
