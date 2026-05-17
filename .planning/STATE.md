@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 ## Current Position
 
 Phase: 1 of 5 (Foundation + Setup)
-Plan: 2 of 5 in current phase
-Status: In progress — Plan 01-02 complete; Plan 01-03 next
-Last activity: 2026-05-17 — Plan 01-02 complete (Drift schema v1, Hive wrappers, FMTC init, keepAlive providers, appStartupProvider wired)
+Plan: 3 of 5 in current phase
+Status: In progress — Plan 01-03 complete; Plan 01-04 next
+Last activity: 2026-05-17 — Plan 01-03 complete (API layer, CourseRepositoryImpl, search providers, Setup screen UI with all 5 widgets)
 
-Progress: [████░░░░░░] 40%
+Progress: [██████░░░░] 60%
 
 ## Performance Metrics
 
@@ -71,5 +71,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-17
-Stopped at: Plan 01-02 complete — Drift schema v1 (rounds+holes+shots), RoundDao (findIncompleteRoundId, insert, complete), HivePlayerPrefs, HiveCourseBox (JSON-string D-05), three keepAlive providers (appDatabase, hivePlayerPrefs, hiveCourseBox), FMTC init in main() (P-03), appStartupProvider now queries real Drift. build_runner clean, analyze clean, test passing.
-Resume file: .planning/phase-01/01-03-PLAN.md
+Stopped at: Plan 01-03 complete — Retrofit GolfCourseApi + DTOs + AuthInterceptor, CourseRepositoryImpl (D-04 write-through), debounced search results provider (400ms + min 2 chars), SelectedCourseProvider (loadCourse, loadFromCache, overrideRating), all 5 Setup widgets + SetupScreen rebuilt as ConsumerStatefulWidget (SETUP-01/02/03/04, FOUND-04). Live API verification deferred (no API key in CI) — A3 gate (stroke_index) unverified. START ROUND button rendered with placeholder onPressed.
+Resume file: .planning/phase-01/01-04-PLAN.md
