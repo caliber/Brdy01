@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 Plan 1 complete
-last_updated: "2026-05-18T22:00:24Z"
-last_activity: 2026-05-18 — Phase 3 Plan 1 complete. scorecardProvider, statsProvider, whsDifferentialProvider created. build_runner exit 0. flutter analyze clean.
+stopped_at: Phase 3 Plan 2 complete
+last_updated: "2026-05-18T22:16:00Z"
+last_activity: 2026-05-18 — Phase 3 Plan 2 complete. ScorecardTable, WhsBlock, StatCard, StatsSection widgets created. flutter analyze clean. All 4 files created, 0 issues.
 progress:
   total_phases: 5
   completed_phases: 2
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 ## Current Position
 
 Phase: 3 of 5 (Round Review) — **IN PROGRESS**
-Plan: 1 of 3 complete
-Status: Phase 3 Plan 1 complete — scorecardProvider, statsProvider, whsDifferentialProvider created with all view-model classes, build_runner passed, flutter analyze clean. Ready for Plan 2 (widgets).
-Last activity: 2026-05-18 — Phase 3 Plan 1 complete. scorecardProvider, statsProvider, whsDifferentialProvider created. build_runner exit 0. flutter analyze clean.
+Plan: 2 of 3 complete
+Status: Phase 3 Plan 2 complete — ScorecardTable, WhsBlock, StatCard, StatsSection widgets created. flutter analyze clean on all 4 files. Ready for Plan 3 (screen assembly + share).
+Last activity: 2026-05-18 — Phase 3 Plan 2 complete. ScorecardTable, WhsBlock, StatCard, StatsSection widgets created. flutter analyze clean. All 4 files created, 0 issues.
 
 Progress: [██████████] 100% (Phase 1) | [██████████] 100% (Phase 2)
 
@@ -36,9 +36,9 @@ Progress: [██████████] 100% (Phase 1) | [██████�
 
 **Velocity:**
 
-- Total plans completed: 8 (Phase 1 + Phase 2 complete)
+- Total plans completed: 10 (Phase 1 + Phase 2 complete + Phase 3 plans 1-2)
 - Average duration: —
-- Total execution time: 2026-05-17 (single session)
+- Total execution time: 2026-05-17/18 (two sessions)
 
 **By Phase:**
 
@@ -46,11 +46,11 @@ Progress: [██████████] 100% (Phase 1) | [██████�
 |-------|-------|--------|
 | Phase 1 | 5/5 | ✅ Complete |
 | Phase 2 | 3/3 | ✅ Complete |
-| Phase 3 | 1/3 | In progress |
+| Phase 3 | 2/3 | In progress |
 
 **Recent Trend:**
 
-- Last 9 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓ 02-03 ✓ 03-01 ✓
+- Last 10 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓ 02-03 ✓ 03-01 ✓ 03-02 ✓
 - Trend: All on track
 
 *Updated after each plan completion*
@@ -80,6 +80,9 @@ Recent decisions affecting current work:
 - [03-01]: statsProvider uses Future<StatsData?> (async) — courseForRound and roundDao are futures
 - [03-01]: WHS Course Handicap fallback: if courseRating null, omit (courseRating - par) term
 - [03-01]: triples field always 0 in Phase 3 — HoleOutcome enum has no triple value
+- [03-02]: ScorecardTable renders header + 18 hole rows + subtotals in single Table widget — column widths align
+- [03-02]: WhsBlock does NOT hold screenshot GlobalKey — key managed at screen level in Wave 3
+- [03-02]: StatCard has fullWidth bool param (defaults false) for future layout flexibility
 
 ### Pending Todos
 
@@ -104,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-18T22:00:24Z
-Stopped at: Phase 3 Plan 1 complete (03-01-PLAN.md)
-Next: Execute Phase 3 Plan 2 (03-02-PLAN.md) — ScorecardTable, WhsBlock, StatCard, StatsSection widgets.
+Last session: 2026-05-18T22:16:00Z
+Stopped at: Phase 3 Plan 2 complete (03-02-PLAN.md)
+Next: Execute Phase 3 Plan 3 (03-03-PLAN.md) — RoundReviewScreen assembly, ShareService, share flow.
