@@ -76,7 +76,7 @@ Plans:
 - [ ] 02-02-PLAN.md — HoleHeader, ScoreBar, OutcomeButtonGrid (EAGLE double-tap), ShotCaptureScreen (undo toast, NEXT, round completion)
 
 **Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 02-03-PLAN.md — PuttsCounter, FairwayGirToggles, HoleNavDrawer, full screen assembly, P2-08 fix, human-verify
+- [ ] 02-03-PLAN.md — FairwayGirToggles, HoleNavDrawer, full screen assembly, P2-08 fix, human-verify
 
 **Cross-cutting constraints:**
 - Drift write-through on every tap — no Riverpod buffering

@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-05-16)
 
 **Core value:** A golfer finishes a hole, taps one button, and the round stays accurate — frictionless hole-by-hole scoring on the course.
-**Current focus:** Phase 2 — Shot Capture (SHOT-01..07, SHOT-10..12)
+**Current focus:** Phase 2 — Shot Capture (SHOT-01..07, SHOT-10..12) — PLANNED ✓ (3 plans, 3 waves)
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation + Setup) — **COMPLETE** ✅
-Plan: 5 of 5 complete
-Status: Phase 1 complete — all 10 requirements satisfied. Ready for `/gsd:verify-work` then `/gsd:plan-phase 2`
-Last activity: 2026-05-17 — Plan 01-05 complete. FMTC tile pre-cache (FOUND-05) + MissingRatingBanner + ManualRatingForm (SETUP-05). Human-verify approved (architecture review; device test deferred to Android Studio install).
+Phase: 2 of 5 (Shot Capture) — **PLANNED** ✅ Ready to execute
+Plan: 0 of 3 complete
+Status: Phase 2 planned — 3 plans across 3 waves. Ready for `/gsd:execute-phase 2`
+Last activity: 2026-05-17 — Phase 2 plans created (02-01..03). Pattern mapping complete (15 analogs). Plan checker passed after 3 blocker fixes.
 
 Progress: [██████████] 100% (Phase 1)
 
