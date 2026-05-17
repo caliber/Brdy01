@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 3 context gathered
-last_updated: "2026-05-17T21:27:02.180Z"
-last_activity: 2026-05-17 — Phase 2 complete. Human-verify approved. FairwayGirToggles (par3 gate), HoleNavDrawer (18 chips + NOW chip), P2-08 reset fix, full ShotCaptureScreen assembly. All 13 device checks passed.
+status: executing
+stopped_at: Phase 3 Plan 1 complete
+last_updated: "2026-05-18T22:00:24Z"
+last_activity: 2026-05-18 — Phase 3 Plan 1 complete. scorecardProvider, statsProvider, whsDifferentialProvider created. build_runner exit 0. flutter analyze clean.
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 2
   total_plans: 0
-  completed_plans: 8
+  completed_plans: 9
   percent: 0
 ---
 
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 
 ## Current Position
 
-Phase: 2 of 5 (Shot Capture) — **COMPLETE** ✅
-Plan: 3 of 3 complete
-Status: Phase 2 complete — all 10 requirements satisfied (SHOT-01..07, SHOT-10..12). Human-verify approved. Ready for `/gsd:verify-work` then `/gsd:plan-phase 3`
-Last activity: 2026-05-17 — Phase 2 complete. Human-verify approved. FairwayGirToggles (par3 gate), HoleNavDrawer (18 chips + NOW chip), P2-08 reset fix, full ShotCaptureScreen assembly. All 13 device checks passed.
+Phase: 3 of 5 (Round Review) — **IN PROGRESS**
+Plan: 1 of 3 complete
+Status: Phase 3 Plan 1 complete — scorecardProvider, statsProvider, whsDifferentialProvider created with all view-model classes, build_runner passed, flutter analyze clean. Ready for Plan 2 (widgets).
+Last activity: 2026-05-18 — Phase 3 Plan 1 complete. scorecardProvider, statsProvider, whsDifferentialProvider created. build_runner exit 0. flutter analyze clean.
 
 Progress: [██████████] 100% (Phase 1) | [██████████] 100% (Phase 2)
 
@@ -46,11 +46,11 @@ Progress: [██████████] 100% (Phase 1) | [██████�
 |-------|-------|--------|
 | Phase 1 | 5/5 | ✅ Complete |
 | Phase 2 | 3/3 | ✅ Complete |
-| Phase 3 | TBD | Not started |
+| Phase 3 | 1/3 | In progress |
 
 **Recent Trend:**
 
-- Last 8 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓ 02-03 ✓
+- Last 9 plans: 01-01 ✓ 01-02 ✓ 01-03 ✓ 01-04 ✓ 01-05 ✓ 02-01 ✓ 02-02 ✓ 02-03 ✓ 03-01 ✓
 - Trend: All on track
 
 *Updated after each plan completion*
@@ -76,6 +76,10 @@ Recent decisions affecting current work:
 - [02-02]: persist: false omitted (not in Flutter 3.24.5); add when upgrading to Flutter 3.38+
 - [02-03]: FairwayGirToggles extracted as separate ConsumerWidget; _navStripOpen lives in screen state (not a provider)
 - [02-03]: P2-08 fix: activeHoleIndexProvider.set(0) synchronous inside createRound() before return — ordering guaranteed
+- [03-01]: Plain Dart view-model classes (no freezed) for ScorecardData, StatsData, WhsDifferential — computation results not domain entities
+- [03-01]: statsProvider uses Future<StatsData?> (async) — courseForRound and roundDao are futures
+- [03-01]: WHS Course Handicap fallback: if courseRating null, omit (courseRating - par) term
+- [03-01]: triples field always 0 in Phase 3 — HoleOutcome enum has no triple value
 
 ### Pending Todos
 
@@ -100,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-17T21:27:02.170Z
-Stopped at: Phase 3 context gathered
-Next: `/gsd:verify-work` to confirm Phase 2 goal delivery, then `/gsd:plan-phase 3` for Round Review.
+Last session: 2026-05-18T22:00:24Z
+Stopped at: Phase 3 Plan 1 complete (03-01-PLAN.md)
+Next: Execute Phase 3 Plan 2 (03-02-PLAN.md) — ScorecardTable, WhsBlock, StatCard, StatsSection widgets.

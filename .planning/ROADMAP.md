@@ -100,7 +100,7 @@ Plans:
 Plans:
 
 **Wave 1**
-- [ ] 03-01-PLAN.md — ScorecardData/StatsData/WhsDifferential models + scorecardProvider, statsProvider, whsDifferentialProvider; build_runner
+- [x] 03-01-PLAN.md — ScorecardData/StatsData/WhsDifferential models + scorecardProvider, statsProvider, whsDifferentialProvider; build_runner
 
 **Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 03-02-PLAN.md — ScorecardTable, WhsBlock, StatCard, StatsSection widgets
@@ -147,7 +147,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
 | 2. Shot Capture | 3/3 | ✅ Complete | 2026-05-17 |
-| 3. Round Review | 0/3 | Not started | - |
+| 3. Round Review | 1/3 | In progress | - |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. Polish | 0/TBD | Not started | - |
 
