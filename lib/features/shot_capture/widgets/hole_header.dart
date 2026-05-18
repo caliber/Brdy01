@@ -31,9 +31,10 @@ class HoleHeader extends ConsumerWidget {
     final courseAsync = ref.watch(courseForRoundProvider(roundId));
     final holesAsync = ref.watch(holeListProvider(roundId));
 
-    // Compute SHOTS total from hole list
-    final int totalShots = holesAsync.whenData((holes) {
-      int shots = 0;
+    // Compute round total and current hole shots from hole list
+    int totalShots = 0;
+    int? currentHoleShots;
+    holesAsync.whenData((holes) {
       for (final h in holes) {
         if (h.outcome == null) continue;
         final outcome = HoleOutcome.values.byName(h.outcome!);
@@ -45,10 +46,12 @@ class HoleHeader extends ConsumerWidget {
           HoleOutcome.doubleBogey => 2,
           HoleOutcome.pickup => 2,
         };
-        shots += h.par + offset;
+        final holeShots = h.par + offset;
+        totalShots += holeShots;
+        if (h.holeNumber == holeIndex + 1) currentHoleShots = holeShots;
       }
-      return shots;
-    }).value ?? 0;
+    });
+    final String holeShotsDisplay = currentHoleShots != null ? '$currentHoleShots' : '—';
 
     // Extract course info
     final course = courseAsync.valueOrNull;
@@ -237,11 +240,11 @@ class HoleHeader extends ConsumerWidget {
                         },
                 ),
               ),
-              // SHOTS counter — centred between chevrons
+              // Current hole shots — XLarge
               Text(
-                'SHOTS $totalShots',
+                holeShotsDisplay,
                 style: GoogleFonts.sometypeMono(
-                  fontSize: 42,
+                  fontSize: 64,
                   fontWeight: FontWeight.w700,
                   color: BrdyColors.onSurface,
                 ),
@@ -270,6 +273,16 @@ class HoleHeader extends ConsumerWidget {
                 ),
               ),
             ],
+          ),
+          // Round total — Small, centred
+          Text(
+            '$totalShots TOTAL',
+            style: GoogleFonts.sometypeMono(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: BrdyColors.onSurfaceMuted,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
