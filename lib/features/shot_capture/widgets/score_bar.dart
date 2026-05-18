@@ -28,8 +28,8 @@ class ScoreBar extends ConsumerWidget {
     return Semantics(
       label: 'RUNNING SCORE $display VERSUS PAR',
       child: Container(
-        width: 48,
-        height: 48,
+        width: 36,
+        height: 36,
         decoration: const BoxDecoration(
           color: BrdyColors.accent,
           shape: BoxShape.circle,
