@@ -140,9 +140,9 @@ class ScorecardTable extends ConsumerWidget {
             : '${subtotal.scoreToPar}';
 
     return TableRow(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: BrdyColors.surface,
-        border: const Border(
+        border: Border(
           top: BorderSide(color: BrdyColors.divider, width: 1),
         ),
       ),

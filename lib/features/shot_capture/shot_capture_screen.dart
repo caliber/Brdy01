@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import '../../data/local/database/app_database_provider.dart';
 import '../../domain/enums/hole_outcome.dart';
 import '../../theme/brdy_colors.dart';
@@ -29,6 +30,19 @@ class ShotCaptureScreen extends ConsumerStatefulWidget {
 class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
   int? _lastScoredHoleIndex;
   bool _navStripOpen = false;
+  bool _voiceAvailable = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initVoice();
+  }
+
+  Future<void> _initVoice() async {
+    final speech = SpeechToText();
+    final available = await speech.initialize();
+    if (mounted) setState(() => _voiceAvailable = available);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +87,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 holeIndex: holeIndex,
                 holePar: holePar,
                 holeStrokeIndex: holeStrokeIndex,
+                voiceAvailable: _voiceAvailable,
                 onOutcomeTapped: _handleOutcomeTapped,
                 onNextTapped: _handleNext,
               ),
@@ -211,6 +226,7 @@ class _BottomZone extends StatelessWidget {
   final int holeIndex;
   final int holePar;
   final int? holeStrokeIndex;
+  final bool voiceAvailable;
   final void Function(HoleOutcome, int, int?) onOutcomeTapped;
   final void Function() onNextTapped;
 
@@ -219,6 +235,7 @@ class _BottomZone extends StatelessWidget {
     required this.holeIndex,
     required this.holePar,
     required this.holeStrokeIndex,
+    required this.voiceAvailable,
     required this.onOutcomeTapped,
     required this.onNextTapped,
   });
@@ -254,6 +271,18 @@ class _BottomZone extends StatelessWidget {
               ],
             ),
             const Gap(BrdySpacing.sm),
+            if (!voiceAvailable)
+              Padding(
+                padding: const EdgeInsets.only(bottom: BrdySpacing.xs),
+                child: Text(
+                  'VOICE UNAVAILABLE',
+                  style: GoogleFonts.barlowCondensed(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: BrdyColors.onSurfaceMuted,
+                  ),
+                ),
+              ),
             OutcomeButtonGrid(
               roundId: roundId,
               holeIndex: holeIndex,

@@ -125,7 +125,7 @@ Unchanged from Phase 1/2. All values from `BrdySpacing`. Do not hardcode spacing
 | `BrdySpacing.xs` | 4 | Cell internal padding; gap between stat label and value; scorecard column gap |
 | `BrdySpacing.sm` | 8 | Gap between stat cards; scorecard row vertical padding; section internal padding |
 | `BrdySpacing.md` | 16 | Horizontal screen padding; gap between sections |
-| `BrdySpacing.lg` | 24 | Vertical gap above section headings |
+| `BrdySpacing.lg` | 24 | Vertical gap above section headings; scorecard header row height |
 | `BrdySpacing.xl` | 32 | Gap between action row and last section |
 | `BrdySpacing.x2l` | 48 | Bottom safe-area padding below action row |
 | `BrdySpacing.x3l` | 64 | Minimum tap target width+height for action buttons |
@@ -138,22 +138,22 @@ Unchanged from Phase 1/2. All values from `BrdySpacing`. Do not hardcode spacing
 
 ## Typography
 
-All styles from Phase 1/2. No new TextTheme slots. Inline `GoogleFonts.*` calls for sizes not in BrdyTextTheme.
+All styles from Phase 1/2. Exactly 4 font sizes are active in Phase 3: 11dp, 14dp, 20dp, 28dp. No other sizes are used anywhere on this screen.
 
 | Style name | Flutter mapping | Font | Size (dp) | Weight | Line Height | Usage in Phase 3 |
 |------------|-----------------|------|-----------|--------|-------------|-----------------|
 | `displayNumeric` | `textTheme.displaySmall` | JetBrains Mono | 28 | w700 | 1.2 | WHS differential value |
-| `bodyNumeric` | `textTheme.bodyMedium` | JetBrains Mono | 16 | w400 | 1.5 | Stat card numeric values |
-| `labelLarge` | `textTheme.labelLarge` | Barlow Condensed | 18 | w700 | 1.2 | Section headings; action button labels |
-| `bodyLabel` | `textTheme.bodySmall` | Barlow Condensed | 14 | w400 | 1.5 | Stat card labels; scorecard column headers; descriptors |
+| `statValue` | inline `GoogleFonts.jetBrainsMono` | JetBrains Mono | 20 | w700 | 1.2 | Stat card primary numeric values |
+| `bodyLabel` | `textTheme.bodySmall` | Barlow Condensed | 14 | w400 | 1.5 | Stat card labels; scorecard column headers; descriptors; action button labels |
+| `labelBold` | inline `GoogleFonts.barlowCondensed` | Barlow Condensed | 14 | w700 | 1.2 | Section headings; scorecard row labels; scorecard cell scores; ALL CAPS short labels |
 
 **Additional inline sizes (via `GoogleFonts.*` directly — not new TextTheme slots):**
 
 | Usage | Font | Size (dp) | Weight | Color |
 |-------|------|-----------|--------|-------|
 | Scorecard hole number (column header) | Barlow Condensed | 11 | w700 | `BrdyColors.onSurfaceMuted` |
-| Scorecard cell score value | JetBrains Mono | 13 | w700 | Contextual — see cell colour table |
-| Scorecard subtotal row value | JetBrains Mono | 13 | w700 | `BrdyColors.onSurface` |
+| Scorecard cell score value | JetBrains Mono | 14 | w700 | Contextual — see cell colour table |
+| Scorecard subtotal row value | JetBrains Mono | 14 | w700 | `BrdyColors.onSurface` |
 | Scorecard par row value | Barlow Condensed | 11 | w400 | `BrdyColors.onSurfaceMuted` |
 | Scorecard putts row value | Barlow Condensed | 11 | w400 | `BrdyColors.onSurface` |
 | Stat card label | Barlow Condensed | 11 | w700 | `BrdyColors.onSurfaceMuted` |
@@ -163,6 +163,10 @@ All styles from Phase 1/2. No new TextTheme slots. Inline `GoogleFonts.*` calls 
 | WHS "INDICATIVE" label | Barlow Condensed | 11 | w700 | `BrdyColors.destructive` |
 | WHS "N/A" value | JetBrains Mono | 28 | w700 | `BrdyColors.onSurfaceMuted` |
 | Section heading text | Barlow Condensed | 14 | w700 | `BrdyColors.onSurface` |
+| Screen header wordmark | Barlow Condensed | 14 | w700 | `BrdyColors.onSurface` |
+| Screen header course label | Barlow Condensed | 11 | w700 | `BrdyColors.onSurfaceMuted` |
+
+**Active font sizes summary (exactly 4):** 11dp · 14dp · 20dp · 28dp
 
 **ALL TEXT IN ALL CAPS.** No sentence case or title case anywhere on this screen.
 
@@ -341,7 +345,7 @@ Two instances: Front 9 (holes 1–9) and Back 9 (holes 10–18). Each is a fixed
 - Each hole column: `Expanded` (equal share of remaining width after label and subtotal cols)
 - Subtotal column: 40dp fixed
 
-**Row heights:** 22dp for header row; 20dp for par row; 28dp for score row; 20dp for putts row.
+**Row heights:** 24dp for header row (`BrdySpacing.lg`); 20dp for par row; 28dp for score row; 20dp for putts row.
 
 **Label column (`PAR` / `SCR` / `PTT`):**
 - Barlow Condensed 11dp w700 `BrdyColors.onSurfaceMuted`
@@ -359,9 +363,9 @@ Two instances: Front 9 (holes 1–9) and Back 9 (holes 10–18). Each is a fixed
 
 **Score row (REV-01):**
 Each cell is a `Container` with outcome-specific fill and text — see colour table above.
-- Scored cell: 28dp tall, centered JetBrains Mono 13dp w700; outcome fill + text per colour table
+- Scored cell: 28dp tall, centered JetBrains Mono 14dp w700; outcome fill + text per colour table
 - Unscored cell: `BrdyColors.divider` fill, `—` glyph in `BrdyColors.onSurfaceMuted` Barlow Condensed 11dp w400
-- Subtotal cell: `BrdyColors.surface` fill, JetBrains Mono 13dp w700 `BrdyColors.onSurface`
+- Subtotal cell: `BrdyColors.surface` fill, JetBrains Mono 14dp w700 `BrdyColors.onSurface`
 
 **Putts row:**
 - Barlow Condensed 11dp w400 `BrdyColors.onSurface`
@@ -533,14 +537,14 @@ Two equal-width buttons in a `Row`. Positioned at the bottom of the scroll conte
 **Button spec:**
 - Border radius: 0dp
 - `BoxConstraints(minHeight: 64, minWidth: 64)` — CLAUDE.md minimum tap target
-- Text: Barlow Condensed 14dp w700 ALL CAPS (using `bodyLabel` size with `labelLarge` weight)
+- Text: Barlow Condensed 14dp w700 ALL CAPS
 - Width: `Expanded` (equal halves of content width minus gap)
 - Gap between buttons: `BrdySpacing.sm` (8dp)
 - NEW ROUND button border: `Border.all(color: BrdyColors.divider, width: 1)` — distinguishes from background
 
 **SHARE SCORECARD button (REV-06):**
 1. `HapticFeedback.mediumImpact()` on tap.
-2. Show loading state: replace button label with a 16dp `CircularProgressIndicator` in `BrdyColors.onAccent`.
+2. Show loading state: replace button label with a 14dp `CircularProgressIndicator` in `BrdyColors.onAccent`.
 3. Use `RepaintBoundary` keyed to the scorecard section — call `RenderRepaintBoundary.toImage()` to capture the scorecard grid widget as a PNG in memory.
 4. Write PNG bytes to a temporary file in `getTemporaryDirectory()` path.
 5. Call `Share.shareXFiles([XFile(tempPath)])` from `share_plus` package.
@@ -730,6 +734,7 @@ All UI is Flutter-native with packages declared in `pubspec.yaml` from Phase 1/2
 | 02-UI-SPEC.md | Phase 2 token values; inline outcome colors (Eagle gold, Par blue); section heading pattern; wordmark rule; navigation model (`context.go` only); animation library (`flutter_animate`); haptic pattern; snackbar spec; ALL CAPS everywhere |
 | 01-UI-SPEC.md | Phase 1 token origin; WHS formula reference; destructive pattern; muted label color |
 | `shot_capture_screen.dart` | Navigation trigger confirmed: `context.go('/round-review/$roundId')` |
+| UI checker revision | Fix 1: consolidated 7 font sizes to 4 (11, 14, 20, 28dp); Fix 2: header row height 22dp → 24dp |
 | User input | 0 — all decisions determinable from upstream artifacts, codebase, and design reference |
 
 ---

@@ -1,13 +1,204 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class RoundReviewScreen extends StatelessWidget {
+import '../../services/share/share_service.dart';
+import '../../theme/brdy_colors.dart';
+import '../../theme/brdy_spacing.dart';
+import 'widgets/scorecard_table.dart';
+import 'widgets/stats_section.dart';
+import 'widgets/whs_block.dart';
+
+class RoundReviewScreen extends ConsumerStatefulWidget {
   final int roundId;
+
   const RoundReviewScreen({super.key, required this.roundId});
 
   @override
+  ConsumerState<RoundReviewScreen> createState() => _RoundReviewScreenState();
+}
+
+class _RoundReviewScreenState extends ConsumerState<RoundReviewScreen> {
+  final GlobalKey _screenshotKey = GlobalKey();
+  final ShareService _shareService = ShareService();
+
+  Future<void> _handleShare() async {
+    await _shareService.shareScorecard(context, _screenshotKey);
+  }
+
+  void _handleStartNewRound() {
+    context.go('/setup');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('ROUND REVIEW $roundId')),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: BrdyColors.background,
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _ScorecardHeaderDelegate(),
+              ),
+              SliverToBoxAdapter(
+                child: RepaintBoundary(
+                  key: _screenshotKey,
+                  child: Column(
+                    children: [
+                      ScorecardTable(roundId: widget.roundId),
+                      Padding(
+                        padding: const EdgeInsets.all(BrdySpacing.md),
+                        child: WhsBlock(roundId: widget.roundId),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(BrdySpacing.md),
+                  child: StatsSection(roundId: widget.roundId),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _ActionButtons(
+                  onShare: _handleShare,
+                  onStartNewRound: _handleStartNewRound,
+                ),
+              ),
+              const SliverToBoxAdapter(child: Gap(BrdySpacing.xl)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── _ScorecardHeaderDelegate ──────────────────────────────────────────────────
+
+class _ScorecardHeaderDelegate extends SliverPersistentHeaderDelegate {
+  static const double _height = 36.0;
+
+  @override
+  double get minExtent => _height;
+
+  @override
+  double get maxExtent => _height;
+
+  @override
+  bool shouldRebuild(covariant _ScorecardHeaderDelegate oldDelegate) => false;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    final style = GoogleFonts.barlowCondensed(
+      fontSize: 12,
+      fontWeight: FontWeight.w700,
+      color: BrdyColors.onSurfaceMuted,
+    );
+
+    return Container(
+      height: _height,
+      color: BrdyColors.surface,
+      child: Table(
+        columnWidths: const {
+          0: FixedColumnWidth(48), // HOLE
+          1: FixedColumnWidth(36), // PAR
+          2: FlexColumnWidth(1),   // OUTCOME
+          3: FixedColumnWidth(48), // PUTTS
+        },
+        children: [
+          TableRow(
+            children: [
+              _headerCell('HOLE', style, TextAlign.left),
+              _headerCell('PAR', style, TextAlign.center),
+              _headerCell('OUTCOME', style, TextAlign.center),
+              _headerCell('PUTTS', style, TextAlign.center),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerCell(String text, TextStyle style, TextAlign align) {
+    return SizedBox(
+      height: 36,
+      child: Align(
+        alignment:
+            align == TextAlign.left ? Alignment.centerLeft : Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.sm),
+          child: Text(text, style: style, textAlign: align),
+        ),
+      ),
+    );
+  }
+}
+
+// ── _ActionButtons ─────────────────────────────────────────────────────────────
+
+class _ActionButtons extends StatelessWidget {
+  final VoidCallback onShare;
+  final VoidCallback onStartNewRound;
+
+  const _ActionButtons({
+    required this.onShare,
+    required this.onStartNewRound,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: BrdySpacing.md,
+        vertical: BrdySpacing.lg,
+      ),
+      child: Column(
+        children: [
+          ElevatedButton.icon(
+            onPressed: onShare,
+            icon: const Icon(Icons.share_outlined, color: BrdyColors.onAccent),
+            label: Text(
+              'SHARE SCORECARD',
+              style: GoogleFonts.barlowCondensed(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: BrdyColors.onAccent,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: BrdyColors.accent,
+              minimumSize: const Size.fromHeight(52),
+            ),
+          ),
+          const Gap(BrdySpacing.sm),
+          OutlinedButton(
+            onPressed: onStartNewRound,
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: BrdyColors.divider),
+              minimumSize: const Size.fromHeight(52),
+            ),
+            child: Text(
+              'START NEW ROUND',
+              style: GoogleFonts.barlowCondensed(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: BrdyColors.onSurface,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
