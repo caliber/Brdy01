@@ -110,7 +110,7 @@ class HoleHeader extends ConsumerWidget {
                   Text(
                     courseInfoLine1.toUpperCase(),
                     style: GoogleFonts.sometypeMono(
-                      fontSize: 11,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: BrdyColors.onSurfaceMuted,
                     ),
@@ -119,7 +119,7 @@ class HoleHeader extends ConsumerWidget {
                   Text(
                     courseInfoLine2.toUpperCase(),
                     style: GoogleFonts.sometypeMono(
-                      fontSize: 11,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: BrdyColors.onSurfaceMuted,
                     ),
@@ -249,7 +249,7 @@ class HoleHeader extends ConsumerWidget {
                   Text(
                 '$currentHoleShots',
                 style: GoogleFonts.sometypeMono(
-                  fontSize: 64,
+                  fontSize: 127,
                   fontWeight: FontWeight.w700,
                   color: BrdyColors.onSurface,
                 ),
@@ -290,7 +290,7 @@ class HoleHeader extends ConsumerWidget {
           Text(
             '$totalShots TOTAL',
             style: GoogleFonts.sometypeMono(
-              fontSize: 12,
+              fontSize: 24,
               fontWeight: FontWeight.w500,
               color: BrdyColors.onSurfaceMuted,
             ),
