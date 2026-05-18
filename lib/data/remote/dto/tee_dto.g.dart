@@ -45,12 +45,12 @@ _$HoleDtoImpl _$$HoleDtoImplFromJson(Map<String, dynamic> json) =>
     _$HoleDtoImpl(
       par: (json['par'] as num).toInt(),
       yardage: (json['yardage'] as num?)?.toInt(),
-      handicap: (json['stroke_index'] as num?)?.toInt(),
+      handicap: (json['handicap'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$HoleDtoImplToJson(_$HoleDtoImpl instance) =>
     <String, dynamic>{
       'par': instance.par,
       'yardage': instance.yardage,
-      'stroke_index': instance.handicap,
+      'handicap': instance.handicap,
     };
