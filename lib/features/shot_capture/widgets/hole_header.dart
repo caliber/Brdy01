@@ -78,7 +78,7 @@ class HoleHeader extends ConsumerWidget {
     final bool rightDisabled = holeIndex >= highestScoredHoleIndex;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md),
+      padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.sm, vertical: BrdySpacing.xs),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -170,7 +170,7 @@ class HoleHeader extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: BrdySpacing.lg),
+          const SizedBox(height: BrdySpacing.xs),
           // Giant hole number — centred, no chevrons
           Center(
             child: Semantics(
@@ -189,7 +189,7 @@ class HoleHeader extends ConsumerWidget {
                     Text(
                       (holeIndex + 1).toString().padLeft(2, '0'),
                       style: GoogleFonts.jetBrainsMono(
-                        fontSize: 96,
+                        fontSize: 72,
                         fontWeight: FontWeight.w700,
                         height: 1.0,
                         color: BrdyColors.onSurface,
@@ -209,7 +209,7 @@ class HoleHeader extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: BrdySpacing.md),
+          const SizedBox(height: BrdySpacing.xs),
           // SHOTS total with chevrons on screen edges
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -241,7 +241,7 @@ class HoleHeader extends ConsumerWidget {
               Text(
                 'SHOTS $totalShots',
                 style: GoogleFonts.barlowCondensed(
-                  fontSize: 56,
+                  fontSize: 42,
                   fontWeight: FontWeight.w700,
                   color: BrdyColors.onSurface,
                 ),

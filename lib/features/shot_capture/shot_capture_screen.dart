@@ -203,7 +203,7 @@ class _TopZone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         HoleHeader(
           roundId: roundId,
