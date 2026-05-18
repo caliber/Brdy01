@@ -50,7 +50,7 @@ class FairwayGirToggles extends ConsumerWidget {
                 )
               : const SizedBox.shrink(),
         ),
-        const SizedBox(width: BrdySpacing.xs),
+        const SizedBox(width: BrdySpacing.sm),
         // GIR
         Expanded(
           child: _GirToggle(
