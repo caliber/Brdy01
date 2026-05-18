@@ -4,6 +4,7 @@ import '../../domain/repositories/course_repository.dart';
 import '../../data/remote/api/golf_course_api.dart';
 import '../../data/remote/dto/course_search_response_dto.dart';
 import '../../data/remote/dto/course_detail_response_dto.dart';
+import '../../data/remote/dto/tee_dto.dart';
 import '../../data/local/preferences/hive_course_box.dart';
 
 class CourseRepositoryImpl implements CourseRepository {
@@ -22,7 +23,6 @@ class CourseRepositoryImpl implements CourseRepository {
   Future<CourseModel> getCourseDetail(String id) async {
     final response = await _api.getCourseDetail(id);
     final model = _detailDtoToModel(response.course);
-    // D-04: write through to Hive immediately after API success (SETUP-04)
     _hive.writeCourse(model.id, model);
     return model;
   }
@@ -33,33 +33,48 @@ class CourseRepositoryImpl implements CourseRepository {
   @override
   void cacheCourse(CourseModel course) => _hive.writeCourse(course.id, course);
 
-  CourseModel _searchDtoToModel(CourseSearchResultDto dto) => CourseModel(
-        id: dto.id,
-        clubName: dto.clubName,
-        courseName: dto.courseName,
-        courseRating: dto.courseRating,
-        slope: dto.slopeRating,
-        par: dto.par,
-        holes: const [], // search response carries no per-hole data
-      );
+  TeeDto? _primaryTee(TeesDto tees) =>
+      (tees.male?.isNotEmpty == true ? tees.male!.first : null) ??
+      (tees.female?.isNotEmpty == true ? tees.female!.first : null);
 
-  CourseModel _detailDtoToModel(CourseDetailDto dto) => CourseModel(
-        id: dto.id,
-        clubName: dto.clubName,
-        courseName: dto.courseName,
-        courseRating: dto.courseRating,
-        slope: dto.slopeRating,
-        par: dto.par,
-        holes: dto.holes.map(_holeDtoToModel).toList(),
-      );
+  CourseModel _searchDtoToModel(CourseSearchResultDto dto) {
+    final tee = _primaryTee(dto.tees);
+    return CourseModel(
+      id: dto.id.toString(),
+      clubName: dto.clubName,
+      courseName: dto.courseName,
+      courseRating: tee?.courseRating,
+      slope: tee?.slopeRating,
+      par: tee?.parTotal ?? 72,
+      holes: const [],
+    );
+  }
 
-  HoleModel _holeDtoToModel(HoleDto dto) => HoleModel(
-        holeNumber: dto.holeNumber,
+  CourseModel _detailDtoToModel(CourseDetailDto dto) {
+    final tee = _primaryTee(dto.tees);
+    final holes = tee?.holes ?? [];
+    return CourseModel(
+      id: dto.id.toString(),
+      clubName: dto.clubName,
+      courseName: dto.courseName,
+      courseRating: tee?.courseRating,
+      slope: tee?.slopeRating,
+      par: tee?.parTotal ?? 72,
+      holes: holes
+          .asMap()
+          .entries
+          .map((e) => _holeDtoToModel(e.key + 1, e.value))
+          .toList(),
+    );
+  }
+
+  HoleModel _holeDtoToModel(int number, HoleDto dto) => HoleModel(
+        holeNumber: number,
         par: dto.par,
-        strokeIndex: dto.strokeIndex,
-        teeLat: dto.teeLat,
-        teeLng: dto.teeLng,
-        greenLat: dto.greenLat,
-        greenLng: dto.greenLng,
+        strokeIndex: dto.handicap,
+        teeLat: null,
+        teeLng: null,
+        greenLat: null,
+        greenLng: null,
       );
 }

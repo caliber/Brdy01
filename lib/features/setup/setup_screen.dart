@@ -146,10 +146,10 @@ class _SearchResultsList extends ConsumerWidget {
                 final result = results[i];
                 return CourseResultTile(
                   courseName: result.clubName,
-                  city: result.location?.city,
-                  country: result.location?.country,
+                  city: null,
+                  country: null,
                   courseRating: result.courseRating,
-                  slope: result.slopeRating,
+                  slope: result.slope,
                   onTap: () => ref
                       .read(selectedCourseProvider.notifier)
                       .loadCourse(result.id),

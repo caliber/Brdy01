@@ -186,16 +186,12 @@ CourseSearchResultDto _$CourseSearchResultDtoFromJson(
 
 /// @nodoc
 mixin _$CourseSearchResultDto {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'club_name')
   String get clubName => throw _privateConstructorUsedError;
   @JsonKey(name: 'course_name')
   String get courseName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'course_rating')
-  double? get courseRating => throw _privateConstructorUsedError;
-  @JsonKey(name: 'slope_rating')
-  int? get slopeRating => throw _privateConstructorUsedError;
-  int get par => throw _privateConstructorUsedError;
+  TeesDto get tees => throw _privateConstructorUsedError;
   LocationDto? get location => throw _privateConstructorUsedError;
 
   /// Serializes this CourseSearchResultDto to a JSON map.
@@ -215,14 +211,13 @@ abstract class $CourseSearchResultDtoCopyWith<$Res> {
       _$CourseSearchResultDtoCopyWithImpl<$Res, CourseSearchResultDto>;
   @useResult
   $Res call(
-      {String id,
+      {int id,
       @JsonKey(name: 'club_name') String clubName,
       @JsonKey(name: 'course_name') String courseName,
-      @JsonKey(name: 'course_rating') double? courseRating,
-      @JsonKey(name: 'slope_rating') int? slopeRating,
-      int par,
+      TeesDto tees,
       LocationDto? location});
 
+  $TeesDtoCopyWith<$Res> get tees;
   $LocationDtoCopyWith<$Res>? get location;
 }
 
@@ -245,16 +240,14 @@ class _$CourseSearchResultDtoCopyWithImpl<$Res,
     Object? id = null,
     Object? clubName = null,
     Object? courseName = null,
-    Object? courseRating = freezed,
-    Object? slopeRating = freezed,
-    Object? par = null,
+    Object? tees = null,
     Object? location = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       clubName: null == clubName
           ? _value.clubName
           : clubName // ignore: cast_nullable_to_non_nullable
@@ -263,23 +256,25 @@ class _$CourseSearchResultDtoCopyWithImpl<$Res,
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
               as String,
-      courseRating: freezed == courseRating
-          ? _value.courseRating
-          : courseRating // ignore: cast_nullable_to_non_nullable
-              as double?,
-      slopeRating: freezed == slopeRating
-          ? _value.slopeRating
-          : slopeRating // ignore: cast_nullable_to_non_nullable
-              as int?,
-      par: null == par
-          ? _value.par
-          : par // ignore: cast_nullable_to_non_nullable
-              as int,
+      tees: null == tees
+          ? _value.tees
+          : tees // ignore: cast_nullable_to_non_nullable
+              as TeesDto,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as LocationDto?,
     ) as $Val);
+  }
+
+  /// Create a copy of CourseSearchResultDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TeesDtoCopyWith<$Res> get tees {
+    return $TeesDtoCopyWith<$Res>(_value.tees, (value) {
+      return _then(_value.copyWith(tees: value) as $Val);
+    });
   }
 
   /// Create a copy of CourseSearchResultDto
@@ -307,14 +302,14 @@ abstract class _$$CourseSearchResultDtoImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {int id,
       @JsonKey(name: 'club_name') String clubName,
       @JsonKey(name: 'course_name') String courseName,
-      @JsonKey(name: 'course_rating') double? courseRating,
-      @JsonKey(name: 'slope_rating') int? slopeRating,
-      int par,
+      TeesDto tees,
       LocationDto? location});
 
+  @override
+  $TeesDtoCopyWith<$Res> get tees;
   @override
   $LocationDtoCopyWith<$Res>? get location;
 }
@@ -336,16 +331,14 @@ class __$$CourseSearchResultDtoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? clubName = null,
     Object? courseName = null,
-    Object? courseRating = freezed,
-    Object? slopeRating = freezed,
-    Object? par = null,
+    Object? tees = null,
     Object? location = freezed,
   }) {
     return _then(_$CourseSearchResultDtoImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       clubName: null == clubName
           ? _value.clubName
           : clubName // ignore: cast_nullable_to_non_nullable
@@ -354,18 +347,10 @@ class __$$CourseSearchResultDtoImplCopyWithImpl<$Res>
           ? _value.courseName
           : courseName // ignore: cast_nullable_to_non_nullable
               as String,
-      courseRating: freezed == courseRating
-          ? _value.courseRating
-          : courseRating // ignore: cast_nullable_to_non_nullable
-              as double?,
-      slopeRating: freezed == slopeRating
-          ? _value.slopeRating
-          : slopeRating // ignore: cast_nullable_to_non_nullable
-              as int?,
-      par: null == par
-          ? _value.par
-          : par // ignore: cast_nullable_to_non_nullable
-              as int,
+      tees: null == tees
+          ? _value.tees
+          : tees // ignore: cast_nullable_to_non_nullable
+              as TeesDto,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -381,16 +366,14 @@ class _$CourseSearchResultDtoImpl implements _CourseSearchResultDto {
       {required this.id,
       @JsonKey(name: 'club_name') required this.clubName,
       @JsonKey(name: 'course_name') required this.courseName,
-      @JsonKey(name: 'course_rating') this.courseRating,
-      @JsonKey(name: 'slope_rating') this.slopeRating,
-      required this.par,
+      required this.tees,
       this.location});
 
   factory _$CourseSearchResultDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$CourseSearchResultDtoImplFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   @JsonKey(name: 'club_name')
   final String clubName;
@@ -398,19 +381,13 @@ class _$CourseSearchResultDtoImpl implements _CourseSearchResultDto {
   @JsonKey(name: 'course_name')
   final String courseName;
   @override
-  @JsonKey(name: 'course_rating')
-  final double? courseRating;
-  @override
-  @JsonKey(name: 'slope_rating')
-  final int? slopeRating;
-  @override
-  final int par;
+  final TeesDto tees;
   @override
   final LocationDto? location;
 
   @override
   String toString() {
-    return 'CourseSearchResultDto(id: $id, clubName: $clubName, courseName: $courseName, courseRating: $courseRating, slopeRating: $slopeRating, par: $par, location: $location)';
+    return 'CourseSearchResultDto(id: $id, clubName: $clubName, courseName: $courseName, tees: $tees, location: $location)';
   }
 
   @override
@@ -423,19 +400,15 @@ class _$CourseSearchResultDtoImpl implements _CourseSearchResultDto {
                 other.clubName == clubName) &&
             (identical(other.courseName, courseName) ||
                 other.courseName == courseName) &&
-            (identical(other.courseRating, courseRating) ||
-                other.courseRating == courseRating) &&
-            (identical(other.slopeRating, slopeRating) ||
-                other.slopeRating == slopeRating) &&
-            (identical(other.par, par) || other.par == par) &&
+            (identical(other.tees, tees) || other.tees == tees) &&
             (identical(other.location, location) ||
                 other.location == location));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, clubName, courseName,
-      courseRating, slopeRating, par, location);
+  int get hashCode =>
+      Object.hash(runtimeType, id, clubName, courseName, tees, location);
 
   /// Create a copy of CourseSearchResultDto
   /// with the given fields replaced by the non-null parameter values.
@@ -456,19 +429,17 @@ class _$CourseSearchResultDtoImpl implements _CourseSearchResultDto {
 
 abstract class _CourseSearchResultDto implements CourseSearchResultDto {
   const factory _CourseSearchResultDto(
-      {required final String id,
+      {required final int id,
       @JsonKey(name: 'club_name') required final String clubName,
       @JsonKey(name: 'course_name') required final String courseName,
-      @JsonKey(name: 'course_rating') final double? courseRating,
-      @JsonKey(name: 'slope_rating') final int? slopeRating,
-      required final int par,
+      required final TeesDto tees,
       final LocationDto? location}) = _$CourseSearchResultDtoImpl;
 
   factory _CourseSearchResultDto.fromJson(Map<String, dynamic> json) =
       _$CourseSearchResultDtoImpl.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
   @JsonKey(name: 'club_name')
   String get clubName;
@@ -476,13 +447,7 @@ abstract class _CourseSearchResultDto implements CourseSearchResultDto {
   @JsonKey(name: 'course_name')
   String get courseName;
   @override
-  @JsonKey(name: 'course_rating')
-  double? get courseRating;
-  @override
-  @JsonKey(name: 'slope_rating')
-  int? get slopeRating;
-  @override
-  int get par;
+  TeesDto get tees;
   @override
   LocationDto? get location;
 

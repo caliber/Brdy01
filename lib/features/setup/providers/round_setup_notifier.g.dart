@@ -7,7 +7,7 @@ part of 'round_setup_notifier.dart';
 // **************************************************************************
 
 String _$roundSetupNotifierHash() =>
-    r'cbb3c2b45b811e649b8ef7020099a9feaef1c455';
+    r'ce15250d6482ab1de4ac90becd2d3fdfd28054b9';
 
 /// See also [RoundSetupNotifier].
 @ProviderFor(RoundSetupNotifier)

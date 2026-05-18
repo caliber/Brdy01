@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'tee_dto.dart';
 
 part 'course_search_response_dto.freezed.dart';
 part 'course_search_response_dto.g.dart';
@@ -16,12 +17,10 @@ class CourseSearchResponseDto with _$CourseSearchResponseDto {
 @freezed
 class CourseSearchResultDto with _$CourseSearchResultDto {
   const factory CourseSearchResultDto({
-    required String id,
+    required int id,
     @JsonKey(name: 'club_name') required String clubName,
     @JsonKey(name: 'course_name') required String courseName,
-    @JsonKey(name: 'course_rating') double? courseRating,
-    @JsonKey(name: 'slope_rating') int? slopeRating,
-    required int par,
+    required TeesDto tees,
     LocationDto? location,
   }) = _CourseSearchResultDto;
 

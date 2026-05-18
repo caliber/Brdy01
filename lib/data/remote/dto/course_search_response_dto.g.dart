@@ -23,12 +23,10 @@ Map<String, dynamic> _$$CourseSearchResponseDtoImplToJson(
 _$CourseSearchResultDtoImpl _$$CourseSearchResultDtoImplFromJson(
         Map<String, dynamic> json) =>
     _$CourseSearchResultDtoImpl(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       clubName: json['club_name'] as String,
       courseName: json['course_name'] as String,
-      courseRating: (json['course_rating'] as num?)?.toDouble(),
-      slopeRating: (json['slope_rating'] as num?)?.toInt(),
-      par: (json['par'] as num).toInt(),
+      tees: TeesDto.fromJson(json['tees'] as Map<String, dynamic>),
       location: json['location'] == null
           ? null
           : LocationDto.fromJson(json['location'] as Map<String, dynamic>),
@@ -40,9 +38,7 @@ Map<String, dynamic> _$$CourseSearchResultDtoImplToJson(
       'id': instance.id,
       'club_name': instance.clubName,
       'course_name': instance.courseName,
-      'course_rating': instance.courseRating,
-      'slope_rating': instance.slopeRating,
-      'par': instance.par,
+      'tees': instance.tees,
       'location': instance.location,
     };
 
