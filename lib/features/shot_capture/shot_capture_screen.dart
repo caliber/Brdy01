@@ -120,11 +120,6 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
 
     if (!mounted) return;
     _showUndoToast(context, outcome, holeIndex + 1);
-
-    // Advance to next hole; on hole 18 NEXT button navigates to Round Review
-    if (holeIndex < 17) {
-      ref.read(activeHoleIndexProvider.notifier).set(holeIndex + 1);
-    }
   }
 
   Future<void> _handleNext() async {
