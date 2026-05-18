@@ -251,14 +251,14 @@ class _BottomZone extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Gap(BrdySpacing.sm),
+            const Gap(BrdySpacing.md),
             // BRDY.01 wordmark rule
             Row(
               children: [
                 Text(
                   'BRDY.01',
                   style: GoogleFonts.sometypeMono(
-                    fontSize: 14,
+                    fontSize: 24,
                     fontWeight: FontWeight.w700,
                     color: BrdyColors.background,
                   ),
@@ -272,7 +272,7 @@ class _BottomZone extends StatelessWidget {
                 ),
               ],
             ),
-            const Gap(BrdySpacing.sm),
+            const Gap(BrdySpacing.md),
             if (!voiceAvailable)
               Padding(
                 padding: const EdgeInsets.only(bottom: BrdySpacing.xs),
