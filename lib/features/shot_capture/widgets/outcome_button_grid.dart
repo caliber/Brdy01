@@ -50,9 +50,37 @@ class OutcomeButtonGrid extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Row 1: PAR, BIRDY, BOGEY, DOUBLE
+        // Row 1: DOUBLE, BOGEY, PAR, BIRDY
         Row(
           children: [
+            // DOUBLE
+            Expanded(
+              child: _ButtonColumn(
+                abbrev: 'DBL',
+                label: 'DOUBLE',
+                isActive: currentOutcome == HoleOutcome.doubleBogey,
+                activeColor: BrdyColors.surface,
+                activeTextColor: BrdyColors.onSurface,
+                dotActiveColor: BrdyColors.onSurfaceMuted,
+                onTap: () => onOutcomeTapped(
+                    HoleOutcome.doubleBogey, holePar, holeStrokeIndex),
+              ),
+            ),
+            const SizedBox(width: BrdySpacing.xs),
+            // BOGEY
+            Expanded(
+              child: _ButtonColumn(
+                abbrev: 'BGY',
+                label: 'BOGEY',
+                isActive: currentOutcome == HoleOutcome.bogey,
+                activeColor: BrdyColors.surface,
+                activeTextColor: BrdyColors.onSurface,
+                dotActiveColor: BrdyColors.onSurfaceMuted,
+                onTap: () => onOutcomeTapped(
+                    HoleOutcome.bogey, holePar, holeStrokeIndex),
+              ),
+            ),
+            const SizedBox(width: BrdySpacing.xs),
             // PAR
             Expanded(
               child: _ButtonColumn(
@@ -76,34 +104,6 @@ class OutcomeButtonGrid extends ConsumerWidget {
                     onOutcomeTapped(HoleOutcome.birdie, holePar, holeStrokeIndex),
                 onDoubleTap: () =>
                     onOutcomeTapped(HoleOutcome.eagle, holePar, holeStrokeIndex),
-              ),
-            ),
-            const SizedBox(width: BrdySpacing.xs),
-            // BOGEY
-            Expanded(
-              child: _ButtonColumn(
-                abbrev: 'BGY',
-                label: 'BOGEY',
-                isActive: currentOutcome == HoleOutcome.bogey,
-                activeColor: BrdyColors.surface,
-                activeTextColor: BrdyColors.onSurface,
-                dotActiveColor: BrdyColors.onSurfaceMuted,
-                onTap: () => onOutcomeTapped(
-                    HoleOutcome.bogey, holePar, holeStrokeIndex),
-              ),
-            ),
-            const SizedBox(width: BrdySpacing.xs),
-            // DOUBLE
-            Expanded(
-              child: _ButtonColumn(
-                abbrev: 'DBL',
-                label: 'DOUBLE',
-                isActive: currentOutcome == HoleOutcome.doubleBogey,
-                activeColor: BrdyColors.surface,
-                activeTextColor: BrdyColors.onSurface,
-                dotActiveColor: BrdyColors.onSurfaceMuted,
-                onTap: () => onOutcomeTapped(
-                    HoleOutcome.doubleBogey, holePar, holeStrokeIndex),
               ),
             ),
           ],
