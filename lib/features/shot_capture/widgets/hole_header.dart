@@ -171,25 +171,62 @@ class HoleHeader extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: BrdySpacing.lg),
-          // Giant hole number row
+          // Giant hole number — centred, no chevrons
+          Center(
+            child: Semantics(
+              label: 'HOLE ${holeIndex + 1} OF 18 — TAP TO NAVIGATE HOLES',
+              button: onHoleNumberTap != null,
+              child: GestureDetector(
+                onTap: onHoleNumberTap != null
+                    ? () {
+                        HapticFeedback.selectionClick();
+                        onHoleNumberTap!();
+                      }
+                    : null,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Text(
+                      (holeIndex + 1).toString().padLeft(2, '0'),
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 96,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        color: BrdyColors.onSurface,
+                      ),
+                    )
+                        .animate(key: ValueKey(holeIndex))
+                        .fadeOut(duration: 50.ms, curve: Curves.easeOut)
+                        .then()
+                        .fadeIn(duration: 100.ms, curve: Curves.easeOut),
+                    Positioned(
+                      right: -8,
+                      top: 0,
+                      child: ScoreBar(roundId: roundId),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: BrdySpacing.md),
+          // SHOTS total with chevrons on screen edges
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Left chevron
+              // Left chevron — screen edge
               Semantics(
                 label: 'PREVIOUS HOLE',
                 child: IconButton(
                   icon: Icon(
                     Icons.chevron_left,
-                    size: 32,
+                    size: 40,
                     color: leftDisabled
                         ? BrdyColors.onSurfaceMuted
                         : BrdyColors.onSurface,
                   ),
-                  constraints: const BoxConstraints(
-                    minWidth: 48,
-                    minHeight: 48,
-                  ),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                   onPressed: leftDisabled
                       ? null
                       : () {
@@ -200,57 +237,28 @@ class HoleHeader extends ConsumerWidget {
                         },
                 ),
               ),
-              // Hole number stack with score badge — tappable to toggle nav strip
-              Semantics(
-                label: 'HOLE ${holeIndex + 1} OF 18 — TAP TO NAVIGATE HOLES',
-                button: onHoleNumberTap != null,
-                child: GestureDetector(
-                  onTap: onHoleNumberTap != null
-                      ? () {
-                          HapticFeedback.selectionClick();
-                          onHoleNumberTap!();
-                        }
-                      : null,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Text(
-                        (holeIndex + 1).toString().padLeft(2, '0'),
-                        style: GoogleFonts.jetBrainsMono(
-                          fontSize: 96,
-                          fontWeight: FontWeight.w700,
-                          height: 1.0,
-                          color: BrdyColors.onSurface,
-                        ),
-                      )
-                          .animate(key: ValueKey(holeIndex))
-                          .fadeOut(duration: 50.ms, curve: Curves.easeOut)
-                          .then()
-                          .fadeIn(duration: 100.ms, curve: Curves.easeOut),
-                      Positioned(
-                        right: -8,
-                        top: 0,
-                        child: ScoreBar(roundId: roundId),
-                      ),
-                    ],
-                  ),
+              // SHOTS counter — centred between chevrons
+              Text(
+                'SHOTS $totalShots',
+                style: GoogleFonts.barlowCondensed(
+                  fontSize: 56,
+                  fontWeight: FontWeight.w700,
+                  color: BrdyColors.onSurface,
                 ),
               ),
-              // Right chevron
+              // Right chevron — screen edge
               Semantics(
                 label: 'NEXT HOLE',
                 child: IconButton(
                   icon: Icon(
                     Icons.chevron_right,
-                    size: 32,
+                    size: 40,
                     color: rightDisabled
                         ? BrdyColors.onSurfaceMuted
                         : BrdyColors.onSurface,
                   ),
-                  constraints: const BoxConstraints(
-                    minWidth: 48,
-                    minHeight: 48,
-                  ),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                   onPressed: rightDisabled
                       ? null
                       : () {
@@ -262,17 +270,6 @@ class HoleHeader extends ConsumerWidget {
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: BrdySpacing.md),
-          // SHOTS total
-          Text(
-            'SHOTS $totalShots',
-            style: GoogleFonts.barlowCondensed(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: BrdyColors.onSurface,
-            ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
