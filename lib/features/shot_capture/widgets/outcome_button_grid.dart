@@ -250,7 +250,8 @@ class _ButtonColumnState extends State<_ButtonColumn> {
                   ),
                 ],
               ),
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
                 widget.label,
                 style: GoogleFonts.sometypeMono(
@@ -452,7 +453,8 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
                   ),
                 ],
               ),
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
                 widget.label,
                 style: GoogleFonts.sometypeMono(
@@ -567,7 +569,8 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
                   ),
                 ],
               ),
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
                 label,
                 style: GoogleFonts.sometypeMono(
@@ -667,7 +670,8 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
                       ),
                     ],
                   ),
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 10),
                   child: Text(
                     'NEXT',
                     style: GoogleFonts.sometypeMono(

@@ -292,7 +292,7 @@ class HoleHeader extends ConsumerWidget {
             style: GoogleFonts.sometypeMono(
               fontSize: 24,
               fontWeight: FontWeight.w500,
-              color: BrdyColors.onSurfaceMuted,
+              color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
