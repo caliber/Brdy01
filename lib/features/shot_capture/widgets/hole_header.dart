@@ -201,29 +201,19 @@ class HoleHeader extends ConsumerWidget {
                         onHoleNumberTap!();
                       }
                     : null,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Text(
-                      (holeIndex + 1).toString().padLeft(2, '0'),
-                      style: GoogleFonts.sometypeMono(
-                        fontSize: 72,
-                        fontWeight: FontWeight.w700,
-                        height: 1.0,
-                        color: BrdyColors.onSurface,
-                      ),
-                    )
-                        .animate(key: ValueKey(holeIndex))
-                        .fadeOut(duration: 50.ms, curve: Curves.easeOut)
-                        .then()
-                        .fadeIn(duration: 100.ms, curve: Curves.easeOut),
-                    Positioned(
-                      right: -8,
-                      top: 0,
-                      child: ScoreBar(roundId: roundId),
-                    ),
-                  ],
-                ),
+                child: Text(
+                  (holeIndex + 1).toString().padLeft(2, '0'),
+                  style: GoogleFonts.sometypeMono(
+                    fontSize: 72,
+                    fontWeight: FontWeight.w700,
+                    height: 1.0,
+                    color: BrdyColors.onSurface,
+                  ),
+                )
+                    .animate(key: ValueKey(holeIndex))
+                    .fadeOut(duration: 50.ms, curve: Curves.easeOut)
+                    .then()
+                    .fadeIn(duration: 100.ms, curve: Curves.easeOut),
               ),
             ),
           ),
@@ -255,14 +245,24 @@ class HoleHeader extends ConsumerWidget {
                         },
                 ),
               ),
-              // Current hole shots — XLarge
-              Text(
+              // Current hole shots — XLarge with ScoreBar top-right
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Text(
                 '$currentHoleShots',
                 style: GoogleFonts.sometypeMono(
                   fontSize: 64,
                   fontWeight: FontWeight.w700,
                   color: BrdyColors.onSurface,
                 ),
+              ),
+                  Positioned(
+                    right: -8,
+                    top: 0,
+                    child: ScoreBar(roundId: roundId),
+                  ),
+                ],
               ),
               // Right chevron — screen edge
               Semantics(
