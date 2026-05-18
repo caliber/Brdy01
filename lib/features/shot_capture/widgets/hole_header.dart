@@ -258,8 +258,8 @@ class HoleHeader extends ConsumerWidget {
                 ),
               ),
                   Positioned(
-                    right: -8,
-                    top: 0,
+                    right: -38,
+                    top: -18,
                     child: ScoreBar(roundId: roundId),
                   ),
                 ],
