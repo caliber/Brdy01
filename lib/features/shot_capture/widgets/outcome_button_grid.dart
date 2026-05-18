@@ -50,7 +50,7 @@ class OutcomeButtonGrid extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Row 1: PAR, SUB, ADD, BIRDY
+        // Row 1: PAR, BIRDY, BOGEY, DOUBLE
         Row(
           children: [
             // PAR
@@ -67,31 +67,6 @@ class OutcomeButtonGrid extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: BrdySpacing.xs),
-            // SUB | count | ADD combined putts counter
-            Expanded(
-              flex: 2,
-              child: _PuttsCounter(
-                count: currentPutts,
-                onSub: currentPutts > 0
-                    ? () {
-                        HapticFeedback.selectionClick();
-                        ref
-                            .read(holeScoreNotifierProvider(
-                                    roundId, holeIndex)
-                                .notifier)
-                            .setPutts(currentPutts - 1);
-                      }
-                    : null,
-                onAdd: () {
-                  HapticFeedback.selectionClick();
-                  ref
-                      .read(holeScoreNotifierProvider(roundId, holeIndex)
-                          .notifier)
-                      .setPutts(currentPutts + 1);
-                },
-              ),
-            ),
-            const SizedBox(width: BrdySpacing.xs),
             // BIRDY (with double-tap for EAGLE)
             Expanded(
               child: _BirdyButtonColumn(
@@ -101,25 +76,6 @@ class OutcomeButtonGrid extends ConsumerWidget {
                     onOutcomeTapped(HoleOutcome.birdie, holePar, holeStrokeIndex),
                 onDoubleTap: () =>
                     onOutcomeTapped(HoleOutcome.eagle, holePar, holeStrokeIndex),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: BrdySpacing.sm),
-        // Row 2: PICKUP, BOGEY, DOUBLE, NEXT
-        Row(
-          children: [
-            // PICKUP
-            Expanded(
-              child: _ButtonColumn(
-                abbrev: 'PKU',
-                label: 'PICKUP',
-                isActive: currentOutcome == HoleOutcome.pickup,
-                activeColor: BrdyColors.surface,
-                activeTextColor: BrdyColors.onSurface,
-                dotActiveColor: BrdyColors.onSurfaceMuted,
-                onTap: () => onOutcomeTapped(
-                    HoleOutcome.pickup, holePar, holeStrokeIndex),
               ),
             ),
             const SizedBox(width: BrdySpacing.xs),
@@ -148,6 +104,50 @@ class OutcomeButtonGrid extends ConsumerWidget {
                 dotActiveColor: BrdyColors.onSurfaceMuted,
                 onTap: () => onOutcomeTapped(
                     HoleOutcome.doubleBogey, holePar, holeStrokeIndex),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: BrdySpacing.sm),
+        // Row 2: PICKUP, PUTTS, NEXT
+        Row(
+          children: [
+            // PICKUP
+            Expanded(
+              child: _ButtonColumn(
+                abbrev: 'PKU',
+                label: 'PICKUP',
+                isActive: currentOutcome == HoleOutcome.pickup,
+                activeColor: BrdyColors.surface,
+                activeTextColor: BrdyColors.onSurface,
+                dotActiveColor: BrdyColors.onSurfaceMuted,
+                onTap: () => onOutcomeTapped(
+                    HoleOutcome.pickup, holePar, holeStrokeIndex),
+              ),
+            ),
+            const SizedBox(width: BrdySpacing.xs),
+            // PUTTS counter
+            Expanded(
+              flex: 2,
+              child: _PuttsCounter(
+                count: currentPutts,
+                onSub: currentPutts > 0
+                    ? () {
+                        HapticFeedback.selectionClick();
+                        ref
+                            .read(holeScoreNotifierProvider(
+                                    roundId, holeIndex)
+                                .notifier)
+                            .setPutts(currentPutts - 1);
+                      }
+                    : null,
+                onAdd: () {
+                  HapticFeedback.selectionClick();
+                  ref
+                      .read(holeScoreNotifierProvider(roundId, holeIndex)
+                          .notifier)
+                      .setPutts(currentPutts + 1);
+                },
               ),
             ),
             const SizedBox(width: BrdySpacing.xs),
