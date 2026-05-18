@@ -70,7 +70,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
         child: Column(
           children: [
             Expanded(
-              flex: 55,
+              flex: 47,
               child: _TopZone(
                 roundId: roundId,
                 highestScoredHoleIndex: highestIndex,
