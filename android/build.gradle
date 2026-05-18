@@ -5,6 +5,21 @@ allprojects {
     }
 }
 
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            project.android {
+                if (it.hasProperty("compileSdkVersion")) {
+                    compileSdkVersion 35
+                }
+                if (it.hasProperty("compileSdk")) {
+                    compileSdk 35
+                }
+            }
+        }
+    }
+}
+
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
@@ -12,7 +27,6 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
-
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
