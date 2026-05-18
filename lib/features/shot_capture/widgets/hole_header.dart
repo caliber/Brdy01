@@ -133,16 +133,15 @@ class HoleHeader extends ConsumerWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(color: BrdyColors.onSurface, width: 1),
-                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                     child: Text(
                       parLabel.toUpperCase(),
                       style: GoogleFonts.sometypeMono(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: BrdyColors.onSurface,
+                        color: BrdyColors.background,
                       ),
                     ),
                   ),
@@ -152,16 +151,15 @@ class HoleHeader extends ConsumerWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(color: BrdyColors.onSurface, width: 1),
-                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                     child: Text(
                       siLabel.toUpperCase(),
                       style: GoogleFonts.sometypeMono(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: BrdyColors.onSurface,
+                        color: BrdyColors.background,
                       ),
                     ),
                   ),
@@ -171,16 +169,15 @@ class HoleHeader extends ConsumerWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(color: BrdyColors.onSurface, width: 1),
-                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                     child: Text(
                       'HOLE ${holeIndex + 1}',
                       style: GoogleFonts.sometypeMono(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: BrdyColors.onSurface,
+                        color: BrdyColors.background,
                       ),
                     ),
                   ),
