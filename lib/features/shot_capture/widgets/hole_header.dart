@@ -91,7 +91,7 @@ class HoleHeader extends ConsumerWidget {
                 children: [
                   Text(
                     courseInfoLine1.toUpperCase(),
-                    style: GoogleFonts.barlowCondensed(
+                    style: GoogleFonts.sometypeMono(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: BrdyColors.onSurfaceMuted,
@@ -100,7 +100,7 @@ class HoleHeader extends ConsumerWidget {
                   const SizedBox(height: 2),
                   Text(
                     courseInfoLine2.toUpperCase(),
-                    style: GoogleFonts.barlowCondensed(
+                    style: GoogleFonts.sometypeMono(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: BrdyColors.onSurfaceMuted,
@@ -121,7 +121,7 @@ class HoleHeader extends ConsumerWidget {
                     ),
                     child: Text(
                       parLabel.toUpperCase(),
-                      style: GoogleFonts.barlowCondensed(
+                      style: GoogleFonts.sometypeMono(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: BrdyColors.onSurface,
@@ -140,7 +140,7 @@ class HoleHeader extends ConsumerWidget {
                     ),
                     child: Text(
                       siLabel.toUpperCase(),
-                      style: GoogleFonts.barlowCondensed(
+                      style: GoogleFonts.sometypeMono(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: BrdyColors.onSurface,
@@ -159,7 +159,7 @@ class HoleHeader extends ConsumerWidget {
                     ),
                     child: Text(
                       'HOLE ${holeIndex + 1}',
-                      style: GoogleFonts.barlowCondensed(
+                      style: GoogleFonts.sometypeMono(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: BrdyColors.onSurface,
@@ -188,7 +188,7 @@ class HoleHeader extends ConsumerWidget {
                   children: [
                     Text(
                       (holeIndex + 1).toString().padLeft(2, '0'),
-                      style: GoogleFonts.jetBrainsMono(
+                      style: GoogleFonts.sometypeMono(
                         fontSize: 72,
                         fontWeight: FontWeight.w700,
                         height: 1.0,
@@ -240,7 +240,7 @@ class HoleHeader extends ConsumerWidget {
               // SHOTS counter — centred between chevrons
               Text(
                 'SHOTS $totalShots',
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 42,
                   fontWeight: FontWeight.w700,
                   color: BrdyColors.onSurface,

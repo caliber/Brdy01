@@ -113,7 +113,7 @@ class _FairwayToggle extends StatelessWidget {
             children: [
               Text(
                 isActive ? 'HIT' : 'MISS',
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: labelColor,
@@ -122,7 +122,7 @@ class _FairwayToggle extends StatelessWidget {
               ),
               Text(
                 'FAIRWAY',
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
                   color: BrdyColors.background,
@@ -183,7 +183,7 @@ class _GirToggle extends StatelessWidget {
             children: [
               Text(
                 isActive ? 'GREEN' : 'MISS',
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: labelColor,
@@ -192,7 +192,7 @@ class _GirToggle extends StatelessWidget {
               ),
               Text(
                 'REG',
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
                   color: BrdyColors.background,
@@ -239,7 +239,7 @@ class _VoiceToggle extends StatelessWidget {
           children: [
             Text(
               'OFF',
-              style: GoogleFonts.barlowCondensed(
+              style: GoogleFonts.sometypeMono(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: BrdyColors.background,
@@ -248,7 +248,7 @@ class _VoiceToggle extends StatelessWidget {
             ),
             Text(
               'VOICE',
-              style: GoogleFonts.barlowCondensed(
+              style: GoogleFonts.sometypeMono(
                 fontSize: 10,
                 fontWeight: FontWeight.w400,
                 color: BrdyColors.background,

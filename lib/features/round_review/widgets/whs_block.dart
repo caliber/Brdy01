@@ -22,7 +22,7 @@ class WhsBlock extends ConsumerWidget {
     if (whsAsync.hasError) {
       return Text(
         'WHS N/A',
-        style: GoogleFonts.barlowCondensed(
+        style: GoogleFonts.sometypeMono(
           fontSize: 12,
           fontWeight: FontWeight.w700,
           color: BrdyColors.onSurfaceMuted,
@@ -48,7 +48,7 @@ class WhsBlock extends ConsumerWidget {
           // Row 1: label
           Text(
             'WHS DIFFERENTIAL',
-            style: GoogleFonts.barlowCondensed(
+            style: GoogleFonts.sometypeMono(
               fontSize: 12,
               fontWeight: FontWeight.w700,
               color: BrdyColors.onSurfaceMuted,
@@ -59,7 +59,7 @@ class WhsBlock extends ConsumerWidget {
           // Row 2: prominent differential value
           Text(
             whs.displayValue,
-            style: GoogleFonts.jetBrainsMono(
+            style: GoogleFonts.sometypeMono(
               fontSize: 48,
               fontWeight: FontWeight.w700,
               color: BrdyColors.onSurface,
@@ -70,7 +70,7 @@ class WhsBlock extends ConsumerWidget {
             const SizedBox(height: BrdySpacing.xs),
             Text(
               whs.indicativeLabel!,
-              style: GoogleFonts.barlowCondensed(
+              style: GoogleFonts.sometypeMono(
                 fontSize: 11,
                 color: BrdyColors.onSurfaceMuted,
               ),

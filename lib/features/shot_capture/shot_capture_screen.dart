@@ -155,7 +155,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
         SnackBar(
           content: Text(
             '$outcomeLabel — HOLE $holeNumber',
-            style: GoogleFonts.barlowCondensed(
+            style: GoogleFonts.sometypeMono(
               fontSize: 14,
               fontWeight: FontWeight.w400,
               color: BrdyColors.onSurface,
@@ -257,7 +257,7 @@ class _BottomZone extends StatelessWidget {
               children: [
                 Text(
                   'BRDY.01',
-                  style: GoogleFonts.barlowCondensed(
+                  style: GoogleFonts.sometypeMono(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: BrdyColors.background,
@@ -278,7 +278,7 @@ class _BottomZone extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: BrdySpacing.xs),
                 child: Text(
                   'VOICE UNAVAILABLE',
-                  style: GoogleFonts.barlowCondensed(
+                  style: GoogleFonts.sometypeMono(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: BrdyColors.onSurfaceMuted,

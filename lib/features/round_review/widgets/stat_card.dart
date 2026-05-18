@@ -33,7 +33,7 @@ class StatCard extends StatelessWidget {
         children: [
           Text(
             label,
-            style: GoogleFonts.barlowCondensed(
+            style: GoogleFonts.sometypeMono(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: BrdyColors.onSurfaceMuted,
@@ -42,7 +42,7 @@ class StatCard extends StatelessWidget {
           ),
           Text(
             value,
-            style: GoogleFonts.jetBrainsMono(
+            style: GoogleFonts.sometypeMono(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: BrdyColors.onSurface,

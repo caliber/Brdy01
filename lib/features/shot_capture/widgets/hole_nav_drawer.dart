@@ -215,7 +215,7 @@ class _HoleChip extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             holeNumber.toString(),
-            style: GoogleFonts.barlowCondensed(
+            style: GoogleFonts.sometypeMono(
               fontSize: 14,
               fontWeight: FontWeight.w700,
               color: textColor,
@@ -252,7 +252,7 @@ class _NowChip extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           'NOW',
-          style: GoogleFonts.barlowCondensed(
+          style: GoogleFonts.sometypeMono(
             fontSize: 11,
             fontWeight: FontWeight.w700,
             color: BrdyColors.onAccent,

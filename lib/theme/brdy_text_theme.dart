@@ -10,8 +10,8 @@ abstract final class BrdyTextTheme {
   );
 
   static TextStyle _jetBrains(double size, FontWeight weight, double height) =>
-      GoogleFonts.jetBrainsMono(fontSize: size, fontWeight: weight, height: height);
+      GoogleFonts.sometypeMono(fontSize: size, fontWeight: weight, height: height);
 
   static TextStyle _barlow(double size, FontWeight weight, double height) =>
-      GoogleFonts.barlowCondensed(fontSize: size, fontWeight: weight, height: height);
+      GoogleFonts.sometypeMono(fontSize: size, fontWeight: weight, height: height);
 }

@@ -35,7 +35,7 @@ class ScoreBar extends ConsumerWidget {
         ),
         child: Text(
           display,
-          style: GoogleFonts.jetBrainsMono(
+          style: GoogleFonts.sometypeMono(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: BrdyColors.onAccent,

@@ -29,7 +29,7 @@ class StatsSection extends ConsumerWidget {
     if (statsAsync.hasError) {
       return Text(
         'Stats unavailable',
-        style: GoogleFonts.barlowCondensed(
+        style: GoogleFonts.sometypeMono(
           fontSize: 14,
           color: BrdyColors.onSurfaceMuted,
         ),
@@ -41,7 +41,7 @@ class StatsSection extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final sectionHeaderStyle = GoogleFonts.barlowCondensed(
+    final sectionHeaderStyle = GoogleFonts.sometypeMono(
       fontSize: 12,
       fontWeight: FontWeight.w700,
       color: BrdyColors.onSurfaceMuted,

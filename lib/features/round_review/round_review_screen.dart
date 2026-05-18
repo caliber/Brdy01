@@ -100,7 +100,7 @@ class _ScorecardHeaderDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    final style = GoogleFonts.barlowCondensed(
+    final style = GoogleFonts.sometypeMono(
       fontSize: 12,
       fontWeight: FontWeight.w700,
       color: BrdyColors.onSurfaceMuted,
@@ -170,7 +170,7 @@ class _ActionButtons extends StatelessWidget {
             icon: const Icon(Icons.share_outlined, color: BrdyColors.onAccent),
             label: Text(
               'SHARE SCORECARD',
-              style: GoogleFonts.barlowCondensed(
+              style: GoogleFonts.sometypeMono(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: BrdyColors.onAccent,
@@ -190,7 +190,7 @@ class _ActionButtons extends StatelessWidget {
             ),
             child: Text(
               'START NEW ROUND',
-              style: GoogleFonts.barlowCondensed(
+              style: GoogleFonts.sometypeMono(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: BrdyColors.onSurface,

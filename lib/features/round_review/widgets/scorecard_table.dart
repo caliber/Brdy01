@@ -44,7 +44,7 @@ class ScorecardTable extends ConsumerWidget {
   }
 
   TableRow _buildHeaderRow() {
-    final style = GoogleFonts.barlowCondensed(
+    final style = GoogleFonts.sometypeMono(
       fontSize: 12,
       fontWeight: FontWeight.w700,
       color: BrdyColors.onSurfaceMuted,
@@ -79,14 +79,14 @@ class ScorecardTable extends ConsumerWidget {
     final isOdd = row.holeNumber % 2 == 1;
     final bgColor = isOdd ? BrdyColors.background : BrdyColors.surface;
 
-    final numericStyle = GoogleFonts.jetBrainsMono(
+    final numericStyle = GoogleFonts.sometypeMono(
       fontSize: 14,
       color: BrdyColors.onSurface,
     );
 
     // Outcome text style — coloured, with underline only for bogey (+1).
     final outcomeBogey = row.outcomeAbbr == '+1';
-    final outcomeStyle = GoogleFonts.jetBrainsMono(
+    final outcomeStyle = GoogleFonts.sometypeMono(
       fontSize: 14,
       color: row.outcomeColor ?? BrdyColors.onSurfaceMuted,
       decoration: outcomeBogey ? TextDecoration.underline : TextDecoration.none,
@@ -116,19 +116,19 @@ class ScorecardTable extends ConsumerWidget {
   }
 
   TableRow _buildSubtotalRow(ScorecardSubtotal subtotal) {
-    final labelStyle = GoogleFonts.barlowCondensed(
+    final labelStyle = GoogleFonts.sometypeMono(
       fontSize: 12,
       fontWeight: FontWeight.w700,
       color: BrdyColors.onSurfaceMuted,
     );
 
-    final strokesStyle = GoogleFonts.jetBrainsMono(
+    final strokesStyle = GoogleFonts.sometypeMono(
       fontSize: 14,
       fontWeight: FontWeight.w700,
       color: BrdyColors.onSurface,
     );
 
-    final mutedStyle = GoogleFonts.jetBrainsMono(
+    final mutedStyle = GoogleFonts.sometypeMono(
       fontSize: 11,
       color: BrdyColors.onSurfaceMuted,
     );

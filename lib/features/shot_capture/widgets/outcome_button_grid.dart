@@ -207,7 +207,7 @@ class _ButtonColumnState extends State<_ButtonColumn> {
       children: [
         Text(
           widget.abbrev,
-          style: GoogleFonts.barlowCondensed(
+          style: GoogleFonts.sometypeMono(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF4A4A4A),
@@ -253,7 +253,7 @@ class _ButtonColumnState extends State<_ButtonColumn> {
               alignment: Alignment.center,
               child: Text(
                 widget.label,
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: widget.isActive
@@ -298,7 +298,7 @@ class _PuttsCounter extends StatelessWidget {
       children: [
         Text(
           'PUTTS',
-          style: GoogleFonts.barlowCondensed(
+          style: GoogleFonts.sometypeMono(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF4A4A4A),
@@ -332,7 +332,7 @@ class _PuttsCounter extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   child: Text(
                     '−',
-                    style: GoogleFonts.jetBrainsMono(
+                    style: GoogleFonts.sometypeMono(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: onSub != null
@@ -345,7 +345,7 @@ class _PuttsCounter extends StatelessWidget {
               // Count
               Text(
                 '$count',
-                style: GoogleFonts.jetBrainsMono(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
                   color: BrdyColors.onSurface,
@@ -359,7 +359,7 @@ class _PuttsCounter extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   child: Text(
                     '+',
-                    style: GoogleFonts.jetBrainsMono(
+                    style: GoogleFonts.sometypeMono(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: BrdyColors.onSurface,
@@ -404,7 +404,7 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
       children: [
         Text(
           widget.abbrev,
-          style: GoogleFonts.barlowCondensed(
+          style: GoogleFonts.sometypeMono(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF4A4A4A),
@@ -455,7 +455,7 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
               alignment: Alignment.center,
               child: Text(
                 widget.label,
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: widget.isEnabled
@@ -525,7 +525,7 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
       children: [
         Text(
           abbrev,
-          style: GoogleFonts.barlowCondensed(
+          style: GoogleFonts.sometypeMono(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF4A4A4A),
@@ -570,7 +570,7 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
               alignment: Alignment.center,
               child: Text(
                 label,
-                style: GoogleFonts.barlowCondensed(
+                style: GoogleFonts.sometypeMono(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: textColor,
@@ -618,7 +618,7 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
       children: [
         Text(
           'HLE',
-          style: GoogleFonts.barlowCondensed(
+          style: GoogleFonts.sometypeMono(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF4A4A4A),
@@ -670,7 +670,7 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
                   alignment: Alignment.center,
                   child: Text(
                     'NEXT',
-                    style: GoogleFonts.barlowCondensed(
+                    style: GoogleFonts.sometypeMono(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: BrdyColors.onAccent,
