@@ -28,15 +28,17 @@ class ScoreBar extends ConsumerWidget {
     return Semantics(
       label: 'RUNNING SCORE $display VERSUS PAR',
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
+        width: 48,
+        height: 48,
+        decoration: const BoxDecoration(
           color: BrdyColors.accent,
-          borderRadius: BorderRadius.circular(12),
+          shape: BoxShape.circle,
         ),
+        alignment: Alignment.center,
         child: Text(
           display,
           style: GoogleFonts.sometypeMono(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w700,
             color: BrdyColors.onAccent,
           ),
