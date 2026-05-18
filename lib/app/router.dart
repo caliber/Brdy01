@@ -38,6 +38,12 @@ GoRouter router(Ref ref) {
         error: (_, __) => '/setup',
         data: (incompleteRoundId) {
           if (incompleteRoundId != null) {
+            // Allow navigation to round-review for this round — the round was
+            // just completed and appStartupProvider still has the cached
+            // incomplete ID from startup.
+            if (state.uri.path.startsWith('/round-review/$incompleteRoundId')) {
+              return null;
+            }
             ref.read(activeRoundIdProvider.notifier).set(incompleteRoundId);
             return '/shot-capture/$incompleteRoundId';
           }

@@ -67,13 +67,12 @@ class OutcomeButtonGrid extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: BrdySpacing.xs),
-            // SUB (putts minus)
+            // SUB | count | ADD combined putts counter
             Expanded(
-              child: _PuttsButtonColumn(
-                abbrev: 'SUB',
-                label: 'SUB',
-                isEnabled: currentPutts > 0,
-                onTap: currentPutts > 0
+              flex: 2,
+              child: _PuttsCounter(
+                count: currentPutts,
+                onSub: currentPutts > 0
                     ? () {
                         HapticFeedback.selectionClick();
                         ref
@@ -83,16 +82,7 @@ class OutcomeButtonGrid extends ConsumerWidget {
                             .setPutts(currentPutts - 1);
                       }
                     : null,
-              ),
-            ),
-            const SizedBox(width: BrdySpacing.xs),
-            // ADD (putts plus)
-            Expanded(
-              child: _PuttsButtonColumn(
-                abbrev: 'ADD',
-                label: 'ADD',
-                isEnabled: true,
-                onTap: () {
+                onAdd: () {
                   HapticFeedback.selectionClick();
                   ref
                       .read(holeScoreNotifierProvider(roundId, holeIndex)
@@ -168,16 +158,6 @@ class OutcomeButtonGrid extends ConsumerWidget {
                 onNextTapped: onNextTapped,
               ),
             ),
-          ],
-        ),
-        const SizedBox(height: BrdySpacing.sm),
-        // Pagination dots
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _PaginationDot(active: true),
-            SizedBox(width: BrdySpacing.sm),
-            _PaginationDot(active: false),
           ],
         ),
         const SizedBox(height: BrdySpacing.sm),
@@ -291,6 +271,103 @@ class _ButtonColumnState extends State<_ButtonColumn> {
                 )
                 .then()
                 .scale(end: const Offset(1, 1), duration: 80.ms),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── _PuttsCounter ──────────────────────────────────────────────────────────────
+
+class _PuttsCounter extends StatelessWidget {
+  final int count;
+  final VoidCallback? onSub;
+  final VoidCallback onAdd;
+
+  const _PuttsCounter({
+    required this.count,
+    required this.onSub,
+    required this.onAdd,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'PUTTS',
+          style: GoogleFonts.barlowCondensed(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF4A4A4A),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: BrdySpacing.xs),
+        const SizedBox(height: 6), // dot placeholder to align with ButtonColumn
+        const SizedBox(height: BrdySpacing.xs),
+        Container(
+          constraints: const BoxConstraints(minHeight: 80),
+          decoration: BoxDecoration(
+            color: BrdyColors.surface,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.4),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // SUB
+              InkWell(
+                onTap: onSub,
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Text(
+                    '−',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: onSub != null
+                          ? BrdyColors.onSurface
+                          : BrdyColors.onSurfaceMuted,
+                    ),
+                  ),
+                ),
+              ),
+              // Count
+              Text(
+                '$count',
+                style: GoogleFonts.jetBrainsMono(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700,
+                  color: BrdyColors.onSurface,
+                ),
+              ),
+              // ADD
+              InkWell(
+                onTap: onAdd,
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Text(
+                    '+',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: BrdyColors.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -618,26 +695,4 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
   }
 }
 
-// ── _PaginationDot ─────────────────────────────────────────────────────────────
-
-class _PaginationDot extends StatelessWidget {
-  final bool active;
-
-  const _PaginationDot({required this.active});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 8,
-      height: 8,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: active ? BrdyColors.background : Colors.transparent,
-        border: active
-            ? null
-            : Border.all(color: BrdyColors.background, width: 1),
-      ),
-    );
-  }
-}
 
