@@ -33,7 +33,7 @@ class HoleDto with _$HoleDto {
   const factory HoleDto({
     required int par,
     int? yardage,
-    int? handicap,
+    @JsonKey(name: 'stroke_index') int? handicap,
   }) = _HoleDto;
 
   factory HoleDto.fromJson(Map<String, dynamic> json) =>
