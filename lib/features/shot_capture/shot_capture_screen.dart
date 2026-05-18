@@ -121,7 +121,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
     if (!mounted) return;
     _showUndoToast(context, outcome, holeIndex + 1);
 
-    // Advance to next hole — roundCompleteProvider handles hole 18 navigation
+    // Advance to next hole; on hole 18 NEXT button navigates to Round Review
     if (holeIndex < 17) {
       ref.read(activeHoleIndexProvider.notifier).set(holeIndex + 1);
     }
@@ -132,6 +132,8 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
     final hi = ref.read(activeHoleIndexProvider);
     if (hi < 17) {
       ref.read(activeHoleIndexProvider.notifier).set(hi + 1);
+    } else {
+      if (mounted) context.go('/round-review/${widget.roundId}');
     }
   }
 
