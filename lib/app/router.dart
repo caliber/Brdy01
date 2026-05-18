@@ -8,6 +8,7 @@ import '../features/shot_capture/shot_capture_screen.dart';
 import '../features/round_review/round_review_screen.dart';
 import '../features/setup/providers/app_startup_provider.dart';
 import '../features/setup/providers/active_round_id_provider.dart';
+import '../features/shot_capture/providers/round_complete_provider.dart';
 
 part 'router.g.dart';
 
@@ -38,12 +39,18 @@ GoRouter router(Ref ref) {
         error: (_, __) => '/setup',
         data: (incompleteRoundId) {
           if (incompleteRoundId != null) {
-            // Allow navigation to round-review for this round — the round was
-            // just completed and appStartupProvider still has the cached
-            // incomplete ID from startup.
-            if (state.uri.path.startsWith('/round-review/$incompleteRoundId')) {
+            // If the round was completed in-session, appStartupProvider is
+            // stale. Detect this via roundCompleteProvider and allow free
+            // navigation so the user can start a new round.
+            final isComplete = ref.read(roundCompleteProvider(incompleteRoundId));
+            if (isComplete) {
+              if (state.uri.path == '/splash') return '/setup';
               return null;
             }
+            // Also allow /round-review/:id and /shot-capture/:otherId through.
+            if (state.uri.path.startsWith('/round-review/$incompleteRoundId')) return null;
+            if (state.uri.path.startsWith('/shot-capture/') &&
+                state.uri.path != '/shot-capture/$incompleteRoundId') return null;
             ref.read(activeRoundIdProvider.notifier).set(incompleteRoundId);
             return '/shot-capture/$incompleteRoundId';
           }
