@@ -31,23 +31,27 @@ class FairwayGirToggles extends ConsumerWidget {
     final bool? fairwayHit = holeState?.fairwayHit;
     final bool? gir = holeState?.greenInRegulation;
 
+    // Layout mirrors the button grid: FAIRWAY(1) | GIR(1) | spacer(1) | VOICE(1)
+    // The spacer aligns with the putts counter; VOICE aligns under NEXT.
     return Row(
       children: [
-        if (holePar != 3) ...[
-          Expanded(
-            child: _FairwayToggle(
-              fairwayHit: fairwayHit,
-              onTap: () {
-                HapticFeedback.selectionClick();
-                ref
-                    .read(
-                        holeScoreNotifierProvider(roundId, holeIndex).notifier)
-                    .setFairwayHit(!(fairwayHit ?? false));
-              },
-            ),
-          ),
-          const SizedBox(width: BrdySpacing.sm),
-        ],
+        // FAIRWAY — hidden on par 3s but slot kept to preserve alignment
+        Expanded(
+          child: holePar != 3
+              ? _FairwayToggle(
+                  fairwayHit: fairwayHit,
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    ref
+                        .read(holeScoreNotifierProvider(roundId, holeIndex)
+                            .notifier)
+                        .setFairwayHit(!(fairwayHit ?? false));
+                  },
+                )
+              : const SizedBox.shrink(),
+        ),
+        const SizedBox(width: BrdySpacing.xs),
+        // GIR
         Expanded(
           child: _GirToggle(
             gir: gir,
@@ -59,10 +63,12 @@ class FairwayGirToggles extends ConsumerWidget {
             },
           ),
         ),
-        const SizedBox(width: BrdySpacing.sm),
-        const Expanded(
-          child: _VoiceToggle(),
-        ),
+        const SizedBox(width: BrdySpacing.xs),
+        // Spacer — aligns with putts counter above
+        const Expanded(child: SizedBox.shrink()),
+        const SizedBox(width: BrdySpacing.xs),
+        // VOICE — aligns under NEXT button
+        const Expanded(child: _VoiceToggle()),
       ],
     );
   }
