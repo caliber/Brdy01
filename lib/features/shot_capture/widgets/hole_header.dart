@@ -9,6 +9,7 @@ import '../../../theme/brdy_spacing.dart';
 import '../providers/active_hole_index_provider.dart';
 import '../providers/course_for_round_provider.dart';
 import '../providers/hole_list_provider.dart';
+import '../providers/hole_score_notifier.dart';
 import 'score_bar.dart';
 
 class HoleHeader extends ConsumerWidget {
@@ -31,9 +32,8 @@ class HoleHeader extends ConsumerWidget {
     final courseAsync = ref.watch(courseForRoundProvider(roundId));
     final holesAsync = ref.watch(holeListProvider(roundId));
 
-    // Compute round total and current hole shots from hole list
+    // Round total — from holeListProvider stream
     int totalShots = 0;
-    int? currentHoleShots;
     holesAsync.whenData((holes) {
       for (final h in holes) {
         if (h.outcome == null) continue;
@@ -46,12 +46,9 @@ class HoleHeader extends ConsumerWidget {
           HoleOutcome.doubleBogey => 2,
           HoleOutcome.pickup => 2,
         };
-        final holeShots = h.par + offset;
-        totalShots += holeShots;
-        if (h.holeNumber == holeIndex + 1) currentHoleShots = holeShots;
+        totalShots += h.par + offset;
       }
     });
-    final String holeShotsDisplay = currentHoleShots != null ? '$currentHoleShots' : '—';
 
     // Extract course info
     final course = courseAsync.valueOrNull;
@@ -74,6 +71,24 @@ class HoleHeader extends ConsumerWidget {
 
     final holePar = holeModel?.par;
     final holeSi = holeModel?.strokeIndex;
+
+    // Current hole shots — from holeScoreNotifierProvider for immediate updates
+    final currentHoleState = ref.watch(
+      holeScoreNotifierProvider(roundId, holeIndex),
+    ).valueOrNull;
+    int currentHoleShots = 0;
+    if (currentHoleState?.outcome != null && holePar != null) {
+      final outcome = HoleOutcome.values.byName(currentHoleState!.outcome!);
+      final offset = switch (outcome) {
+        HoleOutcome.eagle => -2,
+        HoleOutcome.birdie => -1,
+        HoleOutcome.par => 0,
+        HoleOutcome.bogey => 1,
+        HoleOutcome.doubleBogey => 2,
+        HoleOutcome.pickup => 2,
+      };
+      currentHoleShots = holePar + offset;
+    }
     final siLabel = holeSi != null ? 'SI $holeSi' : 'SI —';
     final parLabel = holePar != null ? 'PAR $holePar' : 'PAR —';
 
@@ -242,7 +257,7 @@ class HoleHeader extends ConsumerWidget {
               ),
               // Current hole shots — XLarge
               Text(
-                holeShotsDisplay,
+                '$currentHoleShots',
                 style: GoogleFonts.sometypeMono(
                   fontSize: 64,
                   fontWeight: FontWeight.w700,
