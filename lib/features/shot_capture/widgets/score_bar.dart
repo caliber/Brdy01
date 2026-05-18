@@ -31,7 +31,7 @@ class ScoreBar extends ConsumerWidget {
         width: 36,
         height: 36,
         decoration: const BoxDecoration(
-          color: BrdyColors.accent,
+          color: Color(0xFF2A2A2A),
           shape: BoxShape.circle,
         ),
         alignment: Alignment.center,
@@ -40,7 +40,7 @@ class ScoreBar extends ConsumerWidget {
           style: GoogleFonts.sometypeMono(
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: BrdyColors.onAccent,
+            color: Colors.white,
           ),
         ),
       )
