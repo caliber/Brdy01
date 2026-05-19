@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 complete
-last_updated: "2026-05-18T22:30:00Z"
-last_activity: 2026-05-18 — Phase 3 Plan 3 complete. RoundReviewScreen assembled, ShareService implemented, SHOT-13 voice unavailable state added. flutter analyze clean. Phase 3 fully complete.
+stopped_at: Phase 5 Plan 1 complete
+last_updated: "2026-05-19T00:10:00Z"
+last_activity: 2026-05-19 — Phase 5 Plan 1 complete. Android GPS permissions added; ShotDao persistence layer created and registered in AppDatabase. flutter analyze clean. schemaVersion stays 1.
 progress:
   total_phases: 8
   completed_phases: 3
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-05-16)
 
 ## Current Position
 
-Phase: 3 of 5 (Round Review) — **COMPLETE**
-Plan: 3 of 3 complete
-Status: Phase 3 complete — RoundReviewScreen assembled, ShareService implemented, SHOT-13 voice unavailable state added. flutter analyze clean.
-Last activity: 2026-05-18 — Phase 3 Plan 3 complete. RoundReviewScreen assembled, ShareService implemented, SHOT-13 voice unavailable state added. flutter analyze clean. Phase 3 fully complete.
+Phase: 5 of 8 (GPS + Voice Polish) — **IN PROGRESS**
+Plan: 1 of 3 complete
+Status: Phase 5 Plan 1 complete — Android GPS permissions added; ShotDao persistence layer created with insertShot, watchShotsForHole, deleteShotsForHole, getShotCountForHole. HoleDao extended with getHoleByRoundAndNumber. flutter analyze clean.
+Last activity: 2026-05-19 — Phase 5 Plan 1 complete. Android GPS permissions added; ShotDao persistence layer created and registered in AppDatabase. flutter analyze clean. schemaVersion stays 1.
 
 Progress: [██████████] 100% (Phase 1) | [██████████] 100% (Phase 2) | [██████████] 100% (Phase 3)
 
@@ -83,6 +83,8 @@ Recent decisions affecting current work:
 - [03-02]: ScorecardTable renders header + 18 hole rows + subtotals in single Table widget — column widths align
 - [03-02]: WhsBlock does NOT hold screenshot GlobalKey — key managed at screen level in Wave 3
 - [03-02]: StatCard has fullWidth bool param (defaults false) for future layout flexibility
+- [05-01]: schemaVersion stays 1 — Shots table already defined at v1; adding ShotDao is not a schema change
+- [05-01]: ACCESS_BACKGROUND_LOCATION excluded — geolocator on-demand only needs foreground permissions
 
 ### Pending Todos
 
