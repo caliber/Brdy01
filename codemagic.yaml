@@ -23,28 +23,23 @@ workflows:
 
       - name: Set up code signing
         script: |
+          gem install fastlane --no-document
           keychain initialize
-          app-store-connect devices create "BRDY Dev iPhone" \
-            --udid 00008110001630522120401E \
-            --platform IOS \
-            --apple-id $APPLE_ID \
-            --password $APP_SPECIFIC_PASSWORD || true
-          app-store-connect fetch-signing-files \
-            com.brdy.brdy01 \
-            --type IOS_APP_DEVELOPMENT \
-            --apple-id $APPLE_ID \
-            --password $APP_SPECIFIC_PASSWORD \
-            --create
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$APP_SPECIFIC_PASSWORD \
+          FASTLANE_SESSION="" \
+          fastlane sigh \
+            --username $APPLE_ID \
+            --app_identifier com.brdy.brdy01 \
+            --development \
+            --force \
+            --output_path /tmp/profiles
           keychain add-certificates
-          xcode-project use-profiles
+          xcode-project use-profiles --path /tmp/profiles/*.mobileprovision
 
-      - name: Build iOS
+      - name: Build and package IPA
         script: |
           flutter build ios --release \
             --dart-define=GOLF_API_KEY=$GOLF_API_KEY
-
-      - name: Package IPA
-        script: |
           xcode-project build-ipa \
             --workspace ios/Runner.xcworkspace \
             --scheme Runner
