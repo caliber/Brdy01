@@ -381,16 +381,15 @@ class _TopZone extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Map fills the entire top zone.
-        Positioned.fill(
-          child: MapOverlayWidget(
-            roundId: roundId,
-            holeIndex: holeIndex,
-            course: courseModel,
-            onMapTapped: onMapTapped,
-          ),
-        ),
-        // HoleHeader and HoleNavDrawer overlaid on top of the map.
+        // GPS map overlay — disabled until Phase 5 GPS is re-enabled
+        // Positioned.fill(
+        //   child: MapOverlayWidget(
+        //     roundId: roundId,
+        //     holeIndex: holeIndex,
+        //     course: courseModel,
+        //     onMapTapped: onMapTapped,
+        //   ),
+        // ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
