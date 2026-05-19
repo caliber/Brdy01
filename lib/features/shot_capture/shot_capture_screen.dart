@@ -14,6 +14,9 @@ import 'providers/course_for_round_provider.dart';
 import 'providers/highest_scored_hole_index_provider.dart';
 import 'providers/hole_score_notifier.dart';
 import 'providers/round_complete_provider.dart';
+import 'providers/voice_listening_provider.dart';
+import 'services/voice_service.dart';
+import 'widgets/fairway_gir_toggles.dart';
 import 'widgets/hole_header.dart';
 import 'widgets/hole_nav_drawer.dart';
 import 'widgets/outcome_button_grid.dart';
@@ -30,18 +33,40 @@ class ShotCaptureScreen extends ConsumerStatefulWidget {
 class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
   int? _lastScoredHoleIndex;
   bool _navStripOpen = false;
-  bool _voiceAvailable = true;
+  bool _voiceAvailable = false;
+  late final VoiceService _voiceService;
 
   @override
   void initState() {
     super.initState();
+    _voiceService = VoiceService(roundId: widget.roundId, ref: ref);
     _initVoice();
   }
 
   Future<void> _initVoice() async {
-    final speech = SpeechToText();
-    final available = await speech.initialize();
+    final available = await _voiceService.initialize();
     if (mounted) setState(() => _voiceAvailable = available);
+  }
+
+  Future<void> _toggleVoice() async {
+    final isListening = ref.read(voiceListeningProvider);
+    if (isListening) {
+      await _voiceService.stopListening(
+        onListeningChanged: (v) =>
+            ref.read(voiceListeningProvider.notifier).set(v),
+      );
+    } else {
+      await _voiceService.startListening(
+        onListeningChanged: (v) =>
+            ref.read(voiceListeningProvider.notifier).set(v),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _voiceService.dispose();
+    super.dispose();
   }
 
   @override
@@ -69,8 +94,8 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              flex: 47,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.36,
               child: _TopZone(
                 roundId: roundId,
                 highestScoredHoleIndex: highestIndex,
@@ -80,9 +105,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
               ),
             ),
             Container(height: 1, color: BrdyColors.divider),
-            Expanded(
-              flex: 45,
-              child: _BottomZone(
+            Expanded(child: ClipRect(child: _BottomZone(
                 roundId: roundId,
                 holeIndex: holeIndex,
                 holePar: holePar,
@@ -90,8 +113,8 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 voiceAvailable: _voiceAvailable,
                 onOutcomeTapped: _handleOutcomeTapped,
                 onNextTapped: _handleNext,
-              ),
-            ),
+                onVoiceTapped: _voiceAvailable ? _toggleVoice : null,
+              ))),
           ],
         ),
       ),
@@ -226,6 +249,7 @@ class _BottomZone extends StatelessWidget {
   final bool voiceAvailable;
   final void Function(HoleOutcome, int, int?) onOutcomeTapped;
   final void Function() onNextTapped;
+  final void Function()? onVoiceTapped;
 
   const _BottomZone({
     required this.roundId,
@@ -235,23 +259,31 @@ class _BottomZone extends StatelessWidget {
     required this.voiceAvailable,
     required this.onOutcomeTapped,
     required this.onNextTapped,
+    this.onVoiceTapped,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: BrdyColors.onSurface,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFE5E0DE), Color(0xFF8E8C8A)],
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md),
+        padding: const EdgeInsets.fromLTRB(BrdySpacing.md, 0, BrdySpacing.md, BrdySpacing.sm),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Gap(BrdySpacing.md),
+            const Gap(BrdySpacing.sm + 15),
             // BRDY.01 wordmark rule
             Row(
               children: [
                 Text(
-                  'BRDY.01',
+                  'BRDY.${(holeIndex + 1).toString().padLeft(2, '0')}',
                   style: GoogleFonts.sometypeMono(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
@@ -259,15 +291,15 @@ class _BottomZone extends StatelessWidget {
                   ),
                 ),
                 const Gap(BrdySpacing.sm),
-                const Expanded(
+                Expanded(
                   child: Divider(
-                    color: BrdyColors.divider,
+                    color: BrdyColors.divider.withOpacity(0.1),
                     thickness: 1,
                   ),
                 ),
               ],
             ),
-            const Gap(BrdySpacing.md),
+            const Gap(BrdySpacing.sm),
             if (!voiceAvailable)
               Padding(
                 padding: const EdgeInsets.only(bottom: BrdySpacing.xs),
@@ -287,6 +319,13 @@ class _BottomZone extends StatelessWidget {
               holeStrokeIndex: holeStrokeIndex,
               onOutcomeTapped: onOutcomeTapped,
               onNextTapped: onNextTapped,
+            ),
+            const Gap(BrdySpacing.md),
+            FairwayGirToggles(
+              roundId: roundId,
+              holeIndex: holeIndex,
+              holePar: holePar,
+              onVoiceTapped: onVoiceTapped,
             ),
           ],
         ),

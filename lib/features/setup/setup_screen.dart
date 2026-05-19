@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../../theme/brdy_colors.dart';
@@ -67,21 +69,28 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
     });
 
     return Scaffold(
-      backgroundColor: BrdyColors.background,
-      body: SafeArea(
+      body: Container(
+        color: Colors.black,
+        child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Gap(BrdySpacing.md),
-              Text(
-                'BRDY.01',
-                style: Theme.of(context).textTheme.displaySmall,
+              const Gap(BrdySpacing.sm),
+              Transform.translate(
+                offset: const Offset(-19, 0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: SvgPicture.asset(
+                    'assets/images/brdy_logo.svg',
+                    height: MediaQuery.of(context).size.height * 0.15,
+                  ),
+                ),
               ),
-              const Gap(BrdySpacing.lg),
+              const Gap(BrdySpacing.sm),
               const HandicapInput(),
-              const Gap(BrdySpacing.xl),
+              const Gap(BrdySpacing.md),
               CourseSearchField(controller: _searchController),
               const Gap(BrdySpacing.sm),
               Expanded(
@@ -97,11 +106,12 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
                     ),
               ),
               const TileCacheProgress(),
-              const Gap(BrdySpacing.x2l),
-              const _StartRoundButton(),
               const Gap(BrdySpacing.md),
+              const _StartRoundButton(),
+              const Gap(BrdySpacing.sm),
             ],
           ),
+        ),
         ),
       ),
     );
@@ -174,41 +184,78 @@ class _StartRoundButton extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ElevatedButton(
-          onPressed: isEnabled
-              ? () async {
-                  await HapticFeedback.mediumImpact();
-                  final handicap =
-                      ref.read(hivePlayerPrefsProvider).handicapIndex ?? 0.0;
-                  try {
-                    final roundId = await ref
-                        .read(roundSetupNotifierProvider.notifier)
-                        .createRound(course, handicap);
-                    if (!context.mounted) return;
-                    context.go('/shot-capture/$roundId');
-                  } catch (e) {
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                            'Could not load course details. Tap to retry.'),
-                        backgroundColor: BrdyColors.surface,
-                        duration: Duration(seconds: 6),
-                      ),
-                    );
+        Align(
+          alignment: Alignment.centerRight,
+          child: FractionallySizedBox(
+            widthFactor: 0.25,
+            child: Opacity(
+          opacity: isEnabled ? 1.0 : 0.4,
+          child: GestureDetector(
+            onTap: isEnabled
+                ? () async {
+                    await HapticFeedback.mediumImpact();
+                    final handicap =
+                        ref.read(hivePlayerPrefsProvider).handicapIndex ?? 0.0;
+                    try {
+                      final roundId = await ref
+                          .read(roundSetupNotifierProvider.notifier)
+                          .createRound(course, handicap);
+                      if (!context.mounted) return;
+                      context.go('/shot-capture/$roundId');
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Could not load course details. Tap to retry.'),
+                          backgroundColor: BrdyColors.surface,
+                          duration: Duration(seconds: 6),
+                        ),
+                      );
+                    }
                   }
-                }
-              : null,
-          child: isLoading
-              ? const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: BrdyColors.onAccent,
+                : null,
+            child: SizedBox(
+              height: 80,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/btn_bogey.svg',
+                    fit: BoxFit.fill,
                   ),
-                )
-              : const Text('START ROUND'),
+                  isLoading
+                      ? const Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              'LOAD',
+                              style: GoogleFonts.sometypeMono(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                ],
+              ),
+            ),
+          ),
+          ),
+          ),
         ),
         if (course == null) ...[
           const Gap(BrdySpacing.xs),

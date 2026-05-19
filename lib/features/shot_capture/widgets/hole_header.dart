@@ -15,8 +15,6 @@ import 'score_bar.dart';
 class HoleHeader extends ConsumerWidget {
   final int roundId;
   final int highestScoredHoleIndex;
-
-  /// Called when the giant hole number is tapped — used to toggle the nav strip.
   final VoidCallback? onHoleNumberTap;
 
   const HoleHeader({
@@ -32,7 +30,6 @@ class HoleHeader extends ConsumerWidget {
     final courseAsync = ref.watch(courseForRoundProvider(roundId));
     final holesAsync = ref.watch(holeListProvider(roundId));
 
-    // Round total — from holeListProvider stream
     int totalShots = 0;
     holesAsync.whenData((holes) {
       for (final h in holes) {
@@ -50,12 +47,10 @@ class HoleHeader extends ConsumerWidget {
       }
     });
 
-    // Extract course info
     final course = courseAsync.valueOrNull;
-    final holeModel =
-        (course != null && holeIndex < course.holes.length)
-            ? course.holes[holeIndex]
-            : null;
+    final holeModel = (course != null && holeIndex < course.holes.length)
+        ? course.holes[holeIndex]
+        : null;
 
     final String courseInfoLine1;
     final String courseInfoLine2;
@@ -72,7 +67,6 @@ class HoleHeader extends ConsumerWidget {
     final holePar = holeModel?.par;
     final holeSi = holeModel?.strokeIndex;
 
-    // Current hole shots — from holeScoreNotifierProvider for immediate updates
     final currentHoleState = ref.watch(
       holeScoreNotifierProvider(roundId, holeIndex),
     ).valueOrNull;
@@ -89,214 +83,181 @@ class HoleHeader extends ConsumerWidget {
       };
       currentHoleShots = holePar + offset;
     }
-    final siLabel = holeSi != null ? 'SI $holeSi' : 'SI —';
-    final parLabel = holePar != null ? 'PAR $holePar' : 'PAR —';
 
+    final parLabel = holePar != null ? 'PAR $holePar' : 'PAR —';
+    final siLabel = holeSi != null ? 'SI $holeSi' : null;
     final bool leftDisabled = holeIndex == 0;
     final bool rightDisabled = holeIndex >= highestScoredHoleIndex;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.sm, vertical: BrdySpacing.xs),
+      padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.sm),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Course info row
+          // ── Course info row ──────────────────────────────────────
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    courseInfoLine1.toUpperCase(),
-                    style: GoogleFonts.sometypeMono(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: BrdyColors.onSurfaceMuted,
-                    ),
-                  ),
+                  Text(courseInfoLine1.toUpperCase(),
+                      style: GoogleFonts.sometypeMono(
+                          fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted)),
                   const SizedBox(height: 2),
-                  Text(
-                    courseInfoLine2.toUpperCase(),
-                    style: GoogleFonts.sometypeMono(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: BrdyColors.onSurfaceMuted,
-                    ),
-                  ),
+                  Text(courseInfoLine2.toUpperCase(),
+                      style: GoogleFonts.sometypeMono(
+                          fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted)),
                 ],
               ),
               Row(
                 children: [
-                  // PAR pill
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                    child: Text(
-                      parLabel.toUpperCase(),
-                      style: GoogleFonts.sometypeMono(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: BrdyColors.background,
-                      ),
-                    ),
-                  ),
+                  _pill(parLabel),
+                  if (siLabel != null) ...[
+                    const SizedBox(width: BrdySpacing.xs),
+                    _pill(siLabel, fontSize: 11),
+                  ],
                   const SizedBox(width: BrdySpacing.xs),
-                  // SI pill
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                    child: Text(
-                      siLabel.toUpperCase(),
-                      style: GoogleFonts.sometypeMono(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: BrdyColors.background,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: BrdySpacing.xs),
-                  // HOLE pill
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                    child: Text(
-                      'HOLE ${holeIndex + 1}',
-                      style: GoogleFonts.sometypeMono(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: BrdyColors.background,
-                      ),
-                    ),
-                  ),
+                  _pill('HOLE ${holeIndex + 1}'),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: BrdySpacing.xs),
-          // Giant hole number — centred, no chevrons
-          Center(
-            child: Semantics(
-              label: 'HOLE ${holeIndex + 1} OF 18 — TAP TO NAVIGATE HOLES',
-              button: onHoleNumberTap != null,
-              child: GestureDetector(
-                onTap: onHoleNumberTap != null
-                    ? () {
-                        HapticFeedback.selectionClick();
-                        onHoleNumberTap!();
-                      }
-                    : null,
-                child: Text(
-                  (holeIndex + 1).toString().padLeft(2, '0'),
-                  style: GoogleFonts.sometypeMono(
-                    fontSize: 72,
-                    fontWeight: FontWeight.w700,
-                    height: 1.0,
-                    color: BrdyColors.onSurface,
-                  ),
-                )
-                    .animate(key: ValueKey(holeIndex))
-                    .fadeOut(duration: 50.ms, curve: Curves.easeOut)
-                    .then()
-                    .fadeIn(duration: 100.ms, curve: Curves.easeOut),
-              ),
-            ),
-          ),
-          const SizedBox(height: BrdySpacing.xs),
-          // SHOTS total with chevrons on screen edges
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          // ── Stack: hole number behind, chevrons + shots + total in front ──
+          Stack(
+            alignment: Alignment.center,
             children: [
-              // Left chevron — screen edge
+              // Giant hole number — behind everything
               Semantics(
-                label: 'PREVIOUS HOLE',
-                child: IconButton(
-                  icon: Icon(
-                    Icons.chevron_left,
-                    size: 40,
-                    color: leftDisabled
-                        ? BrdyColors.onSurfaceMuted
-                        : BrdyColors.onSurface,
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                  onPressed: leftDisabled
-                      ? null
-                      : () {
-                          HapticFeedback.lightImpact();
-                          ref
-                              .read(activeHoleIndexProvider.notifier)
-                              .set(holeIndex - 1);
-                        },
+                label: 'HOLE ${holeIndex + 1} OF 18 — TAP TO NAVIGATE HOLES',
+                button: onHoleNumberTap != null,
+                child: GestureDetector(
+                  onTap: onHoleNumberTap != null
+                      ? () {
+                          HapticFeedback.selectionClick();
+                          onHoleNumberTap!();
+                        }
+                      : null,
+                  child: Text(
+                    (holeIndex + 1).toString().padLeft(2, '0'),
+                    style: GoogleFonts.sometypeMono(
+                      fontSize: 72,
+                      fontWeight: FontWeight.w700,
+                      height: 1.0,
+                      color: BrdyColors.onSurface,
+                    ),
+                  )
+                      .animate(key: ValueKey(holeIndex))
+                      .fadeOut(duration: 50.ms, curve: Curves.easeOut)
+                      .then()
+                      .fadeIn(duration: 100.ms, curve: Curves.easeOut),
                 ),
               ),
-              // Current hole shots — XLarge with ScoreBar top-right
-              Stack(
-                clipBehavior: Clip.none,
+
+              // Chevrons + shot counter + total — overlaid on hole number
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Left chevron
+                      Semantics(
+                        label: 'PREVIOUS HOLE',
+                        child: IconButton(
+                          icon: Icon(Icons.chevron_left,
+                              size: 40,
+                              color: leftDisabled
+                                  ? BrdyColors.onSurfaceMuted
+                                  : BrdyColors.onSurface),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                          onPressed: leftDisabled
+                              ? null
+                              : () {
+                                  HapticFeedback.lightImpact();
+                                  ref.read(activeHoleIndexProvider.notifier).set(holeIndex - 1);
+                                },
+                        ),
+                      ),
+
+                      // Shot counter + ScoreBar
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Text(
+                            '$currentHoleShots',
+                            style: GoogleFonts.sometypeMono(
+                              fontSize: 100,
+                              fontWeight: FontWeight.w700,
+                              color: BrdyColors.onSurface,
+                            ),
+                          ),
+                          Positioned(
+                            right: -30,
+                            top: 20,
+                            child: ScoreBar(roundId: roundId),
+                          ),
+                        ],
+                      ),
+
+                      // Right chevron
+                      Semantics(
+                        label: 'NEXT HOLE',
+                        child: IconButton(
+                          icon: Icon(Icons.chevron_right,
+                              size: 40,
+                              color: rightDisabled
+                                  ? BrdyColors.onSurfaceMuted
+                                  : BrdyColors.onSurface),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                          onPressed: rightDisabled
+                              ? null
+                              : () {
+                                  HapticFeedback.lightImpact();
+                                  ref.read(activeHoleIndexProvider.notifier).set(holeIndex + 1);
+                                },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // SHOTS TAKEN total
                   Text(
-                '$currentHoleShots',
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 127,
-                  fontWeight: FontWeight.w700,
-                  color: BrdyColors.onSurface,
-                ),
-              ),
-                  Positioned(
-                    right: -38,
-                    top: -18,
-                    child: ScoreBar(roundId: roundId),
+                    'SHOTS TAKEN $totalShots',
+                    style: GoogleFonts.sometypeMono(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
-              // Right chevron — screen edge
-              Semantics(
-                label: 'NEXT HOLE',
-                child: IconButton(
-                  icon: Icon(
-                    Icons.chevron_right,
-                    size: 40,
-                    color: rightDisabled
-                        ? BrdyColors.onSurfaceMuted
-                        : BrdyColors.onSurface,
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                  onPressed: rightDisabled
-                      ? null
-                      : () {
-                          HapticFeedback.lightImpact();
-                          ref
-                              .read(activeHoleIndexProvider.notifier)
-                              .set(holeIndex + 1);
-                        },
-                ),
-              ),
             ],
-          ),
-          // Round total — Small, centred
-          Text(
-            '$totalShots TOTAL',
-            style: GoogleFonts.sometypeMono(
-              fontSize: 24,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-            textAlign: TextAlign.center,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _pill(String text, {double fontSize = 13}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: Text(
+        text.toUpperCase(),
+        style: GoogleFonts.sometypeMono(
+          fontSize: fontSize,
+          fontWeight: FontWeight.w700,
+          color: BrdyColors.background,
+        ),
       ),
     );
   }
