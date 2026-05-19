@@ -237,7 +237,25 @@ Plans:
   2. Averages for score-to-par, putts, fairways hit and GIR% are shown across all rounds
   3. Stats update immediately when a new round is completed
 
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+
+**Wave 1**
+
+- [ ] 07-01-PLAN.md — fl_chart ^0.71.0 dependency, trendChartProvider (List<FlSpot>), crossRoundAveragesProvider (CrossRoundAverages?), build_runner
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 07-02-PLAN.md — DifferentialLineChart widget, AverageStatCard widget, StatsScreen, /stats route + redirect allowlist, Setup STATS button, human-verify
+
+**Cross-cutting constraints:**
+
+- fl_chart must be pinned to ^0.71.0 — 1.x requires Flutter >=3.27.4, project runs 3.24.5
+- No schema changes — all stats computed from existing rounds + holes tables
+- All new providers use @riverpod (auto-dispose) — never keepAlive
+- ref.watch (not ref.read) inside async loops for STAT-03 reactivity
+- Empty guard mandatory: show 'NOT ENOUGH DATA' when spots.length < 2
 
 ### Phase 8: Feel & Polish
 
@@ -265,7 +283,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. GPS + Voice Polish | 3/3 | Complete   | 2026-05-19 |
 | 6. Round History | 1/3 | In Progress|  |
-| 7. Stats & Trends | 0/TBD | Not started | - |
+| 7. Stats & Trends | 0/2 | Not started | - |
 | 8. Feel & Polish | 0/TBD | Not started | - |
 
 ---
@@ -275,3 +293,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 *Phase 2 complete: 2026-05-17*
 *Phase 3 planned: 2026-05-18*
 *Phase 5 planned: 2026-05-19*
+*Phase 7 planned: 2026-05-20*
