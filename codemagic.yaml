@@ -26,10 +26,14 @@ workflows:
           keychain initialize
           app-store-connect devices create "BRDY Dev iPhone" \
             --udid 00008110001630522120401E \
-            --platform IOS || true
+            --platform IOS \
+            --apple-id $APPLE_ID \
+            --password $APP_SPECIFIC_PASSWORD || true
           app-store-connect fetch-signing-files \
             com.brdy.brdy01 \
             --type IOS_APP_DEVELOPMENT \
+            --apple-id $APPLE_ID \
+            --password $APP_SPECIFIC_PASSWORD \
             --create
           keychain add-certificates
           xcode-project use-profiles
