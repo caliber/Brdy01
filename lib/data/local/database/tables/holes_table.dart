@@ -3,7 +3,7 @@ import 'rounds_table.dart';
 
 class Holes extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get roundId => integer().references(Rounds, #id)();
+  IntColumn get roundId => integer().references(Rounds, #id, onDelete: KeyAction.cascade)();
   IntColumn get holeNumber => integer()();
   IntColumn get par => integer()();
   IntColumn get strokeIndex => integer().nullable()();
