@@ -20,6 +20,8 @@ class VoiceService {
   bool _listening = false;
   bool _handled = false;           // prevents double-fire between onResult + onStatus
   void Function(bool)? _onListeningChanged;
+  void Function(String)? _onHeard;
+  void Function(HoleOutcome outcome, int holeIndex)? onOutcomeRecorded;
   String _lastRecognised = '';
 
   bool get isAvailable => _available;
@@ -72,6 +74,7 @@ class VoiceService {
   }) async {
     if (!_available || _listening) return;
     _onListeningChanged = onListeningChanged;
+    _onHeard = onPartialResult;
     _lastRecognised = '';
     _handled = false;
     _setListening(true);
@@ -175,6 +178,7 @@ class VoiceService {
         .read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
         .recordOutcome(outcome: outcome, par: par);
     _speak('$label, hole ${holeIndex + 1}');
+    onOutcomeRecorded?.call(outcome, holeIndex);
   }
 
   Future<void> _speak(String text) async {
