@@ -215,7 +215,7 @@ Plans:
 
 **Wave 1**
 
-- [ ] 06-01-PLAN.md — Drift schema v2 migration (FK cascade on holes+shots), RoundDao.watchCompletedRounds + deleteRound, build_runner, schema dump
+- [x] 06-01-PLAN.md — Drift schema v2 migration (FK cascade on holes+shots), RoundDao.watchCompletedRounds + deleteRound, build_runner, schema dump
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -264,7 +264,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 3. Round Review | 3/3 | ✅ Complete | 2026-05-18 |
 | 4. Wear OS | 0/TBD | Not started | - |
 | 5. GPS + Voice Polish | 3/3 | Complete   | 2026-05-19 |
-| 6. Round History | 0/3 | Not started | - |
+| 6. Round History | 1/3 | In Progress|  |
 | 7. Stats & Trends | 0/TBD | Not started | - |
 | 8. Feel & Polish | 0/TBD | Not started | - |
 
