@@ -33,7 +33,7 @@ Infrastructure requirements that underpin every user-facing feature.
 - [x] **SHOT-06**: User can toggle fairway hit per hole (toggle is hidden / marked N/A on par 3s)
 - [x] **SHOT-07**: User can toggle GIR (Green in Regulation) per hole
 - [ ] **SHOT-08**: User can drop GPS shot pins on the map overlay by tapping the map (pins stored in Drift, not used in scoring)
-- [ ] **SHOT-09**: User can record hole outcome by voice command ("eagle", "birdie", "par", "bogey", "double", "pickup"); voice confirmation shown as toast with undo option
+- [x] **SHOT-09**: User can record hole outcome by voice command ("eagle", "birdie", "par", "bogey", "double", "pickup"); voice confirmation shown as toast with undo option
 - [x] **SHOT-10**: Running score vs par is always visible during the round (persists across hole transitions, no tap required)
 - [x] **SHOT-11**: Each hole displays its hole number, par, and Stroke Index prominently
 - [x] **SHOT-12**: User can navigate back to any previously scored hole to correct an entry (internal state change, not route back-stack)
@@ -120,7 +120,7 @@ Infrastructure requirements that underpin every user-facing feature.
 | SHOT-06 | Phase 2 | Pending |
 | SHOT-07 | Phase 2 | Pending |
 | SHOT-08 | Phase 5 | Pending |
-| SHOT-09 | Phase 5 | Pending |
+| SHOT-09 | Phase 5 | Complete |
 | SHOT-10 | Phase 2 | Pending |
 | SHOT-11 | Phase 2 | Pending |
 | SHOT-12 | Phase 2 | Pending |
@@ -137,6 +137,7 @@ Infrastructure requirements that underpin every user-facing feature.
 | WEAR-03 | Phase 4 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 33 total
 - Mapped to phases: 33
 - Unmapped: 0
