@@ -46,6 +46,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
   void initState() {
     super.initState();
     _voiceService = VoiceService(roundId: widget.roundId, ref: ref);
+    _voiceService.onOutcomeRecorded = _handleVoiceOutcome;
     _initVoice();
   }
 
@@ -276,6 +277,23 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
 
     if (!mounted) return;
     _showUndoToast(context, outcome, holeIndex + 1);
+  }
+
+  void _handleVoiceOutcome(HoleOutcome outcome, int holeIndex) {
+    if (!mounted) return;
+    setState(() => _lastScoredHoleIndex = holeIndex);
+    _showUndoToast(context, outcome, holeIndex + 1);
+    // Handle round completion when hole 18 is scored by voice.
+    // VoiceService already wrote the outcome to Drift; we only need to call
+    // completeRound so the roundCompleteProvider listener triggers context.go.
+    if (holeIndex == 17) {
+      ref
+          .read(appDatabaseProvider)
+          .roundDao
+          .completeRound(widget.roundId, DateTime.now());
+    }
+    // No hole advancement here — user taps the NEXT button to advance,
+    // matching the tap-scoring behavior in OutcomeButtonGrid.
   }
 
   Future<void> _handleNext() async {
