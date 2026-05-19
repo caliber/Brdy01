@@ -83,8 +83,7 @@ GoRouter router(Ref ref) {
         path: '/round-review/:roundId',
         builder: (_, state) => RoundReviewScreen(
           roundId: int.parse(state.pathParameters['roundId']!),
-          // TODO(06-03): pass readOnly: state.uri.queryParameters['readOnly'] == 'true'
-          // once RoundReviewScreen constructor accepts a readOnly parameter (Wave 3).
+          readOnly: state.uri.queryParameters['readOnly'] == 'true',
         ),
       ),
       GoRoute(

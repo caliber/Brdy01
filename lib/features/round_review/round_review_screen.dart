@@ -9,12 +9,12 @@ import '../../theme/brdy_colors.dart';
 import '../../theme/brdy_spacing.dart';
 import 'widgets/scorecard_table.dart';
 import 'widgets/stats_section.dart';
-import 'widgets/whs_block.dart';
 
 class RoundReviewScreen extends ConsumerStatefulWidget {
   final int roundId;
+  final bool readOnly;
 
-  const RoundReviewScreen({super.key, required this.roundId});
+  const RoundReviewScreen({super.key, required this.roundId, this.readOnly = false});
 
   @override
   ConsumerState<RoundReviewScreen> createState() => _RoundReviewScreenState();
@@ -35,12 +35,18 @@ class _RoundReviewScreenState extends ConsumerState<RoundReviewScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: widget.readOnly,
       child: Scaffold(
         backgroundColor: BrdyColors.background,
         body: SafeArea(
           child: CustomScrollView(
             slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(BrdySpacing.md),
+                  child: StatsSection(roundId: widget.roundId),
+                ),
+              ),
               SliverPersistentHeader(
                 pinned: true,
                 delegate: _ScorecardHeaderDelegate(),
@@ -48,28 +54,16 @@ class _RoundReviewScreenState extends ConsumerState<RoundReviewScreen> {
               SliverToBoxAdapter(
                 child: RepaintBoundary(
                   key: _screenshotKey,
-                  child: Column(
-                    children: [
-                      ScorecardTable(roundId: widget.roundId),
-                      Padding(
-                        padding: const EdgeInsets.all(BrdySpacing.md),
-                        child: WhsBlock(roundId: widget.roundId),
+                  child: ScorecardTable(roundId: widget.roundId),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: widget.readOnly
+                    ? const _BackButton()
+                    : _ActionButtons(
+                        onShare: _handleShare,
+                        onStartNewRound: _handleStartNewRound,
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(BrdySpacing.md),
-                  child: StatsSection(roundId: widget.roundId),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: _ActionButtons(
-                  onShare: _handleShare,
-                  onStartNewRound: _handleStartNewRound,
-                ),
               ),
               const SliverToBoxAdapter(child: Gap(BrdySpacing.xl)),
             ],
@@ -137,8 +131,8 @@ class _ScorecardHeaderDelegate extends SliverPersistentHeaderDelegate {
         alignment:
             align == TextAlign.left ? Alignment.centerLeft : Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.sm),
-          child: Text(text, style: style, textAlign: align),
+          padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.xs),
+          child: Text(text, style: style, textAlign: align, softWrap: false, overflow: TextOverflow.clip),
         ),
       ),
     );
@@ -198,6 +192,37 @@ class _ActionButtons extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ── _BackButton ────────────────────────────────────────────────────────────────
+
+class _BackButton extends StatelessWidget {
+  const _BackButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: BrdySpacing.md,
+        vertical: BrdySpacing.lg,
+      ),
+      child: OutlinedButton(
+        onPressed: () => Navigator.of(context).pop(),
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: BrdyColors.divider),
+          minimumSize: const Size.fromHeight(52),
+        ),
+        child: Text(
+          'BACK',
+          style: GoogleFonts.sometypeMono(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: BrdyColors.onSurface,
+          ),
+        ),
       ),
     );
   }
