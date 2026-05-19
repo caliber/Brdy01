@@ -129,7 +129,7 @@ Plans:
   3. When the phone is not connected, the watch queues the entry and syncs on reconnect, with a visible connection status indicator
 **Plans**: TBD
 
-### Phase 5: Polish
+### Phase 5: GPS + Voice Polish
 **Goal**: GPS shot pins and voice scoring are live; every edge case and error state is handled across the full app
 **Mode:** mvp
 **Depends on**: Phase 4
@@ -138,7 +138,25 @@ Plans:
   1. User can tap the map overlay to drop GPS shot pins; pins persist across app restarts and are visible throughout the round
   2. User can say "eagle", "birdie", "par", "bogey", "double", or "pickup" to record a score; a confirmation toast appears with an undo option
   3. When voice recognition is unavailable (no network, init failure), the mic UI shows "Voice unavailable" and outcome buttons remain fully functional
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+
+**Wave 1**
+- [ ] 05-01-PLAN.md — Android location permissions + ShotDao + HoleDao.getHoleByRoundAndNumber + AppDatabase registration
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 05-02-PLAN.md — shotsForHoleProvider, MapOverlayWidget (FlutterMap + FMTC + pin drop), GPS error handling, human-verify
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 05-03-PLAN.md — VoiceService.onOutcomeRecorded callback, ShotCaptureScreen._handleVoiceOutcome, hole advance + toast + undo, human-verify
+
+**Cross-cutting constraints:**
+- GPS on-demand only: Geolocator.getCurrentPosition() at pin-tap time — never getPositionStream()
+- No schema version bump — shots table already at v1; adding ShotDao is not a migration
+- All new providers auto-dispose (@riverpod lowercase)
+- Map must not render before courseForRoundProvider resolves (null LatLng guard required)
+- Voice callback fires AFTER Drift write in VoiceService._recordOutcome — screen handles toast + advance only
 **UI hint**: yes
 
 ### Phase 6: Round History
@@ -184,7 +202,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Shot Capture | 3/3 | ✅ Complete | 2026-05-17 |
 | 3. Round Review | 3/3 | ✅ Complete | 2026-05-18 |
 | 4. Wear OS | 0/TBD | Not started | - |
-| 5. GPS + Voice Polish | 0/TBD | Not started | - |
+| 5. GPS + Voice Polish | 0/3 | Not started | - |
 | 6. Round History | 0/TBD | Not started | - |
 | 7. Stats & Trends | 0/TBD | Not started | - |
 | 8. Feel & Polish | 0/TBD | Not started | - |
@@ -195,3 +213,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 *Phase 2 planned: 2026-05-17*
 *Phase 2 complete: 2026-05-17*
 *Phase 3 planned: 2026-05-18*
+*Phase 5 planned: 2026-05-19*
