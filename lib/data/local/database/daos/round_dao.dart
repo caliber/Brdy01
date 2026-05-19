@@ -24,4 +24,18 @@ class RoundDao extends DatabaseAccessor<AppDatabase> with _$RoundDaoMixin {
   Future<void> completeRound(int id, DateTime completedAt) =>
       (update(rounds)..where((r) => r.id.equals(id)))
           .write(RoundsCompanion(completedAt: Value(completedAt)));
+
+  Stream<List<Round>> watchCompletedRounds() =>
+      (select(rounds)
+            ..where((r) => r.completedAt.isNotNull())
+            ..orderBy([
+              (r) => OrderingTerm(
+                    expression: r.completedAt,
+                    mode: OrderingMode.desc,
+                  )
+            ]))
+          .watch();
+
+  Future<void> deleteRound(int id) =>
+      (delete(rounds)..where((r) => r.id.equals(id))).go();
 }

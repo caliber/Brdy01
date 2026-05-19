@@ -466,8 +466,8 @@ class $HolesTable extends Holes with TableInfo<$HolesTable, Hole> {
       'round_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES rounds (id)'));
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES rounds (id) ON DELETE CASCADE'));
   static const VerificationMeta _holeNumberMeta =
       const VerificationMeta('holeNumber');
   @override
@@ -989,8 +989,8 @@ class $ShotsTable extends Shots with TableInfo<$ShotsTable, Shot> {
       'hole_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES holes (id)'));
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES holes (id) ON DELETE CASCADE'));
   static const VerificationMeta _latitudeMeta =
       const VerificationMeta('latitude');
   @override
@@ -1327,6 +1327,25 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [rounds, holes, shots];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
+        [
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('rounds',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('holes', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('holes',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('shots', kind: UpdateKind.delete),
+            ],
+          ),
+        ],
+      );
 }
 
 typedef $$RoundsTableCreateCompanionBuilder = RoundsCompanion Function({
