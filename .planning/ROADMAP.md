@@ -14,9 +14,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Setup** - User can load a course and start a round
 - [x] **Phase 2: Shot Capture** - User can score a full 18-hole round
-- [ ] **Phase 3: Round Review** - User can see their scorecard and stats
+- [x] **Phase 3: Round Review** - User can see their scorecard and stats
 - [ ] **Phase 4: Wear OS** - User can score from the watch
-- [ ] **Phase 5: Polish** - GPS pins, voice, and edge-case hardening
+- [ ] **Phase 5: GPS + Voice Polish** - GPS pins, voice, and edge-case hardening
+- [ ] **Phase 6: Round History** - User can browse, view and delete past rounds
+- [ ] **Phase 7: Stats & Trends** - User can see handicap trend and stats over time
+- [ ] **Phase 8: Feel & Polish** - Scorecard overlay, haptic patterns, score animations
 
 ## Phase Details
 
@@ -138,18 +141,53 @@ Plans:
 **Plans**: TBD
 **UI hint**: yes
 
+### Phase 6: Round History
+**Goal**: User can browse all past rounds, tap into a completed round's scorecard, and delete rounds they don't want
+**Mode:** mvp
+**Depends on**: Phase 3
+**Requirements**: HIST-01, HIST-02, HIST-03
+**Success Criteria** (what must be TRUE):
+  1. A round history list is accessible from the Setup screen showing date, course name, score and shots for each round
+  2. Tapping a past round opens its full Round Review screen (scorecard + stats) in read-only mode
+  3. User can delete a past round with a swipe-to-delete gesture and confirmation
+**Plans**: TBD
+
+### Phase 7: Stats & Trends
+**Goal**: User can see their handicap trend and scoring averages across all rounds
+**Mode:** mvp
+**Depends on**: Phase 6
+**Requirements**: STAT-01, STAT-02, STAT-03
+**Success Criteria** (what must be TRUE):
+  1. A stats screen shows handicap differential trend as a line chart across the last 20 rounds
+  2. Averages for score-to-par, putts, fairways hit and GIR% are shown across all rounds
+  3. Stats update immediately when a new round is completed
+**Plans**: TBD
+
+### Phase 8: Feel & Polish
+**Goal**: The app feels premium and responsive — scorecard overlay on shot capture, haptic patterns for outcomes, and score reveal animations
+**Mode:** mvp
+**Depends on**: Phase 7
+**Success Criteria** (what must be TRUE):
+  1. Tapping the hole number on shot capture reveals a mini scorecard overlay showing all scored holes
+  2. Each outcome has a distinct haptic pattern — birdie feels different from bogey
+  3. Recording an outcome triggers a brief colour flash/animation on the score counter
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
 | 2. Shot Capture | 3/3 | ✅ Complete | 2026-05-17 |
-| 3. Round Review | 2/3 | In progress | - |
+| 3. Round Review | 3/3 | ✅ Complete | 2026-05-18 |
 | 4. Wear OS | 0/TBD | Not started | - |
-| 5. Polish | 0/TBD | Not started | - |
+| 5. GPS + Voice Polish | 0/TBD | Not started | - |
+| 6. Round History | 0/TBD | Not started | - |
+| 7. Stats & Trends | 0/TBD | Not started | - |
+| 8. Feel & Polish | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-05-16*
