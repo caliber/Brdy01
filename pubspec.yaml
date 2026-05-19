@@ -51,6 +51,7 @@ dependencies:
   gap: ^3.0.1                  # Semantic spacing widget
   flutter_animate: ^4.5.0      # Micro-animations (pulse dot, toasts)
   haptic_feedback: ^0.5.0+2    # Shot record haptic
+  flutter_svg: ^2.0.10+1       # SVG asset rendering
   share_plus: ^9.0.0           # Share round summary card
   screenshot: ^2.3.0           # Capture round summary as image
 
@@ -70,7 +71,7 @@ dev_dependencies:
 
   # Code generation
   build_runner: ^2.4.11
-  riverpod_generator: ^2.4.3
+  riverpod_generator: 2.6.3
   drift_dev: ^2.18.0
   retrofit_generator: ^8.1.0
   freezed: ^2.5.2
