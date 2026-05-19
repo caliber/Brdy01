@@ -1321,6 +1321,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ShotsTable shots = $ShotsTable(this);
   late final RoundDao roundDao = RoundDao(this as AppDatabase);
   late final HoleDao holeDao = HoleDao(this as AppDatabase);
+  late final ShotDao shotDao = ShotDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

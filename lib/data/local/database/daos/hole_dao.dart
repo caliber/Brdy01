@@ -27,4 +27,10 @@ class HoleDao extends DatabaseAccessor<AppDatabase> with _$HoleDaoMixin {
 
   Stream<List<Hole>> watchHolesForRound(int roundId) =>
       (select(holes)..where((h) => h.roundId.equals(roundId))).watch();
+
+  Future<Hole?> getHoleByRoundAndNumber(int roundId, int holeNumber) =>
+      (select(holes)
+            ..where((h) => h.roundId.equals(roundId))
+            ..where((h) => h.holeNumber.equals(holeNumber)))
+          .getSingleOrNull();
 }

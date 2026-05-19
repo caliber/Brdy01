@@ -8,10 +8,11 @@ import 'tables/holes_table.dart';
 import 'tables/shots_table.dart';
 import 'daos/round_dao.dart';
 import 'daos/hole_dao.dart';
+import 'daos/shot_dao.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [Rounds, Holes, Shots], daos: [RoundDao, HoleDao])
+@DriftDatabase(tables: [Rounds, Holes, Shots], daos: [RoundDao, HoleDao, ShotDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
