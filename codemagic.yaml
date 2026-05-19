@@ -24,6 +24,9 @@ workflows:
       - name: Set up code signing
         script: |
           keychain initialize
+          app-store-connect devices create "BRDY Dev iPhone" \
+            --udid 00008110001630522120401E \
+            --platform IOS || true
           app-store-connect fetch-signing-files \
             com.brdy.brdy01 \
             --type IOS_APP_DEVELOPMENT \
