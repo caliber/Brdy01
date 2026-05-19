@@ -109,6 +109,22 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
               const Gap(BrdySpacing.md),
               const _StartRoundButton(),
               const Gap(BrdySpacing.sm),
+              OutlinedButton(
+                onPressed: () => context.push('/round-history'),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: BrdyColors.divider),
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                child: Text(
+                  'ROUND HISTORY',
+                  style: GoogleFonts.sometypeMono(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: BrdyColors.onSurfaceMuted,
+                  ),
+                ),
+              ),
+              const Gap(BrdySpacing.sm),
             ],
           ),
         ),

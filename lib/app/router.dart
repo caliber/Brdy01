@@ -6,6 +6,7 @@ import '../features/setup/setup_screen.dart';
 import '../features/splash/splash_screen.dart';
 import '../features/shot_capture/shot_capture_screen.dart';
 import '../features/round_review/round_review_screen.dart';
+import '../features/round_history/round_history_screen.dart';
 import '../features/setup/providers/app_startup_provider.dart';
 import '../features/setup/providers/active_round_id_provider.dart';
 import '../features/shot_capture/providers/round_complete_provider.dart';
@@ -51,6 +52,10 @@ GoRouter router(Ref ref) {
             if (state.uri.path.startsWith('/round-review/$incompleteRoundId')) return null;
             if (state.uri.path.startsWith('/shot-capture/') &&
                 state.uri.path != '/shot-capture/$incompleteRoundId') return null;
+            // Allowlist: round history and read-only review are safe during an active round.
+            if (state.uri.path == '/round-history') return null;
+            if (state.uri.path.startsWith('/round-review/') &&
+                state.uri.queryParameters['readOnly'] == 'true') return null;
             ref.read(activeRoundIdProvider.notifier).set(incompleteRoundId);
             return '/shot-capture/$incompleteRoundId';
           }
@@ -78,7 +83,13 @@ GoRouter router(Ref ref) {
         path: '/round-review/:roundId',
         builder: (_, state) => RoundReviewScreen(
           roundId: int.parse(state.pathParameters['roundId']!),
+          // TODO(06-03): pass readOnly: state.uri.queryParameters['readOnly'] == 'true'
+          // once RoundReviewScreen constructor accepts a readOnly parameter (Wave 3).
         ),
+      ),
+      GoRoute(
+        path: '/round-history',
+        builder: (_, __) => const RoundHistoryScreen(),
       ),
     ],
   );
