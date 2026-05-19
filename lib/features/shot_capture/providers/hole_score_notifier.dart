@@ -33,46 +33,44 @@ class HoleScoreNotifier extends _$HoleScoreNotifier {
       par: Value(par),
       strokeIndex: Value(strokeIndex),
       outcome: Value(outcome.name),
+      putts: const Value(0),
       fairwayHit: par == 3 ? const Value(null) : const Value(false),
       recordedAt: Value(DateTime.now()),
     ));
     ref.invalidateSelf();
   }
 
-  Future<void> setPutts(int putts) async {
+  Future<void> setPutts(int putts, {required int par}) async {
     final db = ref.read(appDatabaseProvider);
     final current = await future;
-    if (current == null) return;
     await db.holeDao.insertOrUpdateHole(HolesCompanion(
-      roundId: Value(current.roundId),
-      holeNumber: Value(current.holeNumber),
-      par: Value(current.par),
+      roundId: Value(roundId),
+      holeNumber: Value(holeIndex + 1),
+      par: Value(current?.par ?? par),
       putts: Value(putts),
     ));
     ref.invalidateSelf();
   }
 
-  Future<void> setFairwayHit(bool? fairwayHit) async {
+  Future<void> setFairwayHit(bool? fairwayHit, {required int par}) async {
     final db = ref.read(appDatabaseProvider);
     final current = await future;
-    if (current == null) return;
     await db.holeDao.insertOrUpdateHole(HolesCompanion(
-      roundId: Value(current.roundId),
-      holeNumber: Value(current.holeNumber),
-      par: Value(current.par),
+      roundId: Value(roundId),
+      holeNumber: Value(holeIndex + 1),
+      par: Value(current?.par ?? par),
       fairwayHit: Value(fairwayHit),
     ));
     ref.invalidateSelf();
   }
 
-  Future<void> setGir(bool? gir) async {
+  Future<void> setGir(bool? gir, {required int par}) async {
     final db = ref.read(appDatabaseProvider);
     final current = await future;
-    if (current == null) return;
     await db.holeDao.insertOrUpdateHole(HolesCompanion(
-      roundId: Value(current.roundId),
-      holeNumber: Value(current.holeNumber),
-      par: Value(current.par),
+      roundId: Value(roundId),
+      holeNumber: Value(holeIndex + 1),
+      par: Value(current?.par ?? par),
       greenInRegulation: Value(gir),
     ));
     ref.invalidateSelf();

@@ -6,7 +6,7 @@ part of 'hole_score_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$holeScoreNotifierHash() => r'28f14e6436a12ba5dd457351e02890023ebd9f58';
+String _$holeScoreNotifierHash() => r'4101e377f51468fb5a1ab7ff486ef636d9845930';
 
 /// Copied from Dart SDK
 class _SystemHash {

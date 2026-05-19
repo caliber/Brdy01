@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:speech_to_text/speech_to_text.dart';
+import '../../data/local/database/app_database.dart';
 import '../../data/local/database/app_database_provider.dart';
 import '../../domain/enums/hole_outcome.dart';
+import '../../domain/models/course_model.dart';
 import '../../theme/brdy_colors.dart';
 import '../../theme/brdy_spacing.dart';
 import 'providers/active_hole_index_provider.dart';
@@ -19,6 +23,7 @@ import 'services/voice_service.dart';
 import 'widgets/fairway_gir_toggles.dart';
 import 'widgets/hole_header.dart';
 import 'widgets/hole_nav_drawer.dart';
+import 'widgets/map_overlay_widget.dart';
 import 'widgets/outcome_button_grid.dart';
 
 class ShotCaptureScreen extends ConsumerStatefulWidget {
@@ -101,10 +106,13 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
               height: MediaQuery.of(context).size.height * 0.36,
               child: _TopZone(
                 roundId: roundId,
+                holeIndex: holeIndex,
+                courseModel: course,
                 highestScoredHoleIndex: highestIndex,
                 navStripOpen: _navStripOpen,
                 onHoleNumberTap: () =>
                     setState(() => _navStripOpen = !_navStripOpen),
+                onMapTapped: _dropPinAtCurrentPosition,
               ),
             ),
             Container(height: 1, color: BrdyColors.divider),
@@ -122,6 +130,127 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _dropPinAtCurrentPosition() async {
+    // ── 1. Permission check ───────────────────────────────────────────────────
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(
+              'LOCATION PERMISSION REQUIRED',
+              style: TextStyle(
+                fontFamily: 'SometypeMono',
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: BrdyColors.accent,
+              ),
+            ),
+            backgroundColor: BrdyColors.surface,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      if (permission == LocationPermission.deniedForever) {
+        await Geolocator.openAppSettings();
+      }
+      return;
+    }
+
+    // ── 2. GPS fetch with timeout ─────────────────────────────────────────────
+    Position pos;
+    try {
+      pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 15),
+      );
+    } on TimeoutException {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(
+              'GPS UNAVAILABLE — TRY AGAIN',
+              style: TextStyle(
+                fontFamily: 'SometypeMono',
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: BrdyColors.accent,
+              ),
+            ),
+            backgroundColor: BrdyColors.surface,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      return;
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(
+              'GPS UNAVAILABLE — TRY AGAIN',
+              style: TextStyle(
+                fontFamily: 'SometypeMono',
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: BrdyColors.accent,
+              ),
+            ),
+            backgroundColor: BrdyColors.surface,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      return;
+    }
+
+    // ── 3. Persist pin to Drift ───────────────────────────────────────────────
+    final db = ref.read(appDatabaseProvider);
+    final holeIndex = ref.read(activeHoleIndexProvider);
+    final holeNumber = holeIndex + 1;
+
+    Hole? holeRow =
+        await db.holeDao.getHoleByRoundAndNumber(widget.roundId, holeNumber);
+
+    if (holeRow == null) {
+      // Hole not yet scored — create a placeholder row to satisfy FK constraint.
+      final courseAsync = ref.read(courseForRoundProvider(widget.roundId));
+      final course = courseAsync.valueOrNull;
+      final holePar =
+          (course != null && holeIndex < course.holes.length)
+              ? course.holes[holeIndex].par
+              : 4;
+
+      await db.holeDao.insertOrUpdateHole(
+        HolesCompanion.insert(
+          roundId: widget.roundId,
+          holeNumber: holeNumber,
+          par: holePar,
+        ),
+      );
+      holeRow =
+          await db.holeDao.getHoleByRoundAndNumber(widget.roundId, holeNumber);
+    }
+
+    if (holeRow == null) return; // Safety guard — should never happen.
+
+    final shotNumber = await db.shotDao.getShotCountForHole(holeRow.id) + 1;
+    await db.shotDao.insertShot(
+      holeId: holeRow.id,
+      latitude: pos.latitude,
+      longitude: pos.longitude,
+      shotNumber: shotNumber,
     );
   }
 
@@ -213,30 +342,51 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
 
 class _TopZone extends StatelessWidget {
   final int roundId;
+  final int holeIndex;
+  final CourseModel? courseModel;
   final int highestScoredHoleIndex;
   final bool navStripOpen;
   final VoidCallback onHoleNumberTap;
+  final VoidCallback onMapTapped;
 
   const _TopZone({
     required this.roundId,
+    required this.holeIndex,
+    required this.courseModel,
     required this.highestScoredHoleIndex,
     required this.navStripOpen,
     required this.onHoleNumberTap,
+    required this.onMapTapped,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Stack(
       children: [
-        HoleHeader(
-          roundId: roundId,
-          highestScoredHoleIndex: highestScoredHoleIndex,
-          onHoleNumberTap: onHoleNumberTap,
+        // Map fills the entire top zone.
+        Positioned.fill(
+          child: MapOverlayWidget(
+            roundId: roundId,
+            holeIndex: holeIndex,
+            course: courseModel,
+            onMapTapped: onMapTapped,
+          ),
         ),
-        HoleNavDrawer(
-          roundId: roundId,
-          isOpen: navStripOpen,
+        // HoleHeader and HoleNavDrawer overlaid on top of the map.
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            HoleHeader(
+              roundId: roundId,
+              highestScoredHoleIndex: highestScoredHoleIndex,
+              onHoleNumberTap: onHoleNumberTap,
+            ),
+            HoleNavDrawer(
+              roundId: roundId,
+              isOpen: navStripOpen,
+            ),
+          ],
         ),
       ],
     );
