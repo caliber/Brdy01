@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
 import '../providers/hole_score_notifier.dart';
+import '../providers/voice_listening_provider.dart';
 
 /// Bottom toggle strip for fairway hit, GIR, and voice controls.
 ///
@@ -14,12 +15,16 @@ class FairwayGirToggles extends ConsumerWidget {
   final int roundId;
   final int holeIndex;
   final int holePar;
+  final void Function()? onVoiceTapped;
+  final String voicePartialText;
 
   const FairwayGirToggles({
     super.key,
     required this.roundId,
     required this.holeIndex,
     required this.holePar,
+    this.onVoiceTapped,
+    this.voicePartialText = '',
   });
 
   @override
@@ -30,10 +35,28 @@ class FairwayGirToggles extends ConsumerWidget {
 
     final bool? fairwayHit = holeState?.fairwayHit;
     final bool? gir = holeState?.greenInRegulation;
+    final bool isListening = ref.watch(voiceListeningProvider);
 
-    // Layout mirrors the button grid: FAIRWAY(1) | GIR(1) | spacer(1) | VOICE(1)
-    // The spacer aligns with the putts counter; VOICE aligns under NEXT.
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Live partial text — shows what STT is hearing in real time
+        if (isListening || voicePartialText.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: BrdySpacing.xs),
+            child: Text(
+              voicePartialText.isNotEmpty ? voicePartialText.toUpperCase() : '…',
+              style: GoogleFonts.sometypeMono(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: BrdyColors.background.withOpacity(0.6),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        Row(
       children: [
         // FAIRWAY — hidden on par 3s but slot kept to preserve alignment
         Expanded(
@@ -45,7 +68,7 @@ class FairwayGirToggles extends ConsumerWidget {
                     ref
                         .read(holeScoreNotifierProvider(roundId, holeIndex)
                             .notifier)
-                        .setFairwayHit(!(fairwayHit ?? false));
+                        .setFairwayHit(!(fairwayHit ?? false), par: holePar);
                   },
                 )
               : const SizedBox.shrink(),
@@ -59,7 +82,7 @@ class FairwayGirToggles extends ConsumerWidget {
               HapticFeedback.selectionClick();
               ref
                   .read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
-                  .setGir(!(gir ?? false));
+                  .setGir(!(gir ?? false), par: holePar);
             },
           ),
         ),
@@ -68,7 +91,14 @@ class FairwayGirToggles extends ConsumerWidget {
         const Expanded(child: SizedBox.shrink()),
         const SizedBox(width: BrdySpacing.xs),
         // VOICE — aligns under NEXT button
-        const Expanded(child: _VoiceToggle()),
+        Expanded(
+          child: _VoiceToggle(
+            isListening: isListening,
+            onTap: onVoiceTapped,
+          ),
+        ),
+      ],
+        ),
       ],
     );
   }
@@ -215,53 +245,61 @@ class _GirToggle extends StatelessWidget {
 
 // ── _VoiceToggle ───────────────────────────────────────────────────────────────
 
-/// Phase 2 stub — always inactive. Phase 5 will wire voice recognition.
 class _VoiceToggle extends StatelessWidget {
-  const _VoiceToggle();
+  final bool isListening;
+  final VoidCallback? onTap;
+
+  const _VoiceToggle({this.isListening = false, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.black.withOpacity(0.08),
-      highlightColor: Colors.black.withOpacity(0.04),
-      onTap: () {},
-      borderRadius: BorderRadius.circular(4),
-      child: Container(
-        constraints: const BoxConstraints(minHeight: 48),
-        decoration: BoxDecoration(
-          color: const Color(0xFFD0D0D0),
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 3,
-              offset: const Offset(0, 1),
-            ),
-          ],
-        ),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'OFF',
-              style: GoogleFonts.sometypeMono(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: BrdyColors.background,
+    final Color fill = isListening ? BrdyColors.accent : const Color(0xFFD0D0D0);
+    final Color labelColor = isListening ? BrdyColors.onAccent : BrdyColors.background;
+
+    return Semantics(
+      label: 'VOICE — ${isListening ? "listening" : "off"}',
+      child: InkWell(
+        splashColor: Colors.black.withOpacity(0.08),
+        highlightColor: Colors.black.withOpacity(0.04),
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(4),
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 48),
+          decoration: BoxDecoration(
+            color: fill,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'VOICE',
-              style: GoogleFonts.sometypeMono(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: BrdyColors.background,
+            ],
+          ),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                isListening ? 'ON' : 'OFF',
+                style: GoogleFonts.sometypeMono(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: labelColor,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              Text(
+                'VOICE',
+                style: GoogleFonts.sometypeMono(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: labelColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

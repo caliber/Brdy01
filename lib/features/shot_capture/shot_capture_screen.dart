@@ -34,6 +34,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
   int? _lastScoredHoleIndex;
   bool _navStripOpen = false;
   bool _voiceAvailable = false;
+  String _voicePartialText = '';
   late final VoiceService _voiceService;
 
   @override
@@ -59,6 +60,8 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
       await _voiceService.startListening(
         onListeningChanged: (v) =>
             ref.read(voiceListeningProvider.notifier).set(v),
+        onPartialResult: (text) =>
+            setState(() => _voicePartialText = text),
       );
     }
   }
@@ -111,6 +114,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 holePar: holePar,
                 holeStrokeIndex: holeStrokeIndex,
                 voiceAvailable: _voiceAvailable,
+                voicePartialText: _voicePartialText,
                 onOutcomeTapped: _handleOutcomeTapped,
                 onNextTapped: _handleNext,
                 onVoiceTapped: _voiceAvailable ? _toggleVoice : null,
@@ -247,6 +251,7 @@ class _BottomZone extends StatelessWidget {
   final int holePar;
   final int? holeStrokeIndex;
   final bool voiceAvailable;
+  final String voicePartialText;
   final void Function(HoleOutcome, int, int?) onOutcomeTapped;
   final void Function() onNextTapped;
   final void Function()? onVoiceTapped;
@@ -257,6 +262,7 @@ class _BottomZone extends StatelessWidget {
     required this.holePar,
     required this.holeStrokeIndex,
     required this.voiceAvailable,
+    required this.voicePartialText,
     required this.onOutcomeTapped,
     required this.onNextTapped,
     this.onVoiceTapped,
@@ -272,7 +278,17 @@ class _BottomZone extends StatelessWidget {
           colors: [Color(0xFFE5E0DE), Color(0xFF8E8C8A)],
         ),
       ),
-      child: Padding(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background image on top of gradient
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/bk.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
         padding: const EdgeInsets.fromLTRB(BrdySpacing.md, 0, BrdySpacing.md, BrdySpacing.sm),
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -326,9 +342,12 @@ class _BottomZone extends StatelessWidget {
               holeIndex: holeIndex,
               holePar: holePar,
               onVoiceTapped: onVoiceTapped,
+              voicePartialText: voicePartialText,
             ),
           ],
         ),
+      ),
+        ],
       ),
     );
   }
