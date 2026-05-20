@@ -35,6 +35,14 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Required by Google Play Services Wearable API -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!-- Declare this phone's Wear OS capability so the watch can locate its peer -->
+        <meta-data
+            android:name="com.google.android.wearable.capabilities"
+            android:resource="@array/android_wear_capabilities" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

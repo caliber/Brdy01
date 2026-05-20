@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Capability advertised by the phone app so the watch can find its peer. -->
+    <string-array name="android_wear_capabilities">
+        <item>brdy_phone_peer</item>
+    </string-array>
+</resources>
