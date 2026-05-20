@@ -36,27 +36,11 @@ class FairwayGirToggles extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Live STT partial text
-        if (isListening || voicePartialText.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: BrdySpacing.xs),
-            child: Text(
-              voicePartialText.isNotEmpty ? voicePartialText.toUpperCase() : '…',
-              style: GoogleFonts.sometypeMono(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: context.brdyColors.background.withOpacity(0.6),
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        // Mirrors PICKUP(1) | PUTTS(2) | NEXT(1) — identical flex + gap structure
         Row(
           children: [
-            // REG — same width as PICKUP
-            Expanded(
+            // REG — 8px left
+            Transform.translate(
+              offset: const Offset(-5, 0),
               child: _CtrlButton(
                 stateLabel: gir == true ? 'GREEN' : 'MISS',
                 typeLabel: 'REG',
@@ -69,34 +53,28 @@ class FairwayGirToggles extends ConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(width: BrdySpacing.xs),
-            // Middle flex:1 — FAIRWAY on left, empty space on right
-            Expanded(
-              child: Row(
-                children: [
-                  if (holePar != 3) ...[
-                    Expanded(
-                      child: _CtrlButton(
-                        stateLabel: fairwayHit == true ? 'HIT' : 'MISS',
-                        typeLabel: 'FAIRWAY',
-                        isActive: fairwayHit == true,
-                        semanticLabel: 'FAIRWAY HIT — ${fairwayHit == true ? "hit" : "missed"}',
-                        onTap: () {
-                          HapticFeedback.selectionClick();
-                          ref.read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
-                              .setFairwayHit(!(fairwayHit ?? false), par: holePar);
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: BrdySpacing.xs),
-                  ],
-                  const Expanded(child: SizedBox.shrink()),
-                ],
+            // FAIRWAY — 30px left, par 4/5 only
+            if (holePar != 3) ...[
+              const SizedBox(width: BrdySpacing.xs),
+              Transform.translate(
+                offset: const Offset(-27, 0),
+                child: _CtrlButton(
+                  stateLabel: fairwayHit == true ? 'HIT' : 'MISS',
+                  typeLabel: 'FAIRWAY',
+                  isActive: fairwayHit == true,
+                  semanticLabel: 'FAIRWAY HIT — ${fairwayHit == true ? "hit" : "missed"}',
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    ref.read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
+                        .setFairwayHit(!(fairwayHit ?? false), par: holePar);
+                  },
+                ),
               ),
-            ),
-            const SizedBox(width: BrdySpacing.xs),
-            // VOICE — same width as NEXT
-            Expanded(
+            ],
+            const Spacer(),
+            // VOICE — 12px right
+            Transform.translate(
+              offset: const Offset(14, 0),
               child: _CtrlButton(
                 stateLabel: isListening ? 'ON' : 'OFF',
                 typeLabel: 'VOICE',
@@ -140,14 +118,15 @@ class _CtrlButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: SizedBox(
-          height: 44,
+          width: 94,
+          height: 77,
           child: Stack(
             fit: StackFit.expand,
             children: [
               SvgPicture.asset(svg, fit: BoxFit.fill),
               // State text — top half
               Align(
-                alignment: const Alignment(0, -0.3),
+                alignment: const Alignment(-0.14, -0.5),
                 child: Text(
                   stateLabel,
                   style: GoogleFonts.sometypeMono(
@@ -160,7 +139,7 @@ class _CtrlButton extends StatelessWidget {
               ),
               // Type label — bottom half
               Align(
-                alignment: const Alignment(0, 0.7),
+                alignment: const Alignment(-0.14, 0.6),
                 child: Text(
                   typeLabel,
                   style: GoogleFonts.sometypeMono(

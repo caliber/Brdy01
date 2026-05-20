@@ -7,7 +7,7 @@ import '../../../theme/brdy_colors.dart';
 import '../providers/active_hole_index_provider.dart';
 import '../providers/highest_scored_hole_index_provider.dart';
 import '../providers/hole_list_provider.dart';
-import '../providers/running_score_provider.dart';
+
 
 class MiniScorecardOverlay extends ConsumerWidget {
   final int roundId;
@@ -26,7 +26,6 @@ class MiniScorecardOverlay extends ConsumerWidget {
     final activeHoleIndex = ref.watch(activeHoleIndexProvider);
     final holesAsync = ref.watch(holeListProvider(roundId));
     final highestScoredIndex = ref.watch(highestScoredHoleIndexProvider(roundId));
-    final runningScore = ref.watch(runningScoreProvider(roundId));
 
     // Build outcome map: holeNumber (1-based) → outcome string
     final Map<int, String?> outcomeByHole = {};
@@ -41,7 +40,7 @@ class MiniScorecardOverlay extends ConsumerWidget {
       curve: Curves.easeOut,
       height: isOpen ? 132 : 0,
       color: context.brdyColors.surface,
-      child: isOpen ? _buildContent(context, ref, activeHoleIndex, highestScoredIndex, outcomeByHole, runningScore) : const SizedBox.shrink(),
+      child: isOpen ? _buildContent(context, ref, activeHoleIndex, highestScoredIndex, outcomeByHole) : const SizedBox.shrink(),
     );
   }
 
@@ -51,7 +50,6 @@ class MiniScorecardOverlay extends ConsumerWidget {
     int activeHoleIndex,
     int highestScoredIndex,
     Map<int, String?> outcomeByHole,
-    int? runningScore,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -63,9 +61,6 @@ class MiniScorecardOverlay extends ConsumerWidget {
           const SizedBox(height: 4),
           // Row 2: holes 10–18
           _buildChipRow(context, ref, 9, 18, activeHoleIndex, highestScoredIndex, outcomeByHole),
-          const SizedBox(height: 6),
-          // Score summary bar
-          _buildScoreBar(runningScore),
         ],
       ),
     );
@@ -132,29 +127,6 @@ class MiniScorecardOverlay extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildScoreBar(int? runningScore) {
-    final String label;
-    if (runningScore == null) {
-      label = 'E';
-    } else if (runningScore == 0) {
-      label = 'E';
-    } else if (runningScore > 0) {
-      label = '+$runningScore';
-    } else {
-      label = '$runningScore';
-    }
-
-    return Text(
-      label,
-      style: GoogleFonts.sometypeMono(
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
-        color: Colors.white,
-      ),
-      textAlign: TextAlign.center,
     );
   }
 

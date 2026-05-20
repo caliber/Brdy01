@@ -18,12 +18,14 @@ class HoleHeader extends ConsumerWidget {
   final int roundId;
   final int highestScoredHoleIndex;
   final VoidCallback? onHoleNumberTap;
+  final String voicePartialText;
 
   const HoleHeader({
     super.key,
     required this.roundId,
     required this.highestScoredHoleIndex,
     this.onHoleNumberTap,
+    this.voicePartialText = '',
   });
 
   @override
@@ -130,12 +132,6 @@ class HoleHeader extends ConsumerWidget {
               const SizedBox(width: BrdySpacing.md),
               Row(
                 children: [
-                  _pill(context, parLabel),
-                  if (siLabel != null) ...[
-                    const SizedBox(width: BrdySpacing.xs),
-                    _pill(context, siLabel, fontSize: 11),
-                  ],
-                  const SizedBox(width: BrdySpacing.xs),
                   GestureDetector(
                     onTap: onHoleNumberTap != null
                         ? () {
@@ -145,6 +141,12 @@ class HoleHeader extends ConsumerWidget {
                         : null,
                     child: _pill(context, 'HOLE ${holeIndex + 1}'),
                   ),
+                  const SizedBox(width: BrdySpacing.xs),
+                  _pill(context, parLabel),
+                  if (siLabel != null) ...[
+                    const SizedBox(width: BrdySpacing.xs),
+                    _pill(context, siLabel, fontSize: 11),
+                  ],
                 ],
               ),
             ],
@@ -294,6 +296,19 @@ class HoleHeader extends ConsumerWidget {
                     textAlign: TextAlign.center,
                   ),
                   ),
+                  // Voice partial text — shown below TOTAL SHOTS
+                  if (voicePartialText.isNotEmpty)
+                    Text(
+                      voicePartialText.toUpperCase(),
+                      style: GoogleFonts.sometypeMono(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: context.brdyColors.onSurfaceMuted,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                 ],
               ),
             ],

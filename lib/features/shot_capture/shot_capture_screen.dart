@@ -160,6 +160,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                     onHoleNumberTap: () =>
                         setState(() => _overlayOpen = !_overlayOpen),
                     onMapTapped: _dropPinAtCurrentPosition,
+                    voicePartialText: _voicePartialText,
                   ),
                 ),
                 MiniScorecardOverlay(
@@ -427,6 +428,7 @@ class _TopZone extends StatelessWidget {
   final int highestScoredHoleIndex;
   final VoidCallback onHoleNumberTap;
   final VoidCallback onMapTapped;
+  final String voicePartialText;
 
   const _TopZone({
     required this.roundId,
@@ -435,6 +437,7 @@ class _TopZone extends StatelessWidget {
     required this.highestScoredHoleIndex,
     required this.onHoleNumberTap,
     required this.onMapTapped,
+    this.voicePartialText = '',
   });
 
   @override
@@ -460,6 +463,7 @@ class _TopZone extends StatelessWidget {
               roundId: roundId,
               highestScoredHoleIndex: highestScoredHoleIndex,
               onHoleNumberTap: onHoleNumberTap,
+              voicePartialText: voicePartialText,
             ),
           ],
         ),
@@ -523,12 +527,48 @@ class _BottomZone extends StatelessWidget {
             // BRDY.01 wordmark rule
             Row(
               children: [
-                Text(
-                  'BRDY.${(holeIndex + 1).toString().padLeft(2, '0')}',
-                  style: GoogleFonts.sometypeMono(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: context.brdyColors.background,
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'BRD',
+                        style: GoogleFonts.sometypeMono(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -1.5,
+                          color: context.brdyColors.background,
+                        ),
+                      ),
+                      // letterSpacing on Y controls gap before '.' — subtract 4px
+                      TextSpan(
+                        text: 'Y',
+                        style: GoogleFonts.sometypeMono(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -5.5,
+                          color: context.brdyColors.background,
+                        ),
+                      ),
+                      // letterSpacing on '.' controls gap before hole number — subtract 8px
+                      TextSpan(
+                        text: '.',
+                        style: GoogleFonts.sometypeMono(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -3.5,
+                          color: context.brdyColors.background,
+                        ),
+                      ),
+                      TextSpan(
+                        text: (holeIndex + 1).toString().padLeft(2, '0'),
+                        style: GoogleFonts.sometypeMono(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -1.5,
+                          color: context.brdyColors.background,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const Gap(BrdySpacing.sm),
