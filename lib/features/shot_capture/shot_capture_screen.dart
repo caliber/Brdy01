@@ -22,6 +22,7 @@ import 'providers/hole_score_notifier.dart';
 import 'providers/round_complete_provider.dart';
 import 'providers/voice_listening_provider.dart';
 import 'services/voice_service.dart';
+import 'services/wear_bridge_service.dart';
 import 'widgets/fairway_gir_toggles.dart';
 import 'widgets/hole_header.dart';
 import 'widgets/map_overlay_widget.dart';
@@ -50,6 +51,29 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
     _voiceService = VoiceService(roundId: widget.roundId, ref: ref);
     _voiceService.onOutcomeRecorded = _handleVoiceOutcome;
     _initVoice();
+    // Push initial hole state to watch on screen load
+    WidgetsBinding.instance.addPostFrameCallback((_) => _pushCurrentHoleState());
+  }
+
+  /// Pushes the currently active hole context to the watch via WearBridgeService.
+  /// Called on init and on every hole index change so the watch stays in sync.
+  void _pushCurrentHoleState() {
+    if (!mounted) return;
+    final holeIndex = ref.read(activeHoleIndexProvider);
+    final courseAsync = ref.read(courseForRoundProvider(widget.roundId));
+    final course = courseAsync.valueOrNull;
+    final holeModel =
+        (course != null && holeIndex < course.holes.length)
+            ? course.holes[holeIndex]
+            : null;
+    final par = holeModel?.par ?? 4;
+    final si = holeModel?.strokeIndex;
+    ref.read(wearBridgeServiceProvider).pushHoleState(
+          roundId: widget.roundId.toString(),
+          holeIndex: holeIndex,
+          par: par,
+          si: si,
+        );
   }
 
   Future<void> _initVoice() async {
@@ -98,6 +122,11 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
       if (next == true) {
         context.go('/round-review/$roundId');
       }
+    });
+
+    // Push updated hole state to watch on every hole change
+    ref.listen<int>(activeHoleIndexProvider, (prev, next) {
+      if (prev != next) _pushCurrentHoleState();
     });
 
     return Scaffold(
