@@ -292,7 +292,9 @@ class HoleHeader extends ConsumerWidget {
                   ),
 
                   // SHOTS TAKEN total
-                  Text(
+                  Transform.translate(
+                    offset: const Offset(0, -30),
+                    child: Text(
                     'TOTAL SHOTS $totalShots',
                     style: GoogleFonts.sometypeMono(
                       fontSize: 20,
@@ -300,6 +302,7 @@ class HoleHeader extends ConsumerWidget {
                       color: context.brdyColors.onSurface,
                     ),
                     textAlign: TextAlign.center,
+                  ),
                   ),
                 ],
               ),

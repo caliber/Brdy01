@@ -52,45 +52,59 @@ class FairwayGirToggles extends ConsumerWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+        // Mirrors PICKUP(1) | PUTTS(2) | NEXT(1) — identical flex + gap structure
         Row(
           children: [
-            // REG — left-aligns with PICKUP
-            _CtrlButton(
-              stateLabel: gir == true ? 'GREEN' : 'MISS',
-              typeLabel: 'REG',
-              isActive: gir == true,
-              semanticLabel: 'GREEN IN REGULATION — ${gir == true ? "on" : "off"}',
-              onTap: () {
-                HapticFeedback.selectionClick();
-                ref
-                    .read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
-                    .setGir(!(gir ?? false), par: holePar);
-              },
-            ),
-            // FAIRWAY — par 4/5 only
-            if (holePar != 3) ...[
-              const SizedBox(width: 10),
-              _CtrlButton(
-                stateLabel: fairwayHit == true ? 'HIT' : 'MISS',
-                typeLabel: 'FAIRWAY',
-                isActive: fairwayHit == true,
-                semanticLabel: 'FAIRWAY HIT — ${fairwayHit == true ? "hit" : "missed"}',
+            // REG — same width as PICKUP
+            Expanded(
+              child: _CtrlButton(
+                stateLabel: gir == true ? 'GREEN' : 'MISS',
+                typeLabel: 'REG',
+                isActive: gir == true,
+                semanticLabel: 'GREEN IN REGULATION — ${gir == true ? "on" : "off"}',
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  ref
-                      .read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
-                      .setFairwayHit(!(fairwayHit ?? false), par: holePar);
+                  ref.read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
+                      .setGir(!(gir ?? false), par: holePar);
                 },
               ),
-            ],
-            const Spacer(),
-            // VOICE — right-aligns with NEXT
-            _CtrlButton(
-              stateLabel: isListening ? 'ON' : 'OFF',
-              typeLabel: 'VOICE',
-              isActive: isListening,
-              semanticLabel: 'VOICE — ${isListening ? "listening" : "off"}',
-              onTap: onVoiceTapped,
+            ),
+            const SizedBox(width: BrdySpacing.xs),
+            // Middle flex:2 — FAIRWAY on left, empty space on right
+            Expanded(
+              flex: 2,
+              child: Row(
+                children: [
+                  if (holePar != 3) ...[
+                    Expanded(
+                      child: _CtrlButton(
+                        stateLabel: fairwayHit == true ? 'HIT' : 'MISS',
+                        typeLabel: 'FAIRWAY',
+                        isActive: fairwayHit == true,
+                        semanticLabel: 'FAIRWAY HIT — ${fairwayHit == true ? "hit" : "missed"}',
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          ref.read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
+                              .setFairwayHit(!(fairwayHit ?? false), par: holePar);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: BrdySpacing.xs),
+                  ],
+                  const Expanded(child: SizedBox.shrink()),
+                ],
+              ),
+            ),
+            const SizedBox(width: BrdySpacing.xs),
+            // VOICE — same width as NEXT
+            Expanded(
+              child: _CtrlButton(
+                stateLabel: isListening ? 'ON' : 'OFF',
+                typeLabel: 'VOICE',
+                isActive: isListening,
+                semanticLabel: 'VOICE — ${isListening ? "listening" : "off"}',
+                onTap: onVoiceTapped,
+              ),
             ),
           ],
         ),
@@ -127,7 +141,6 @@ class _CtrlButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: SizedBox(
-          width: 82,
           height: 44,
           child: Stack(
             fit: StackFit.expand,
