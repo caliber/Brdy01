@@ -24,8 +24,8 @@ import 'providers/voice_listening_provider.dart';
 import 'services/voice_service.dart';
 import 'widgets/fairway_gir_toggles.dart';
 import 'widgets/hole_header.dart';
-import 'widgets/hole_nav_drawer.dart';
 import 'widgets/map_overlay_widget.dart';
+import 'widgets/mini_scorecard_overlay.dart';
 import 'widgets/outcome_button_grid.dart';
 
 class ShotCaptureScreen extends ConsumerStatefulWidget {
@@ -39,7 +39,7 @@ class ShotCaptureScreen extends ConsumerStatefulWidget {
 
 class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
   int? _lastScoredHoleIndex;
-  bool _navStripOpen = false;
+  bool _overlayOpen = false;
   bool _voiceAvailable = false;
   String _voicePartialText = '';
   late final VoiceService _voiceService;
@@ -112,9 +112,10 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 holeIndex: holeIndex,
                 courseModel: course,
                 highestScoredHoleIndex: highestIndex,
-                navStripOpen: _navStripOpen,
+                overlayOpen: _overlayOpen,
                 onHoleNumberTap: () =>
-                    setState(() => _navStripOpen = !_navStripOpen),
+                    setState(() => _overlayOpen = !_overlayOpen),
+                onOverlayClose: () => setState(() => _overlayOpen = false),
                 onMapTapped: _dropPinAtCurrentPosition,
               ),
             ),
@@ -374,8 +375,9 @@ class _TopZone extends StatelessWidget {
   final int holeIndex;
   final CourseModel? courseModel;
   final int highestScoredHoleIndex;
-  final bool navStripOpen;
+  final bool overlayOpen;
   final VoidCallback onHoleNumberTap;
+  final VoidCallback onOverlayClose;
   final VoidCallback onMapTapped;
 
   const _TopZone({
@@ -383,8 +385,9 @@ class _TopZone extends StatelessWidget {
     required this.holeIndex,
     required this.courseModel,
     required this.highestScoredHoleIndex,
-    required this.navStripOpen,
+    required this.overlayOpen,
     required this.onHoleNumberTap,
+    required this.onOverlayClose,
     required this.onMapTapped,
   });
 
@@ -410,9 +413,10 @@ class _TopZone extends StatelessWidget {
               highestScoredHoleIndex: highestScoredHoleIndex,
               onHoleNumberTap: onHoleNumberTap,
             ),
-            HoleNavDrawer(
+            MiniScorecardOverlay(
               roundId: roundId,
-              isOpen: navStripOpen,
+              isOpen: overlayOpen,
+              onClose: onOverlayClose,
             ),
           ],
         ),
