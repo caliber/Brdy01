@@ -43,6 +43,18 @@
         <meta-data
             android:name="com.google.android.wearable.capabilities"
             android:resource="@array/android_wear_capabilities" />
+        <!-- Background score reception from Wear OS watch (phone in bag / app backgrounded) -->
+        <service
+            android:name=".WearDataBridgeService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <data
+                    android:scheme="wear"
+                    android:host="*"
+                    android:pathPrefix="/brdy/score/" />
+            </intent-filter>
+        </service>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
