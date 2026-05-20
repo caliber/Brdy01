@@ -97,7 +97,7 @@ class VoiceService {
       listenFor: const Duration(seconds: 10),
       pauseFor: const Duration(seconds: 2),
       localeId: 'en_AU', // Closest to NZ accent, better match than en_US
-      cancelOnError: false, // Don't cancel on no_match — keep trying
+      listenOptions: SpeechListenOptions(cancelOnError: false), // Don't cancel on no_match
     );
   }
 

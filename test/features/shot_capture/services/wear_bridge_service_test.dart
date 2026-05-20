@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:brdy01/features/shot_capture/services/wear_bridge_service.dart';
-import 'package:brdy01/features/shot_capture/services/wear_score_event.dart';
 import 'package:brdy01/domain/enums/hole_outcome.dart';
 
 void main() {

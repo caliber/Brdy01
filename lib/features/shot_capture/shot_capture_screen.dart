@@ -6,6 +6,7 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/local/database/app_database.dart';
@@ -25,7 +26,6 @@ import 'services/voice_service.dart';
 import 'services/wear_bridge_service.dart';
 import 'widgets/fairway_gir_toggles.dart';
 import 'widgets/hole_header.dart';
-import 'widgets/map_overlay_widget.dart';
 import 'widgets/mini_scorecard_overlay.dart';
 import 'widgets/outcome_button_grid.dart';
 
@@ -129,29 +129,45 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
       if (prev != next) _pushCurrentHoleState();
     });
 
+    final topHeight = MediaQuery.of(context).size.height * 0.36;
+
     return Scaffold(
       backgroundColor: BrdyColors.background,
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.36,
-              child: _TopZone(
-                roundId: roundId,
-                holeIndex: holeIndex,
-                courseModel: course,
-                highestScoredHoleIndex: highestIndex,
-                onHoleNumberTap: () =>
-                    setState(() => _overlayOpen = !_overlayOpen),
-                onMapTapped: _dropPinAtCurrentPosition,
+            // DisplayBK fills the entire dark top area (top zone + overlay + divider)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: topHeight + 133 + 1, // top zone + max overlay + divider
+              child: SvgPicture.asset(
+                'assets/images/DisplayBK.svg',
+                fit: BoxFit.fill,
               ),
             ),
-            MiniScorecardOverlay(
-              roundId: roundId,
-              isOpen: _overlayOpen,
-              onClose: () => setState(() => _overlayOpen = false),
-            ),
-            Container(height: 1, color: BrdyColors.divider),
+            // Main content column on top of the background
+            Column(
+              children: [
+                SizedBox(
+                  height: topHeight,
+                  child: _TopZone(
+                    roundId: roundId,
+                    holeIndex: holeIndex,
+                    courseModel: course,
+                    highestScoredHoleIndex: highestIndex,
+                    onHoleNumberTap: () =>
+                        setState(() => _overlayOpen = !_overlayOpen),
+                    onMapTapped: _dropPinAtCurrentPosition,
+                  ),
+                ),
+                MiniScorecardOverlay(
+                  roundId: roundId,
+                  isOpen: _overlayOpen,
+                  onClose: () => setState(() => _overlayOpen = false),
+                ),
+                Container(height: 1, color: BrdyColors.divider),
             Expanded(child: ClipRect(child: _BottomZone(
                 roundId: roundId,
                 holeIndex: holeIndex,
@@ -163,6 +179,8 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 onNextTapped: _handleNext,
                 onVoiceTapped: _voiceAvailable ? _toggleVoice : null,
               ))),
+          ],
+        ),
           ],
         ),
       ),
@@ -422,6 +440,7 @@ class _TopZone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      fit: StackFit.expand,
       children: [
         // GPS map overlay — disabled until Phase 5 GPS is re-enabled
         // Positioned.fill(

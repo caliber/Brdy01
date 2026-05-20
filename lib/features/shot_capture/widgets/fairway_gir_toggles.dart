@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
 import '../providers/hole_score_notifier.dart';
 import '../providers/voice_listening_provider.dart';
 
-/// Bottom toggle strip for fairway hit, GIR, and voice controls.
-///
-/// FAIRWAY toggle is absent from the widget tree (not hidden) when [holePar] == 3.
-/// VOICE toggle is always inactive in Phase 2 (placeholder for Phase 5).
+/// Bottom toggle strip: REG (left), FAIRWAY (par 4/5 only), VOICE (right).
 class FairwayGirToggles extends ConsumerWidget {
   final int roundId;
   final int holeIndex;
@@ -29,10 +27,8 @@ class FairwayGirToggles extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final holeStateAsync =
-        ref.watch(holeScoreNotifierProvider(roundId, holeIndex));
-    final holeState = holeStateAsync.valueOrNull;
-
+    final holeState =
+        ref.watch(holeScoreNotifierProvider(roundId, holeIndex)).valueOrNull;
     final bool? fairwayHit = holeState?.fairwayHit;
     final bool? gir = holeState?.greenInRegulation;
     final bool isListening = ref.watch(voiceListeningProvider);
@@ -40,7 +36,7 @@ class FairwayGirToggles extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Live partial text — shows what STT is hearing in real time
+        // Live STT partial text
         if (isListening || voicePartialText.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: BrdySpacing.xs),
@@ -57,246 +53,117 @@ class FairwayGirToggles extends ConsumerWidget {
             ),
           ),
         Row(
-      children: [
-        // FAIRWAY — hidden on par 3s but slot kept to preserve alignment
-        Expanded(
-          child: holePar != 3
-              ? _FairwayToggle(
-                  fairwayHit: fairwayHit,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    ref
-                        .read(holeScoreNotifierProvider(roundId, holeIndex)
-                            .notifier)
-                        .setFairwayHit(!(fairwayHit ?? false), par: holePar);
-                  },
-                )
-              : const SizedBox.shrink(),
-        ),
-        const SizedBox(width: BrdySpacing.sm),
-        // GIR
-        Expanded(
-          child: _GirToggle(
-            gir: gir,
-            onTap: () {
-              HapticFeedback.selectionClick();
-              ref
-                  .read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
-                  .setGir(!(gir ?? false), par: holePar);
-            },
-          ),
-        ),
-        const SizedBox(width: BrdySpacing.xs),
-        // Spacer — aligns with putts counter above
-        const Expanded(child: SizedBox.shrink()),
-        const SizedBox(width: BrdySpacing.xs),
-        // VOICE — aligns under NEXT button
-        Expanded(
-          child: _VoiceToggle(
-            isListening: isListening,
-            onTap: onVoiceTapped,
-          ),
+          children: [
+            // REG — flush left
+            _CtrlButton(
+              stateLabel: gir == true ? 'GREEN' : 'MISS',
+              typeLabel: 'REG',
+              isActive: gir == true,
+              semanticLabel: 'GREEN IN REGULATION — ${gir == true ? "on" : "off"}',
+              onTap: () {
+                HapticFeedback.selectionClick();
+                ref
+                    .read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
+                    .setGir(!(gir ?? false), par: holePar);
+              },
+            ),
+            // FAIRWAY — par 4/5 only
+            if (holePar != 3) ...[
+              const SizedBox(width: BrdySpacing.xs),
+              _CtrlButton(
+                stateLabel: fairwayHit == true ? 'HIT' : 'MISS',
+                typeLabel: 'FAIRWAY',
+                isActive: fairwayHit == true,
+                semanticLabel: 'FAIRWAY HIT — ${fairwayHit == true ? "hit" : "missed"}',
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  ref
+                      .read(holeScoreNotifierProvider(roundId, holeIndex).notifier)
+                      .setFairwayHit(!(fairwayHit ?? false), par: holePar);
+                },
+              ),
+            ],
+            const Spacer(),
+            // VOICE — flush right
+            _CtrlButton(
+              stateLabel: isListening ? 'ON' : 'OFF',
+              typeLabel: 'VOICE',
+              isActive: isListening,
+              semanticLabel: 'VOICE — ${isListening ? "listening" : "off"}',
+              onTap: onVoiceTapped,
+            ),
+          ],
         ),
       ],
-        ),
-      ],
     );
   }
 }
 
-// ── _FairwayToggle ─────────────────────────────────────────────────────────────
+// ── _CtrlButton ────────────────────────────────────────────────────────────────
 
-class _FairwayToggle extends StatelessWidget {
-  final bool? fairwayHit;
-  final VoidCallback onTap;
-
-  const _FairwayToggle({
-    required this.fairwayHit,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final bool isActive = fairwayHit == true;
-    final Color fill = isActive ? BrdyColors.accent : const Color(0xFFD0D0D0);
-    final Color labelColor =
-        isActive ? BrdyColors.onAccent : BrdyColors.background;
-
-    return Semantics(
-      label:
-          'FAIRWAY HIT — currently ${fairwayHit == true ? "hit" : "missed"}',
-      child: InkWell(
-        splashColor: Colors.black.withOpacity(0.08),
-        highlightColor: Colors.black.withOpacity(0.04),
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(4),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 48),
-          decoration: BoxDecoration(
-            color: fill,
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 3,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                isActive ? 'HIT' : 'MISS',
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: labelColor,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                'FAIRWAY',
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: BrdyColors.background,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ── _GirToggle ─────────────────────────────────────────────────────────────────
-
-class _GirToggle extends StatelessWidget {
-  final bool? gir;
-  final VoidCallback onTap;
-
-  const _GirToggle({
-    required this.gir,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final bool isActive = gir == true;
-    final Color fill =
-        isActive ? BrdyColors.background : const Color(0xFFD0D0D0);
-    final Color labelColor =
-        isActive ? BrdyColors.onSurface : BrdyColors.background;
-
-    return Semantics(
-      label:
-          'GREEN IN REGULATION — currently ${gir == true ? "on" : "off"}',
-      child: InkWell(
-        splashColor: Colors.black.withOpacity(0.08),
-        highlightColor: Colors.black.withOpacity(0.04),
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(4),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 48),
-          decoration: BoxDecoration(
-            color: fill,
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 3,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                isActive ? 'GREEN' : 'MISS',
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: labelColor,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                'REG',
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: BrdyColors.background,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ── _VoiceToggle ───────────────────────────────────────────────────────────────
-
-class _VoiceToggle extends StatelessWidget {
-  final bool isListening;
+class _CtrlButton extends StatelessWidget {
+  final String stateLabel;
+  final String typeLabel;
+  final bool isActive;
+  final String semanticLabel;
   final VoidCallback? onTap;
 
-  const _VoiceToggle({this.isListening = false, this.onTap});
+  const _CtrlButton({
+    required this.stateLabel,
+    required this.typeLabel,
+    required this.isActive,
+    required this.semanticLabel,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final Color fill = isListening ? BrdyColors.accent : const Color(0xFFD0D0D0);
-    final Color labelColor = isListening ? BrdyColors.onAccent : BrdyColors.background;
+    final svg = isActive
+        ? 'assets/images/buttonRightCntrlsOn.svg'
+        : 'assets/images/buttonRightCntrlsOff.svg';
 
     return Semantics(
-      label: 'VOICE — ${isListening ? "listening" : "off"}',
-      child: InkWell(
-        splashColor: Colors.black.withOpacity(0.08),
-        highlightColor: Colors.black.withOpacity(0.04),
+      label: semanticLabel,
+      child: GestureDetector(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(4),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 48),
-          decoration: BoxDecoration(
-            color: fill,
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 3,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        child: SizedBox(
+          width: 94,
+          height: 77,
+          child: Stack(
+            fit: StackFit.expand,
             children: [
-              Text(
-                isListening ? 'ON' : 'OFF',
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: labelColor,
+              SvgPicture.asset(svg, fit: BoxFit.fill),
+              // State text — top-centre
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    stateLabel,
+                    style: GoogleFonts.sometypeMono(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: BrdyColors.onSurface,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
-              Text(
-                'VOICE',
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: labelColor,
+              // Type label — bottom-centre
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    typeLabel,
+                    style: GoogleFonts.sometypeMono(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                      color: BrdyColors.background,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
             ],
           ),

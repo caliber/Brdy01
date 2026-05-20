@@ -40,7 +40,7 @@ class MiniScorecardOverlay extends ConsumerWidget {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
       height: isOpen ? 132 : 0,
-      color: BrdyColors.background.withOpacity(0.92),
+      color: BrdyColors.surface,
       child: isOpen ? _buildContent(ref, activeHoleIndex, highestScoredIndex, outcomeByHole, runningScore) : const SizedBox.shrink(),
     );
   }

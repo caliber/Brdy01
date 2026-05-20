@@ -135,7 +135,15 @@ class HoleHeader extends ConsumerWidget {
                     _pill(siLabel, fontSize: 11),
                   ],
                   const SizedBox(width: BrdySpacing.xs),
-                  _pill('HOLE ${holeIndex + 1}'),
+                  GestureDetector(
+                    onTap: onHoleNumberTap != null
+                        ? () {
+                            HapticFeedback.selectionClick();
+                            onHoleNumberTap!();
+                          }
+                        : null,
+                    child: _pill('HOLE ${holeIndex + 1}'),
+                  ),
                 ],
               ),
             ],
@@ -211,6 +219,7 @@ class HoleHeader extends ConsumerWidget {
                               color: BrdyColors.onSurface,
                             ),
                           )
+                              // Outcome tint flash
                               .animate(key: ValueKey(flashOutcome))
                               .tint(
                                 color: _outcomeFlashColor(flashOutcome),
@@ -265,7 +274,7 @@ class HoleHeader extends ConsumerWidget {
 
                   // SHOTS TAKEN total
                   Text(
-                    'SHOTS TAKEN $totalShots',
+                    'TOTAL SHOTS $totalShots',
                     style: GoogleFonts.sometypeMono(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
@@ -284,7 +293,7 @@ class HoleHeader extends ConsumerWidget {
 
   static Color _outcomeFlashColor(HoleOutcome? outcome) => switch (outcome) {
     HoleOutcome.eagle       => const Color(0xFFFFD700),
-    HoleOutcome.birdie      => BrdyColors.accent,
+    HoleOutcome.birdie      => const Color(0xFF22C55E),
     HoleOutcome.par         => const Color(0xFF1F82B4),
     HoleOutcome.bogey       => const Color(0xFFF3490E),
     HoleOutcome.doubleBogey => BrdyColors.destructive,
@@ -310,3 +319,7 @@ class HoleHeader extends ConsumerWidget {
     );
   }
 }
+
+// ── _HoleBlur ──────────────────────────────────────────────────────────────────
+// Blurs its child when holeIndex changes, then fully removes the filter at 0.
+

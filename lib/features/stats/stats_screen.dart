@@ -91,9 +91,7 @@ class StatsScreen extends ConsumerWidget {
                         ),
                         AverageStatCard(
                           label: 'Avg Putts',
-                          value: averages == null
-                              ? null
-                              : averages.avgPutts.toStringAsFixed(1),
+                          value: averages?.avgPutts.toStringAsFixed(1),
                         ),
                         AverageStatCard(
                           label: 'FIR %',

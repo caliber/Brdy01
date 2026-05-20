@@ -45,37 +45,6 @@ class ScorecardTable extends ConsumerWidget {
     );
   }
 
-  TableRow _buildHeaderRow() {
-    final style = GoogleFonts.sometypeMono(
-      fontSize: 12,
-      fontWeight: FontWeight.w700,
-      color: BrdyColors.onSurfaceMuted,
-    );
-
-    return TableRow(
-      decoration: const BoxDecoration(color: BrdyColors.surface),
-      children: [
-        _headerCell('HOLE', style, TextAlign.left),
-        _headerCell('PAR', style, TextAlign.center),
-        _headerCell('OUTCOME', style, TextAlign.center),
-        _headerCell('PUTTS', style, TextAlign.center),
-      ],
-    );
-  }
-
-  Widget _headerCell(String text, TextStyle style, TextAlign align) {
-    return SizedBox(
-      height: 36,
-      child: Align(
-        alignment: align == TextAlign.left ? Alignment.centerLeft : Alignment.center,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.xs),
-          child: Text(text, style: style, textAlign: align, softWrap: false, overflow: TextOverflow.clip),
-        ),
-      ),
-    );
-  }
-
   TableRow _buildHoleRow(HoleRow row) {
     // Alternate backgrounds: odd hole numbers get surface, even get background.
     final isOdd = row.holeNumber % 2 == 1;

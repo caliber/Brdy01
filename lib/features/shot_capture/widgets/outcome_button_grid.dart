@@ -50,7 +50,7 @@ class OutcomeButtonGrid extends ConsumerWidget {
     // Max putts = total shots for this hole (outcome must be set first).
     int? maxPutts;
     if (currentOutcome != null) {
-      final offset = switch (currentOutcome!) {
+      final offset = switch (currentOutcome) {
         HoleOutcome.eagle => -2,
         HoleOutcome.birdie => -1,
         HoleOutcome.par => 0,
@@ -557,11 +557,6 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
   @override
   Widget build(BuildContext context) {
     final bool isActiveAny = widget.isEagle || widget.isBirdie;
-    final Color fill = widget.isEagle
-        ? const Color(0xFFFFD700)
-        : widget.isBirdie
-            ? BrdyColors.accent
-            : BrdyColors.surface;
     final Color textColor = Colors.white;
     final String abbrev = widget.isEagle ? 'EGL' : 'BIR';
     final String label = widget.isEagle ? 'EAGLE' : 'BIRDY';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../theme/brdy_colors.dart';
 import '../providers/running_score_provider.dart';
 
 class ScoreBar extends ConsumerWidget {
