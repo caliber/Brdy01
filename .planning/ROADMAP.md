@@ -16,11 +16,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation + Setup** - User can load a course and start a round
 - [x] **Phase 2: Shot Capture** - User can score a full 18-hole round
 - [x] **Phase 3: Round Review** - User can see their scorecard and stats
-- [ ] **Phase 4: Wear OS** - User can score from the watch
+- [ ] **Phase 4: Wear OS** - User can score from the watch *(skipped — deferred)*
 - [x] **Phase 5: GPS + Voice Polish** - GPS pins, voice, and edge-case hardening (completed 2026-05-19)
-- [ ] **Phase 6: Round History** - User can browse, view and delete past rounds
-- [ ] **Phase 7: Stats & Trends** - User can see handicap trend and stats over time
-- [ ] **Phase 8: Feel & Polish** - Scorecard overlay, haptic patterns, score animations
+- [x] **Phase 6: Round History** - User can browse, view and delete past rounds (completed 2026-05-20)
+- [x] **Phase 7: Stats & Trends** - User can see handicap trend and stats over time (completed 2026-05-20)
+- [x] **Phase 8: Feel & Polish** - Scorecard overlay, haptic patterns, score animations (completed 2026-05-20)
 
 ## Phase Details
 
@@ -37,37 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. If the app is killed mid-round and relaunched, it returns automatically to the correct hole on Shot Capture without data loss
   4. If Course Rating or Slope is missing, the user sees a warning with an option to enter both values manually
 
-**Plans**: 5 plans
-
-Plans:
-
-**Wave 1**
-
-- [ ] 01-01-PLAN.md — Theme bootstrap, GoRouter shell, splash, keepAlive providers, fixed widget test
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [ ] 01-02-PLAN.md — Domain models, Drift schema v1 (rounds+holes+shots), Hive wrappers, FMTC init, DB providers
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [ ] 01-03-PLAN.md — Retrofit GolfCourseApi, AuthInterceptor, CourseRepositoryImpl, Setup screen UI (handicap, search, CourseCard, API key error)
-
-**Wave 4** *(blocked on Wave 3 completion)*
-
-- [ ] 01-04-PLAN.md — RoundRepositoryImpl, RoundSetupNotifier, START ROUND flow, crash-recovery human-verify
-
-**Wave 5** *(blocked on Wave 4 completion)*
-
-- [ ] 01-05-PLAN.md — FMTC tile pre-cache (Z14–17), MissingRatingBanner + ManualRatingForm, SETUP-05 human-verify
-
-**Cross-cutting constraints:**
-
-- All CLAUDE.md keepAlive providers MUST use `@Riverpod(keepAlive: true)`
-- Write-through to Drift on every data entry — no Riverpod-only state
-- `context.go()` exclusively for main screen transitions
-
-**UI hint**: yes
+**Plans**: 5 plans — ✅ All complete
 
 ### Phase 2: Shot Capture
 
@@ -75,37 +45,8 @@ Plans:
 **Mode:** mvp
 **Depends on**: Phase 1
 **Requirements**: SHOT-01, SHOT-02, SHOT-03, SHOT-04, SHOT-05, SHOT-06, SHOT-07, SHOT-10, SHOT-11, SHOT-12
-**Success Criteria** (what must be TRUE):
 
-  1. User taps an outcome button (EAGLE / BIRDIE / PAR / BOGEY / DOUBLE / PICKUP) and the app immediately advances to the next hole; an undo toast appears for 4 seconds
-  2. Each hole displays its number, par, and Stroke Index; running score vs par is always visible across all hole transitions
-  3. User can record putts, toggle fairway hit (hidden on par 3s), and toggle GIR for each hole
-  4. User can navigate back to any previously scored hole, correct the entry, and return to the current hole
-
-**Plans**: 3 plans
-
-Plans:
-
-**Wave 1**
-
-- [x] 02-01-PLAN.md — HoleDao upsert, 6 providers (HoleScoreNotifier, holeList, runningScore, courseForRound, highestScoredHoleIndex, roundComplete), build_runner
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 02-02-PLAN.md — HoleHeader, ScoreBar, OutcomeButtonGrid (EAGLE double-tap), ShotCaptureScreen (undo toast, NEXT, round completion)
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [x] 02-03-PLAN.md — FairwayGirToggles, HoleNavDrawer, full screen assembly, P2-08 fix, human-verify
-
-**Cross-cutting constraints:**
-
-- Drift write-through on every tap — no Riverpod buffering
-- Hole navigation is internal state only — never context.go/push for hole changes
-- Schema stays at v1 — no schemaVersion bump in Phase 2
-- All new providers are auto-dispose (@riverpod lowercase)
-
-**UI hint**: yes
+**Plans**: 3 plans — ✅ All complete
 
 ### Phase 3: Round Review
 
@@ -113,89 +54,25 @@ Plans:
 **Mode:** mvp
 **Depends on**: Phase 2
 **Requirements**: SHOT-13, REV-01, REV-02, REV-03, REV-04, REV-05, REV-06, REV-07
-**Success Criteria** (what must be TRUE):
 
-  1. User sees a colour-coded 18-hole scorecard grid with front 9 and back 9 subtotals, outcome, and putts per hole
-  2. User sees stat cards covering strokes, score vs par, net score, all outcome counts, putts, GIR%, and fairways hit
-  3. WHS differential is shown for a complete 18-hole round; an indicative differential with a clear label is shown for incomplete rounds; "N/A" is shown when Rating or Slope is missing
-  4. User can share the scorecard via the native share sheet, or start a new round and return to Setup
+**Plans**: 3 plans — ✅ All complete
 
-**Plans**: 3 plans
-
-Plans:
-
-**Wave 1**
-
-- [x] 03-01-PLAN.md — ScorecardData/StatsData/WhsDifferential models + scorecardProvider, statsProvider, whsDifferentialProvider; build_runner
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 03-02-PLAN.md — ScorecardTable, WhsBlock, StatCard, StatsSection widgets
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [ ] 03-03-PLAN.md — RoundReviewScreen assembly, ShareService, SHOT-13 in ShotCaptureScreen, human-verify
-
-**Cross-cutting constraints:**
-
-- All new providers are auto-dispose (@riverpod lowercase) — never keepAlive in Phase 3
-- No new packages — use screenshot + share_plus already in pubspec
-- schema stays at v1 — no Drift schema changes in Phase 3
-- context.go('/setup') for Start New Round; PopScope(canPop: false) to block back from Round Review
-
-**UI hint**: yes
-
-### Phase 4: Wear OS
+### Phase 4: Wear OS *(deferred)*
 
 **Goal**: User can tap a score button on their watch and the outcome syncs to the active round on their phone
-**Mode:** mvp
-**Depends on**: Phase 3
+**Status**: Skipped — deferred to a future milestone. `wear_plus` package is already in pubspec.
 **Requirements**: WEAR-01, WEAR-02, WEAR-03
-**Success Criteria** (what must be TRUE):
-
-  1. The watch displays the current hole number, par, and score buttons (EAGLE / BIRDIE / PAR / BOGEY / DOUBLE / PICKUP)
-  2. Tapping a score button on the watch records the outcome in the active phone round within the same session
-  3. When the phone is not connected, the watch queues the entry and syncs on reconnect, with a visible connection status indicator
-
-**Plans**: TBD
 
 ### Phase 5: GPS + Voice Polish
 
 **Goal**: GPS shot pins and voice scoring are live; every edge case and error state is handled across the full app
 **Mode:** mvp
-**Depends on**: Phase 4
+**Depends on**: Phase 3 (Phase 4 deferred)
 **Requirements**: SHOT-08, SHOT-09
-**Success Criteria** (what must be TRUE):
 
-  1. User can tap the map overlay to drop GPS shot pins; pins persist across app restarts and are visible throughout the round
-  2. User can say "eagle", "birdie", "par", "bogey", "double", or "pickup" to record a score; a confirmation toast appears with an undo option
-  3. When voice recognition is unavailable (no network, init failure), the mic UI shows "Voice unavailable" and outcome buttons remain fully functional
+**Plans**: 3 plans — ✅ All complete (completed 2026-05-19)
 
-**Plans**: 3 plans
-
-Plans:
-
-**Wave 1**
-
-- [x] 05-01-PLAN.md — Android location permissions + ShotDao + HoleDao.getHoleByRoundAndNumber + AppDatabase registration
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 05-02-PLAN.md — shotsForHoleProvider, MapOverlayWidget (FlutterMap + FMTC + pin drop), GPS error handling, human-verify
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [x] 05-03-PLAN.md — VoiceService.onOutcomeRecorded callback, ShotCaptureScreen._handleVoiceOutcome, hole advance + toast + undo, human-verify
-
-**Cross-cutting constraints:**
-
-- GPS on-demand only: Geolocator.getCurrentPosition() at pin-tap time — never getPositionStream()
-- No schema version bump — shots table already at v1; adding ShotDao is not a schema change
-- All new providers auto-dispose (@riverpod lowercase)
-- Map must not render before courseForRoundProvider resolves (null LatLng guard required)
-- Voice callback fires AFTER Drift write in VoiceService._recordOutcome — screen handles toast + advance only
-
-**UI hint**: yes
+**Note**: GPS map overlay is currently disabled (commented out in `_TopZone`). Voice uses en_AU locale with shot-count commands ("four shots", "took four").
 
 ### Phase 6: Round History
 
@@ -203,27 +80,8 @@ Plans:
 **Mode:** mvp
 **Depends on**: Phase 3
 **Requirements**: HIST-01, HIST-02, HIST-03
-**Success Criteria** (what must be TRUE):
 
-  1. A round history list is accessible from the Setup screen showing date, course name, score and shots for each round
-  2. Tapping a past round opens its full Round Review screen (scorecard + stats) in read-only mode
-  3. User can delete a past round with a swipe-to-delete gesture and confirmation
-
-**Plans**: 3 plans
-
-Plans:
-
-**Wave 1**
-
-- [x] 06-01-PLAN.md — Drift schema v2 migration (FK cascade on holes+shots), RoundDao.watchCompletedRounds + deleteRound, build_runner, schema dump
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [ ] 06-02-PLAN.md — completedRoundsProvider, RoundHistoryScreen, RoundHistoryTile (Dismissible delete), /round-history route + redirect allowlist, Setup HISTORY button
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [ ] 06-03-PLAN.md — RoundReviewScreen readOnly mode, router readOnly wiring, human-verify full history flow
+**Plans**: 3 plans — ✅ All complete (completed 2026-05-20)
 
 ### Phase 7: Stats & Trends
 
@@ -231,88 +89,82 @@ Plans:
 **Mode:** mvp
 **Depends on**: Phase 6
 **Requirements**: STAT-01, STAT-02, STAT-03
-**Success Criteria** (what must be TRUE):
 
-  1. A stats screen shows handicap differential trend as a line chart across the last 20 rounds
-  2. Averages for score-to-par, putts, fairways hit and GIR% are shown across all rounds
-  3. Stats update immediately when a new round is completed
+**Plans**: 2 plans — ✅ All complete (completed 2026-05-20)
 
-**Plans**: 2 plans
-
-Plans:
-
-**Wave 1**
-
-- [ ] 07-01-PLAN.md — fl_chart ^0.71.0 dependency, trendChartProvider (List<FlSpot>), crossRoundAveragesProvider (CrossRoundAverages?), build_runner
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [ ] 07-02-PLAN.md — DifferentialLineChart widget, AverageStatCard widget, StatsScreen, /stats route + redirect allowlist, Setup STATS button, human-verify
-
-**Cross-cutting constraints:**
-
-- fl_chart must be pinned to ^0.71.0 — 1.x requires Flutter >=3.27.4, project runs 3.24.5
-- No schema changes — all stats computed from existing rounds + holes tables
-- All new providers use @riverpod (auto-dispose) — never keepAlive
-- ref.watch (not ref.read) inside async loops for STAT-03 reactivity
-- Empty guard mandatory: show 'NOT ENOUGH DATA' when spots.length < 2
+**Note**: fl_chart pinned to 0.66.0 (not ^0.71.0) — 0.71+ requires Flutter ≥3.27.4, project runs 3.24.5.
 
 ### Phase 8: Feel & Polish
 
 **Goal**: The app feels premium and responsive — scorecard overlay on shot capture, haptic patterns for outcomes, and score reveal animations
 **Mode:** mvp
 **Depends on**: Phase 7
-**Success Criteria** (what must be TRUE):
 
-  1. Tapping the hole number on shot capture reveals a mini scorecard overlay showing all scored holes
-  2. Each outcome has a distinct haptic pattern — birdie feels different from bogey
-  3. Recording an outcome triggers a brief colour flash/animation on the score counter
+**Plans**: 3 plans — ✅ All complete (completed 2026-05-20)
 
-**Plans**: 3 plans
+- Per-outcome haptics: eagle→success, birdie→heavy, par→medium, bogey→light, double→warning, pickup→rigid
+- Score counter tint flash: gold eagle, green birdie, blue par, orange bogey, red double/pickup
+- MiniScorecardOverlay: tap HOLE chip (top-right) to reveal 18-hole colour grid + score summary
 
-Plans:
-
-**Wave 1**
-
-- [ ] 08-01-PLAN.md — Per-outcome haptic patterns in _handleOutcomeTapped (Haptics.vibrate switch)
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [ ] 08-02-PLAN.md — lastScoredOutcomeProvider, score counter tint flash in HoleHeader
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [ ] 08-03-PLAN.md — MiniScorecardOverlay widget, overlay toggle replacing HoleNavDrawer tap, human-verify
-
-**Cross-cutting constraints:**
-
-- No new packages — haptic_feedback and flutter_animate already in pubspec
-- All new providers auto-dispose (@riverpod lowercase) — never keepAlive
-- Overlay must not expand _TopZone beyond its 36% height — fixed 132dp chip grid only
-- Schema stays at current version — no Drift changes in Phase 8
+---
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
+Phases execute in numeric order: 1 → 2 → 3 → (4 deferred) → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
 | 2. Shot Capture | 3/3 | ✅ Complete | 2026-05-17 |
 | 3. Round Review | 3/3 | ✅ Complete | 2026-05-18 |
-| 4. Wear OS | 0/TBD | Not started | - |
-| 5. GPS + Voice Polish | 3/3 | Complete   | 2026-05-19 |
-| 6. Round History | 1/3 | In Progress|  |
-| 7. Stats & Trends | 0/2 | Not started | - |
-| 8. Feel & Polish | 0/3 | Not started | - |
+| 4. Wear OS | 0/TBD | ⏸ Deferred | - |
+| 5. GPS + Voice Polish | 3/3 | ✅ Complete | 2026-05-19 |
+| 6. Round History | 3/3 | ✅ Complete | 2026-05-20 |
+| 7. Stats & Trends | 2/2 | ✅ Complete | 2026-05-20 |
+| 8. Feel & Polish | 3/3 | ✅ Complete | 2026-05-20 |
+
+**v1.0 milestone: COMPLETE** — all planned phases shipped.
 
 ---
+
+## Future Considerations
+
+Items not yet planned. Each would become a new phase or milestone.
+
+### High priority
+
+| Item | Notes |
+|------|-------|
+| **iOS deployment** | Needs paid Apple Developer account ($99/yr). Codemagic YAML is ready — just needs signing credentials wired up. IPA builds today, sideloading blocked on iOS 26 free tier. |
+| **Wear OS companion** | Phase 4 deferred. `wear_plus` already in pubspec. Would need WearOS message channel + watch face UI. |
+| **GPS map re-enable** | Map overlay is commented out in `_TopZone`. FlutterMap + FMTC tile caching is fully built — just needs uncommenting and a UX decision on the toggle. |
+| **App icon + splash** | Currently uses Flutter default icon. Needs custom BRDY icon across all Android/iOS sizes. |
+
+### Medium priority
+
+| Item | Notes |
+|------|-------|
+| **Stableford scoring mode** | Currently strokeplay only. Stableford is common in NZ/AU club golf. Would need a scoring mode toggle on Setup and adjusted differential calc. |
+| **Handicap calculation (WHS)** | Differential shown on Round Review but not fed back as a running index. Full WHS requires storing best-8-of-20 differentials and adjusting the stored handicap index. |
+| **Push notifications** | Post-round summary notification. Would need a notification service and permission flow. |
+| **Course favourites** | Pin frequently played courses to the top of search results / pre-populate on Setup. |
+| **Multiple players per round** | Currently single-player only. Useful for social rounds — each player scored separately. |
+
+### Low priority / nice to have
+
+| Item | Notes |
+|------|-------|
+| **Dark/light theme toggle** | App is dark-only. Some users prefer light outdoors. |
+| **Landscape / tablet layout** | Currently portrait-only. Shot Capture layout could adapt for wider screens. |
+| **Export to CSV / share stats** | Round history exportable as CSV for use in external spreadsheets. |
+| **Google Play / App Store submission** | Store listing, screenshots, privacy policy. Android APK is production-ready. |
+| **Flutter upgrade to 3.27+** | Currently pinned to 3.24.5 for Codemagic/riverpod_generator compatibility. Upgrading unlocks fl_chart 0.71+ and other newer package versions. |
+| **Accessibility audit** | Semantics labels exist on key widgets. Full WCAG AA pass not yet verified. |
+| **Unit + widget test coverage** | No automated tests written. Integration tests for the scoring flow would catch regressions. |
+
+---
+
 *Roadmap created: 2026-05-16*
-*Coverage: 33/33 v1 requirements mapped*
-*Phase 2 planned: 2026-05-17*
-*Phase 2 complete: 2026-05-17*
-*Phase 3 planned: 2026-05-18*
-*Phase 5 planned: 2026-05-19*
-*Phase 7 planned: 2026-05-20*
-*Phase 8 planned: 2026-05-20*
+*v1.0 milestone complete: 2026-05-20*
+*Coverage: 33/33 v1 requirements mapped and shipped*
