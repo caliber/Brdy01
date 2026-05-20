@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
@@ -261,7 +262,14 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
     // Store BEFORE the Drift write — captures correct pre-advance index
     setState(() => _lastScoredHoleIndex = holeIndex);
 
-    await HapticFeedback.mediumImpact();
+    await Haptics.vibrate(switch (outcome) {
+      HoleOutcome.eagle       => HapticsType.success,
+      HoleOutcome.birdie      => HapticsType.heavy,
+      HoleOutcome.par         => HapticsType.medium,
+      HoleOutcome.bogey       => HapticsType.light,
+      HoleOutcome.doubleBogey => HapticsType.warning,
+      HoleOutcome.pickup      => HapticsType.rigid,
+    });
     await ref
         .read(holeScoreNotifierProvider(widget.roundId, holeIndex).notifier)
         .recordOutcome(outcome: outcome, par: par, strokeIndex: si);
