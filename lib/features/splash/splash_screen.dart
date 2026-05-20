@@ -7,12 +7,12 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BrdyColors.background,
+      backgroundColor: context.brdyColors.background,
       body: Center(
         child: Text(
           'BRDY.01',
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: BrdyColors.onSurface,
+                color: context.brdyColors.onSurface,
               ),
         ),
       ),

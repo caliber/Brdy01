@@ -25,7 +25,7 @@ class StatCard extends StatelessWidget {
         vertical: BrdySpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: BrdyColors.surface,
+        color: context.brdyColors.surface,
         borderRadius: BorderRadius.circular(4),
       ),
       child: Column(
@@ -37,7 +37,7 @@ class StatCard extends StatelessWidget {
             style: GoogleFonts.sometypeMono(
               fontSize: 11,
               fontWeight: FontWeight.w700,
-              color: BrdyColors.onSurfaceMuted,
+              color: context.brdyColors.onSurfaceMuted,
               letterSpacing: 1.2,
             ),
           ),
@@ -47,7 +47,7 @@ class StatCard extends StatelessWidget {
             style: GoogleFonts.sometypeMono(
               fontSize: 48,
               fontWeight: FontWeight.w700,
-              color: BrdyColors.onSurface,
+              color: context.brdyColors.onSurface,
               height: 1.0,
             ),
           ),

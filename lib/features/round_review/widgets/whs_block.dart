@@ -25,7 +25,7 @@ class WhsBlock extends ConsumerWidget {
         style: GoogleFonts.sometypeMono(
           fontSize: 12,
           fontWeight: FontWeight.w700,
-          color: BrdyColors.onSurfaceMuted,
+          color: context.brdyColors.onSurfaceMuted,
         ),
       );
     }
@@ -39,7 +39,7 @@ class WhsBlock extends ConsumerWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(BrdySpacing.md),
       decoration: BoxDecoration(
-        color: BrdyColors.surface,
+        color: context.brdyColors.surface,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -51,7 +51,7 @@ class WhsBlock extends ConsumerWidget {
             style: GoogleFonts.sometypeMono(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: BrdyColors.onSurfaceMuted,
+              color: context.brdyColors.onSurfaceMuted,
               letterSpacing: 1.5,
             ),
           ),
@@ -62,7 +62,7 @@ class WhsBlock extends ConsumerWidget {
             style: GoogleFonts.sometypeMono(
               fontSize: 48,
               fontWeight: FontWeight.w700,
-              color: BrdyColors.onSurface,
+              color: context.brdyColors.onSurface,
             ),
           ),
           // Row 3 (conditional): indicative label
@@ -72,7 +72,7 @@ class WhsBlock extends ConsumerWidget {
               whs.indicativeLabel!,
               style: GoogleFonts.sometypeMono(
                 fontSize: 11,
-                color: BrdyColors.onSurfaceMuted,
+                color: context.brdyColors.onSurfaceMuted,
               ),
             ),
           ],

@@ -18,7 +18,7 @@ class DifferentialLineChart extends StatelessWidget {
           child: Text(
             'NOT ENOUGH DATA',
             style: GoogleFonts.sometypeMono(
-              color: BrdyColors.onSurfaceMuted,
+              color: context.brdyColors.onSurfaceMuted,
               fontSize: 13,
             ),
           ),
@@ -30,12 +30,12 @@ class DifferentialLineChart extends StatelessWidget {
       height: 200,
       child: LineChart(
         LineChartData(
-          backgroundColor: BrdyColors.background,
+          backgroundColor: context.brdyColors.background,
           gridData: FlGridData(
             show: true,
             drawVerticalLine: false,
             getDrawingHorizontalLine: (_) => FlLine(
-              color: BrdyColors.divider,
+              color: context.brdyColors.divider,
               strokeWidth: 1,
             ),
           ),
@@ -59,7 +59,7 @@ class DifferentialLineChart extends StatelessWidget {
                     value.toStringAsFixed(1),
                     style: GoogleFonts.sometypeMono(
                       fontSize: 10,
-                      color: BrdyColors.onSurfaceMuted,
+                      color: context.brdyColors.onSurfaceMuted,
                     ),
                   );
                 },
@@ -70,21 +70,21 @@ class DifferentialLineChart extends StatelessWidget {
             LineChartBarData(
               spots: spots,
               isCurved: false,
-              color: BrdyColors.accent,
+              color: context.brdyColors.accent,
               barWidth: 2,
               dotData: FlDotData(
                 show: true,
                 getDotPainter: (spot, percent, barData, index) =>
                     FlDotCirclePainter(
                   radius: 3,
-                  color: BrdyColors.accent,
-                  strokeColor: BrdyColors.background,
+                  color: context.brdyColors.accent,
+                  strokeColor: context.brdyColors.background,
                   strokeWidth: 1.5,
                 ),
               ),
               belowBarData: BarAreaData(
                 show: true,
-                color: BrdyColors.accent.withOpacity(0.08),
+                color: context.brdyColors.accent.withOpacity(0.08),
               ),
             ),
           ],

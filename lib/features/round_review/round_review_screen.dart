@@ -37,7 +37,7 @@ class _RoundReviewScreenState extends ConsumerState<RoundReviewScreen> {
     return PopScope(
       canPop: widget.readOnly,
       child: Scaffold(
-        backgroundColor: BrdyColors.background,
+        backgroundColor: context.brdyColors.background,
         body: SafeArea(
           child: CustomScrollView(
             slivers: [
@@ -97,12 +97,12 @@ class _ScorecardHeaderDelegate extends SliverPersistentHeaderDelegate {
     final style = GoogleFonts.sometypeMono(
       fontSize: 12,
       fontWeight: FontWeight.w700,
-      color: BrdyColors.onSurfaceMuted,
+      color: context.brdyColors.onSurfaceMuted,
     );
 
     return Container(
       height: _height,
-      color: BrdyColors.surface,
+      color: context.brdyColors.surface,
       child: Table(
         columnWidths: const {
           0: FixedColumnWidth(48), // HOLE
@@ -161,17 +161,17 @@ class _ActionButtons extends StatelessWidget {
         children: [
           ElevatedButton.icon(
             onPressed: onShare,
-            icon: const Icon(Icons.share_outlined, color: BrdyColors.onAccent),
+            icon: Icon(Icons.share_outlined, color: context.brdyColors.onAccent),
             label: Text(
               'SHARE SCORECARD',
               style: GoogleFonts.sometypeMono(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: BrdyColors.onAccent,
+                color: context.brdyColors.onAccent,
               ),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: BrdyColors.accent,
+              backgroundColor: context.brdyColors.accent,
               minimumSize: const Size.fromHeight(52),
             ),
           ),
@@ -179,7 +179,7 @@ class _ActionButtons extends StatelessWidget {
           OutlinedButton(
             onPressed: onStartNewRound,
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: BrdyColors.divider),
+              side: BorderSide(color: context.brdyColors.divider),
               minimumSize: const Size.fromHeight(52),
             ),
             child: Text(
@@ -187,7 +187,7 @@ class _ActionButtons extends StatelessWidget {
               style: GoogleFonts.sometypeMono(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: BrdyColors.onSurface,
+                color: context.brdyColors.onSurface,
               ),
             ),
           ),
@@ -212,7 +212,7 @@ class _BackButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: () => Navigator.of(context).pop(),
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: BrdyColors.divider),
+          side: BorderSide(color: context.brdyColors.divider),
           minimumSize: const Size.fromHeight(52),
         ),
         child: Text(
@@ -220,7 +220,7 @@ class _BackButton extends StatelessWidget {
           style: GoogleFonts.sometypeMono(
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: BrdyColors.onSurface,
+            color: context.brdyColors.onSurface,
           ),
         ),
       ),

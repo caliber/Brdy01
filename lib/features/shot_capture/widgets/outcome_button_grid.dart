@@ -288,7 +288,7 @@ class _ButtonColumnState extends State<_ButtonColumn> {
                             fontWeight: FontWeight.w700,
                             color: widget.isActive
                                 ? widget.activeTextColor
-                                : BrdyColors.onSurface,
+                                : context.brdyColors.onSurface,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -341,10 +341,10 @@ class _PuttsCounter extends StatelessWidget {
               height: 6,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: count > 0 ? BrdyColors.onSurface : Colors.transparent,
+                color: count > 0 ? context.brdyColors.onSurface : Colors.transparent,
                 border: count > 0
                     ? null
-                    : Border.all(color: BrdyColors.onSurfaceMuted, width: 1),
+                    : Border.all(color: context.brdyColors.onSurfaceMuted, width: 1),
               ),
             ),
             const SizedBox(width: 4),
@@ -362,7 +362,7 @@ class _PuttsCounter extends StatelessWidget {
         Container(
           height: 76,
           decoration: BoxDecoration(
-            color: BrdyColors.surface,
+            color: context.brdyColors.surface,
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
@@ -387,8 +387,8 @@ class _PuttsCounter extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: onSub != null
-                          ? BrdyColors.onSurface
-                          : BrdyColors.onSurfaceMuted,
+                          ? context.brdyColors.onSurface
+                          : context.brdyColors.onSurfaceMuted,
                     ),
                   ),
                 ),
@@ -399,7 +399,7 @@ class _PuttsCounter extends StatelessWidget {
                 style: GoogleFonts.sometypeMono(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                  color: BrdyColors.onSurface,
+                  color: context.brdyColors.onSurface,
                 ),
               ),
               // ADD
@@ -413,7 +413,7 @@ class _PuttsCounter extends StatelessWidget {
                     style: GoogleFonts.sometypeMono(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
-                      color: BrdyColors.onSurface,
+                      color: context.brdyColors.onSurface,
                     ),
                   ),
                 ),
@@ -470,7 +470,7 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.transparent,
-            border: Border.all(color: BrdyColors.onSurfaceMuted, width: 1),
+            border: Border.all(color: context.brdyColors.onSurfaceMuted, width: 1),
           ),
         ),
         const SizedBox(height: BrdySpacing.xs),
@@ -493,7 +493,7 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
               constraints:
                   const BoxConstraints(minWidth: 64, minHeight: 80),
               decoration: BoxDecoration(
-                color: BrdyColors.surface,
+                color: context.brdyColors.surface,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -511,8 +511,8 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: widget.isEnabled
-                      ? BrdyColors.onSurface
-                      : BrdyColors.onSurfaceMuted,
+                      ? context.brdyColors.onSurface
+                      : context.brdyColors.onSurfaceMuted,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -561,7 +561,7 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
     final String abbrev = widget.isEagle ? 'EGL' : 'BIR';
     final String label = widget.isEagle ? 'EAGLE' : 'BIRDY';
     final Color dotColor =
-        widget.isEagle ? const Color(0xFFFFD700) : BrdyColors.accent;
+        widget.isEagle ? const Color(0xFFFFD700) : context.brdyColors.accent;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -685,10 +685,10 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
               height: 6,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: widget.hasOutcome ? BrdyColors.accent : Colors.transparent,
+                color: widget.hasOutcome ? context.brdyColors.accent : Colors.transparent,
                 border: widget.hasOutcome
                     ? null
-                    : Border.all(color: BrdyColors.accent, width: 1),
+                    : Border.all(color: context.brdyColors.accent, width: 1),
               ),
             ),
             const SizedBox(width: 4),

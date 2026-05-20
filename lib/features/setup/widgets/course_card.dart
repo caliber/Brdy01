@@ -27,8 +27,8 @@ class _CourseCardState extends ConsumerState<CourseCard> {
 
             return Container(
               decoration: BoxDecoration(
-                color: BrdyColors.surface,
-                border: Border.all(color: BrdyColors.accent, width: 1),
+                color: context.brdyColors.surface,
+                border: Border.all(color: context.brdyColors.accent, width: 1),
               ),
               padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md, vertical: BrdySpacing.sm),
               child: Column(
@@ -37,13 +37,13 @@ class _CourseCardState extends ConsumerState<CourseCard> {
                   Text(
                     course.courseName.toUpperCase(),
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: BrdyColors.accent,
+                          color: context.brdyColors.accent,
                         ),
                   ),
                   Text(
                     'PAR ${course.par}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: BrdyColors.onSurfaceMuted,
+                          color: context.brdyColors.onSurfaceMuted,
                         ),
                   ),
                   const SizedBox(height: BrdySpacing.xs),
@@ -58,7 +58,7 @@ class _CourseCardState extends ConsumerState<CourseCard> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
-                                  ?.copyWith(color: BrdyColors.onSurfaceMuted),
+                                  ?.copyWith(color: context.brdyColors.onSurfaceMuted),
                             ),
                             Text(
                               course.courseRating?.toStringAsFixed(1) ?? 'N/A',
@@ -76,7 +76,7 @@ class _CourseCardState extends ConsumerState<CourseCard> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
-                                  ?.copyWith(color: BrdyColors.onSurfaceMuted),
+                                  ?.copyWith(color: context.brdyColors.onSurfaceMuted),
                             ),
                             Text(
                               course.slope?.toString() ?? 'N/A',
@@ -108,7 +108,7 @@ class _CourseCardState extends ConsumerState<CourseCard> {
                     child: Text(
                       'change course',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: BrdyColors.onSurfaceMuted,
+                            color: context.brdyColors.onSurfaceMuted,
                             decoration: TextDecoration.underline,
                           ),
                     ),

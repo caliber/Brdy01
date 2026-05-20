@@ -22,7 +22,7 @@ class StatsScreen extends ConsumerWidget {
           style: GoogleFonts.sometypeMono(fontWeight: FontWeight.w700),
         ),
         backgroundColor: Colors.black,
-        foregroundColor: BrdyColors.onSurface,
+        foregroundColor: context.brdyColors.onSurface,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -35,7 +35,7 @@ class StatsScreen extends ConsumerWidget {
                 'HANDICAP TREND',
                 style: GoogleFonts.sometypeMono(
                   fontSize: 12,
-                  color: BrdyColors.onSurfaceMuted,
+                  color: context.brdyColors.onSurfaceMuted,
                 ),
               ),
               const Gap(BrdySpacing.sm),
@@ -44,7 +44,7 @@ class StatsScreen extends ConsumerWidget {
                       height: 200,
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: BrdyColors.accent,
+                          color: context.brdyColors.accent,
                         ),
                       ),
                     ),
@@ -54,7 +54,7 @@ class StatsScreen extends ConsumerWidget {
                         child: Text(
                           '—',
                           style: GoogleFonts.sometypeMono(
-                            color: BrdyColors.onSurfaceMuted,
+                            color: context.brdyColors.onSurfaceMuted,
                           ),
                         ),
                       ),
@@ -66,7 +66,7 @@ class StatsScreen extends ConsumerWidget {
                 'AVERAGES — ALL ROUNDS',
                 style: GoogleFonts.sometypeMono(
                   fontSize: 12,
-                  color: BrdyColors.onSurfaceMuted,
+                  color: context.brdyColors.onSurfaceMuted,
                 ),
               ),
               const Gap(BrdySpacing.sm),

@@ -132,7 +132,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
     final topHeight = MediaQuery.of(context).size.height * 0.36;
 
     return Scaffold(
-      backgroundColor: BrdyColors.background,
+      backgroundColor: context.brdyColors.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -167,7 +167,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                   isOpen: _overlayOpen,
                   onClose: () => setState(() => _overlayOpen = false),
                 ),
-                Container(height: 1, color: BrdyColors.divider),
+                Container(height: 1, color: context.brdyColors.divider),
             Expanded(child: ClipRect(child: _BottomZone(
                 roundId: roundId,
                 holeIndex: holeIndex,
@@ -207,10 +207,10 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 fontFamily: 'SometypeMono',
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: BrdyColors.accent,
+                color: context.brdyColors.accent,
               ),
             ),
-            backgroundColor: BrdyColors.surface,
+            backgroundColor: context.brdyColors.surface,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -239,10 +239,10 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 fontFamily: 'SometypeMono',
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: BrdyColors.accent,
+                color: context.brdyColors.accent,
               ),
             ),
-            backgroundColor: BrdyColors.surface,
+            backgroundColor: context.brdyColors.surface,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -259,10 +259,10 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 fontFamily: 'SometypeMono',
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: BrdyColors.accent,
+                color: context.brdyColors.accent,
               ),
             ),
-            backgroundColor: BrdyColors.surface,
+            backgroundColor: context.brdyColors.surface,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -389,17 +389,17 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
             style: GoogleFonts.sometypeMono(
               fontSize: 14,
               fontWeight: FontWeight.w400,
-              color: BrdyColors.onSurface,
+              color: context.brdyColors.onSurface,
             ),
           ),
-          backgroundColor: BrdyColors.surface,
+          backgroundColor: context.brdyColors.surface,
           duration: const Duration(seconds: 4),
           // NOTE: Flutter 3.24.5 — SnackBar auto-dismisses with actions by default.
           // When upgrading to Flutter 3.38+, add persist: false here for explicit control.
           behavior: SnackBarBehavior.floating,
           action: SnackBarAction(
             label: 'UNDO',
-            textColor: BrdyColors.accent,
+            textColor: context.brdyColors.accent,
             onPressed: _handleUndo,
           ),
         ),
@@ -455,6 +455,7 @@ class _TopZone extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 10),
             HoleHeader(
               roundId: roundId,
               highestScoredHoleIndex: highestScoredHoleIndex,
@@ -527,13 +528,13 @@ class _BottomZone extends StatelessWidget {
                   style: GoogleFonts.sometypeMono(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: BrdyColors.background,
+                    color: context.brdyColors.background,
                   ),
                 ),
                 const Gap(BrdySpacing.sm),
                 Expanded(
                   child: Divider(
-                    color: BrdyColors.divider.withOpacity(0.1),
+                    color: context.brdyColors.divider.withOpacity(0.1),
                     thickness: 1,
                   ),
                 ),
@@ -548,7 +549,7 @@ class _BottomZone extends StatelessWidget {
                   style: GoogleFonts.sometypeMono(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
-                    color: BrdyColors.onSurfaceMuted,
+                    color: context.brdyColors.onSurfaceMuted,
                   ),
                 ),
               ),

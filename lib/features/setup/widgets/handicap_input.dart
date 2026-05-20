@@ -55,12 +55,12 @@ class _HandicapInputState extends ConsumerState<HandicapInput> {
         hintStyle: Theme.of(context)
             .textTheme
             .labelLarge
-            ?.copyWith(color: BrdyColors.onSurfaceMuted),
+            ?.copyWith(color: context.brdyColors.onSurfaceMuted),
         errorText: _error,
         errorStyle: Theme.of(context)
             .textTheme
             .bodySmall
-            ?.copyWith(color: BrdyColors.destructive),
+            ?.copyWith(color: context.brdyColors.destructive),
       ),
       onChanged: _onChanged,
     );

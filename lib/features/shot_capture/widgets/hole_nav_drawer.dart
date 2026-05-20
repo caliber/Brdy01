@@ -93,36 +93,36 @@ class HoleNavDrawer extends ConsumerWidget {
   }
 
   /// Maps an outcome name string to the chip fill color.
-  static Color _outcomeToFill(String? outcomeName) {
-    if (outcomeName == null) return BrdyColors.surface;
+  static Color _outcomeToFill(BuildContext context, String? outcomeName) {
+    if (outcomeName == null) return context.brdyColors.surface;
     try {
       return switch (HoleOutcome.values.byName(outcomeName)) {
         HoleOutcome.eagle => const Color(0xFFFFD700),
         HoleOutcome.birdie => BrdyColors.accent,
         HoleOutcome.par => const Color(0xFF2563EB),
-        HoleOutcome.bogey => BrdyColors.surface,
+        HoleOutcome.bogey => context.brdyColors.surface,
         HoleOutcome.doubleBogey => BrdyColors.destructive,
         HoleOutcome.pickup => BrdyColors.destructive,
       };
     } catch (_) {
-      return BrdyColors.surface;
+      return context.brdyColors.surface;
     }
   }
 
   /// Maps an outcome name string to the chip text color.
-  static Color _outcomeToTextColor(String? outcomeName) {
-    if (outcomeName == null) return BrdyColors.onSurface;
+  static Color _outcomeToTextColor(BuildContext context, String? outcomeName) {
+    if (outcomeName == null) return context.brdyColors.onSurface;
     try {
       return switch (HoleOutcome.values.byName(outcomeName)) {
-        HoleOutcome.eagle => BrdyColors.background,
+        HoleOutcome.eagle => context.brdyColors.background,
         HoleOutcome.birdie => BrdyColors.onAccent,
         HoleOutcome.par => const Color(0xFFFFFFFF),
-        HoleOutcome.bogey => BrdyColors.onSurface,
+        HoleOutcome.bogey => context.brdyColors.onSurface,
         HoleOutcome.doubleBogey => BrdyColors.onDestructive,
         HoleOutcome.pickup => BrdyColors.onDestructive,
       };
     } catch (_) {
-      return BrdyColors.onSurface;
+      return context.brdyColors.onSurface;
     }
   }
 
@@ -179,23 +179,23 @@ class _HoleChip extends StatelessWidget {
         })();
 
     final Color fill = isFuture
-        ? BrdyColors.divider
+        ? context.brdyColors.divider
         : isScored
-            ? HoleNavDrawer._outcomeToFill(outcomeName)
-            : BrdyColors.surface;
+            ? HoleNavDrawer._outcomeToFill(context, outcomeName)
+            : context.brdyColors.surface;
 
     final Color textColor = isFuture
-        ? BrdyColors.onSurfaceMuted
+        ? context.brdyColors.onSurfaceMuted
         : isScored
-            ? HoleNavDrawer._outcomeToTextColor(outcomeName)
-            : BrdyColors.onSurface;
+            ? HoleNavDrawer._outcomeToTextColor(context, outcomeName)
+            : context.brdyColors.onSurface;
 
     BoxBorder? border;
     if (!isScored && !isFuture) {
-      border = Border.all(color: BrdyColors.divider, width: 1);
+      border = Border.all(color: context.brdyColors.divider, width: 1);
     }
     if (isActive) {
-      border = Border.all(color: BrdyColors.onSurface, width: 2);
+      border = Border.all(color: context.brdyColors.onSurface, width: 2);
     }
 
     return Semantics(
@@ -246,7 +246,7 @@ class _NowChip extends StatelessWidget {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: BrdyColors.accent,
+          color: context.brdyColors.accent,
           borderRadius: BorderRadius.circular(4),
         ),
         alignment: Alignment.center,
@@ -255,7 +255,7 @@ class _NowChip extends StatelessWidget {
           style: GoogleFonts.sometypeMono(
             fontSize: 11,
             fontWeight: FontWeight.w700,
-            color: BrdyColors.onAccent,
+            color: context.brdyColors.onAccent,
           ),
           textAlign: TextAlign.center,
         ),

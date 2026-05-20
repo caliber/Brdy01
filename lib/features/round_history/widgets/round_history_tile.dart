@@ -26,32 +26,32 @@ class RoundHistoryTile extends ConsumerWidget {
       key: ValueKey(round.id),
       direction: DismissDirection.endToStart,
       background: Container(
-        color: BrdyColors.destructive,
+        color: context.brdyColors.destructive,
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: BrdySpacing.md),
-        child: const Icon(
+        child: Icon(
           Icons.delete_outline,
-          color: BrdyColors.onDestructive,
+          color: context.brdyColors.onDestructive,
         ),
       ),
       confirmDismiss: (direction) async {
         final result = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            backgroundColor: BrdyColors.surface,
+            backgroundColor: context.brdyColors.surface,
             title: Text(
               'DELETE ROUND?',
               style: GoogleFonts.sometypeMono(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: BrdyColors.onSurface,
+                color: context.brdyColors.onSurface,
               ),
             ),
             content: Text(
               round.courseName,
               style: GoogleFonts.sometypeMono(
                 fontSize: 14,
-                color: BrdyColors.onSurfaceMuted,
+                color: context.brdyColors.onSurfaceMuted,
               ),
             ),
             actions: [
@@ -60,7 +60,7 @@ class RoundHistoryTile extends ConsumerWidget {
                 child: Text(
                   'CANCEL',
                   style: GoogleFonts.sometypeMono(
-                    color: BrdyColors.onSurfaceMuted,
+                    color: context.brdyColors.onSurfaceMuted,
                   ),
                 ),
               ),
@@ -69,7 +69,7 @@ class RoundHistoryTile extends ConsumerWidget {
                 child: Text(
                   'DELETE',
                   style: GoogleFonts.sometypeMono(
-                    color: BrdyColors.destructive,
+                    color: context.brdyColors.destructive,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -85,7 +85,7 @@ class RoundHistoryTile extends ConsumerWidget {
       child: InkWell(
         onTap: () => context.push('/round-review/${round.id}?readOnly=true'),
         child: Container(
-          color: BrdyColors.surface,
+          color: context.brdyColors.surface,
           padding: const EdgeInsets.symmetric(
             horizontal: BrdySpacing.md,
             vertical: BrdySpacing.sm,
@@ -101,7 +101,7 @@ class RoundHistoryTile extends ConsumerWidget {
                       style: GoogleFonts.sometypeMono(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
-                        color: BrdyColors.onSurface,
+                        color: context.brdyColors.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -111,7 +111,7 @@ class RoundHistoryTile extends ConsumerWidget {
                       dateStr,
                       style: GoogleFonts.sometypeMono(
                         fontSize: 12,
-                        color: BrdyColors.onSurfaceMuted,
+                        color: context.brdyColors.onSurfaceMuted,
                       ),
                     ),
                   ],
@@ -125,15 +125,15 @@ class RoundHistoryTile extends ConsumerWidget {
                       '--',
                       style: GoogleFonts.sometypeMono(
                         fontSize: 14,
-                        color: BrdyColors.onSurfaceMuted,
+                        color: context.brdyColors.onSurfaceMuted,
                       ),
                     );
                   }
                   final scoreColor = stats.scoreToPar < 0
-                      ? BrdyColors.accent
+                      ? context.brdyColors.accent
                       : stats.scoreToPar > 0
-                          ? BrdyColors.destructive
-                          : BrdyColors.onSurfaceMuted;
+                          ? context.brdyColors.destructive
+                          : context.brdyColors.onSurfaceMuted;
                   final scoreStr =
                       '${stats.scoreToPar >= 0 ? '+' : ''}${stats.scoreToPar}';
                   return RichText(
@@ -143,7 +143,7 @@ class RoundHistoryTile extends ConsumerWidget {
                           text: '${stats.totalStrokes} shots  ',
                           style: GoogleFonts.sometypeMono(
                             fontSize: 14,
-                            color: BrdyColors.onSurface,
+                            color: context.brdyColors.onSurface,
                           ),
                         ),
                         TextSpan(
@@ -162,14 +162,14 @@ class RoundHistoryTile extends ConsumerWidget {
                   '--',
                   style: GoogleFonts.sometypeMono(
                     fontSize: 14,
-                    color: BrdyColors.onSurfaceMuted,
+                    color: context.brdyColors.onSurfaceMuted,
                   ),
                 ),
                 error: (_, __) => Text(
                   '--',
                   style: GoogleFonts.sometypeMono(
                     fontSize: 14,
-                    color: BrdyColors.onSurfaceMuted,
+                    color: context.brdyColors.onSurfaceMuted,
                   ),
                 ),
               ),

@@ -22,16 +22,16 @@ class CourseSearchField extends ConsumerWidget {
           style: Theme.of(context).textTheme.labelLarge,
           decoration: InputDecoration(
             labelText: 'SEARCH COURSES',
-            prefixIcon: const Icon(
+            prefixIcon: Icon(
               Icons.search,
               size: 20,
-              color: BrdyColors.onSurfaceMuted,
+              color: context.brdyColors.onSurfaceMuted,
             ),
             suffixIcon: controller.text.isNotEmpty
                 ? IconButton(
                     tooltip: 'Clear search',
                     icon: const Icon(Icons.close, size: 20),
-                    color: BrdyColors.onSurfaceMuted,
+                    color: context.brdyColors.onSurfaceMuted,
                     onPressed: () {
                       controller.clear();
                       ref.read(courseSearchQueryProvider.notifier).set('');
@@ -44,9 +44,9 @@ class CourseSearchField extends ConsumerWidget {
           },
         ),
         if (isLoading)
-          const LinearProgressIndicator(
-            color: BrdyColors.accent,
-            backgroundColor: BrdyColors.divider,
+          LinearProgressIndicator(
+            color: context.brdyColors.accent,
+            backgroundColor: context.brdyColors.divider,
             minHeight: 1,
           ),
       ],

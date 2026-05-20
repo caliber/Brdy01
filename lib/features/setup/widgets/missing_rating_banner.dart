@@ -12,10 +12,10 @@ class MissingRatingBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0x26CC2200),
+      decoration: BoxDecoration(
+        color: const Color(0x26CC2200),
         border: Border(
-          left: BorderSide(color: BrdyColors.destructive, width: 3),
+          left: BorderSide(color: context.brdyColors.destructive, width: 3),
         ),
       ),
       padding: const EdgeInsets.all(BrdySpacing.md),
@@ -27,7 +27,7 @@ class MissingRatingBanner extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
-                ?.copyWith(color: BrdyColors.destructive),
+                ?.copyWith(color: context.brdyColors.destructive),
           ),
           const Gap(BrdySpacing.sm),
           InkWell(
@@ -35,10 +35,10 @@ class MissingRatingBanner extends StatelessWidget {
             child: Text(
               'ENTER MANUALLY',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: BrdyColors.destructive,
+                    color: context.brdyColors.destructive,
                     fontWeight: FontWeight.w700,
                     decoration: TextDecoration.underline,
-                    decorationColor: BrdyColors.destructive,
+                    decorationColor: context.brdyColors.destructive,
                   ),
             ),
           ),

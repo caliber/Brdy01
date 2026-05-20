@@ -19,7 +19,7 @@ class AverageStatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: BrdyColors.surface,
+        color: context.brdyColors.surface,
         borderRadius: BorderRadius.circular(4),
       ),
       child: Column(
@@ -30,7 +30,7 @@ class AverageStatCard extends StatelessWidget {
             label.toUpperCase(),
             style: GoogleFonts.sometypeMono(
               fontSize: 11,
-              color: BrdyColors.onSurfaceMuted,
+              color: context.brdyColors.onSurfaceMuted,
             ),
           ),
           const Gap(4),
@@ -40,8 +40,8 @@ class AverageStatCard extends StatelessWidget {
               fontSize: 22,
               fontWeight: FontWeight.w700,
               color: value != null
-                  ? BrdyColors.onSurface
-                  : BrdyColors.onSurfaceMuted,
+                  ? context.brdyColors.onSurface
+                  : context.brdyColors.onSurfaceMuted,
             ),
           ),
         ],

@@ -16,7 +16,7 @@ class ApiKeyErrorState extends StatelessWidget {
         : 'Add your Golf Course API key via --dart-define=GOLF_API_KEY=<value> and restart the app.';
 
     return Scaffold(
-      backgroundColor: BrdyColors.background,
+      backgroundColor: context.brdyColors.background,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -24,10 +24,10 @@ class ApiKeyErrorState extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
+                Icon(
                   Icons.key_off,
                   size: 48,
-                  color: BrdyColors.destructive,
+                  color: context.brdyColors.destructive,
                 ),
                 const Gap(BrdySpacing.lg),
                 Text(
@@ -41,7 +41,7 @@ class ApiKeyErrorState extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
-                      ?.copyWith(color: BrdyColors.onSurfaceMuted),
+                      ?.copyWith(color: context.brdyColors.onSurfaceMuted),
                   textAlign: TextAlign.center,
                 ),
               ],

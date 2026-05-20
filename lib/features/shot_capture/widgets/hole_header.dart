@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../domain/enums/hole_outcome.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
+import '../../../providers/theme_mode_provider.dart';
 import '../providers/active_hole_index_provider.dart';
 import '../providers/course_for_round_provider.dart';
 import '../providers/hole_list_provider.dart';
@@ -100,6 +101,24 @@ class HoleHeader extends ConsumerWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Theme toggle icon
+              Consumer(
+                builder: (context, ref, _) {
+                  final mode = ref.watch(themeModeProvider);
+                  return IconButton(
+                    icon: Icon(
+                      mode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+                      size: 18,
+                      color: context.brdyColors.onSurfaceMuted,
+                    ),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                    onPressed: () => ref.read(themeModeProvider.notifier).state =
+                        mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
+                  );
+                },
+              ),
+              const SizedBox(width: 4),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +126,7 @@ class HoleHeader extends ConsumerWidget {
                     Text(
                       courseInfoLine1.toUpperCase(),
                       style: GoogleFonts.sometypeMono(
-                          fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted),
+                          fontSize: 13, fontWeight: FontWeight.w700, color: context.brdyColors.onSurfaceMuted),
                       maxLines: 2,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
@@ -117,7 +136,7 @@ class HoleHeader extends ConsumerWidget {
                       child: Text(
                         courseInfoLine2.toUpperCase(),
                         style: GoogleFonts.sometypeMono(
-                            fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted),
+                            fontSize: 13, fontWeight: FontWeight.w700, color: context.brdyColors.onSurfaceMuted),
                         maxLines: 1,
                         softWrap: false,
                         overflow: TextOverflow.clip,
@@ -129,10 +148,10 @@ class HoleHeader extends ConsumerWidget {
               const SizedBox(width: BrdySpacing.md),
               Row(
                 children: [
-                  _pill(parLabel),
+                  _pill(context, parLabel),
                   if (siLabel != null) ...[
                     const SizedBox(width: BrdySpacing.xs),
-                    _pill(siLabel, fontSize: 11),
+                    _pill(context, siLabel, fontSize: 11),
                   ],
                   const SizedBox(width: BrdySpacing.xs),
                   GestureDetector(
@@ -142,7 +161,7 @@ class HoleHeader extends ConsumerWidget {
                             onHoleNumberTap!();
                           }
                         : null,
-                    child: _pill('HOLE ${holeIndex + 1}'),
+                    child: _pill(context, 'HOLE ${holeIndex + 1}'),
                   ),
                 ],
               ),
@@ -170,7 +189,7 @@ class HoleHeader extends ConsumerWidget {
                       fontSize: 72,
                       fontWeight: FontWeight.w700,
                       height: 1.0,
-                      color: BrdyColors.onSurface,
+                      color: context.brdyColors.onSurface,
                     ),
                   )
                       .animate(key: ValueKey(holeIndex))
@@ -194,8 +213,8 @@ class HoleHeader extends ConsumerWidget {
                           icon: Icon(Icons.chevron_left,
                               size: 40,
                               color: leftDisabled
-                                  ? BrdyColors.onSurfaceMuted
-                                  : BrdyColors.onSurface),
+                                  ? context.brdyColors.onSurfaceMuted
+                                  : context.brdyColors.onSurface),
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                           onPressed: leftDisabled
@@ -216,7 +235,7 @@ class HoleHeader extends ConsumerWidget {
                             style: GoogleFonts.sometypeMono(
                               fontSize: 100,
                               fontWeight: FontWeight.w700,
-                              color: BrdyColors.onSurface,
+                              color: context.brdyColors.onSurface,
                             ),
                           )
                               // Outcome tint flash
@@ -257,8 +276,8 @@ class HoleHeader extends ConsumerWidget {
                           icon: Icon(Icons.chevron_right,
                               size: 40,
                               color: rightDisabled
-                                  ? BrdyColors.onSurfaceMuted
-                                  : BrdyColors.onSurface),
+                                  ? context.brdyColors.onSurfaceMuted
+                                  : context.brdyColors.onSurface),
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                           onPressed: rightDisabled
@@ -278,7 +297,7 @@ class HoleHeader extends ConsumerWidget {
                     style: GoogleFonts.sometypeMono(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                      color: context.brdyColors.onSurface,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -301,11 +320,11 @@ class HoleHeader extends ConsumerWidget {
     null                    => Colors.transparent,
   };
 
-  Widget _pill(String text, {double fontSize = 13}) {
+  Widget _pill(BuildContext context, String text, {double fontSize = 13}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.brdyColors.onSurface,
         borderRadius: BorderRadius.circular(2),
       ),
       child: Text(
@@ -313,7 +332,7 @@ class HoleHeader extends ConsumerWidget {
         style: GoogleFonts.sometypeMono(
           fontSize: fontSize,
           fontWeight: FontWeight.w700,
-          color: BrdyColors.background,
+          color: context.brdyColors.background,
         ),
       ),
     );
@@ -322,4 +341,3 @@ class HoleHeader extends ConsumerWidget {
 
 // ── _HoleBlur ──────────────────────────────────────────────────────────────────
 // Blurs its child when holeIndex changes, then fully removes the filter at 0.
-

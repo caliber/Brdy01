@@ -112,7 +112,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
               OutlinedButton(
                 onPressed: () => context.push('/stats'),
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: BrdyColors.divider),
+                  side: BorderSide(color: context.brdyColors.divider),
                   minimumSize: const Size.fromHeight(48),
                 ),
                 child: Text(
@@ -120,7 +120,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
                   style: GoogleFonts.sometypeMono(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: BrdyColors.onSurfaceMuted,
+                    color: context.brdyColors.onSurfaceMuted,
                   ),
                 ),
               ),
@@ -128,7 +128,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
               OutlinedButton(
                 onPressed: () => context.push('/round-history'),
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: BrdyColors.divider),
+                  side: BorderSide(color: context.brdyColors.divider),
                   minimumSize: const Size.fromHeight(48),
                 ),
                 child: Text(
@@ -136,7 +136,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
                   style: GoogleFonts.sometypeMono(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: BrdyColors.onSurfaceMuted,
+                    color: context.brdyColors.onSurfaceMuted,
                   ),
                 ),
               ),
@@ -237,11 +237,11 @@ class _StartRoundButton extends ConsumerWidget {
                     } catch (e) {
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
+                        SnackBar(
+                          content: const Text(
                               'Could not load course details. Tap to retry.'),
-                          backgroundColor: BrdyColors.surface,
-                          duration: Duration(seconds: 6),
+                          backgroundColor: context.brdyColors.surface,
+                          duration: const Duration(seconds: 6),
                         ),
                       );
                     }
@@ -296,7 +296,7 @@ class _StartRoundButton extends ConsumerWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
-                ?.copyWith(color: BrdyColors.onSurfaceMuted),
+                ?.copyWith(color: context.brdyColors.onSurfaceMuted),
             textAlign: TextAlign.center,
           ),
         ],

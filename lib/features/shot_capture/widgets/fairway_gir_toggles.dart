@@ -45,7 +45,7 @@ class FairwayGirToggles extends ConsumerWidget {
               style: GoogleFonts.sometypeMono(
                 fontSize: 13,
                 fontWeight: FontWeight.w700,
-                color: BrdyColors.background.withOpacity(0.6),
+                color: context.brdyColors.background.withOpacity(0.6),
               ),
               textAlign: TextAlign.center,
               maxLines: 1,
@@ -54,7 +54,7 @@ class FairwayGirToggles extends ConsumerWidget {
           ),
         Row(
           children: [
-            // REG — flush left
+            // REG — left-aligns with PICKUP
             _CtrlButton(
               stateLabel: gir == true ? 'GREEN' : 'MISS',
               typeLabel: 'REG',
@@ -69,7 +69,7 @@ class FairwayGirToggles extends ConsumerWidget {
             ),
             // FAIRWAY — par 4/5 only
             if (holePar != 3) ...[
-              const SizedBox(width: BrdySpacing.xs),
+              const SizedBox(width: 10),
               _CtrlButton(
                 stateLabel: fairwayHit == true ? 'HIT' : 'MISS',
                 typeLabel: 'FAIRWAY',
@@ -84,7 +84,7 @@ class FairwayGirToggles extends ConsumerWidget {
               ),
             ],
             const Spacer(),
-            // VOICE — flush right
+            // VOICE — right-aligns with NEXT
             _CtrlButton(
               stateLabel: isListening ? 'ON' : 'OFF',
               typeLabel: 'VOICE',
@@ -119,50 +119,44 @@ class _CtrlButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final svg = isActive
-        ? 'assets/images/buttonRightCntrlsOn.svg'
-        : 'assets/images/buttonRightCntrlsOff.svg';
+        ? 'assets/images/buttonRightCntrls-hover.svg'
+        : 'assets/images/buttonRightCntrls-default.svg';
 
     return Semantics(
       label: semanticLabel,
       child: GestureDetector(
         onTap: onTap,
         child: SizedBox(
-          width: 94,
-          height: 77,
+          width: 82,
+          height: 44,
           child: Stack(
             fit: StackFit.expand,
             children: [
               SvgPicture.asset(svg, fit: BoxFit.fill),
-              // State text — top-centre
+              // State text — top half
               Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    stateLabel,
-                    style: GoogleFonts.sometypeMono(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: BrdyColors.onSurface,
-                    ),
-                    textAlign: TextAlign.center,
+                alignment: const Alignment(0, -0.3),
+                child: Text(
+                  stateLabel,
+                  style: GoogleFonts.sometypeMono(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: context.brdyColors.onSurface,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              // Type label — bottom-centre
+              // Type label — bottom half
               Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    typeLabel,
-                    style: GoogleFonts.sometypeMono(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                      color: BrdyColors.background,
-                    ),
-                    textAlign: TextAlign.center,
+                alignment: const Alignment(0, 0.7),
+                child: Text(
+                  typeLabel,
+                  style: GoogleFonts.sometypeMono(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    color: context.brdyColors.background,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

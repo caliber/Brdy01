@@ -40,12 +40,13 @@ class MiniScorecardOverlay extends ConsumerWidget {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
       height: isOpen ? 132 : 0,
-      color: BrdyColors.surface,
-      child: isOpen ? _buildContent(ref, activeHoleIndex, highestScoredIndex, outcomeByHole, runningScore) : const SizedBox.shrink(),
+      color: context.brdyColors.surface,
+      child: isOpen ? _buildContent(context, ref, activeHoleIndex, highestScoredIndex, outcomeByHole, runningScore) : const SizedBox.shrink(),
     );
   }
 
   Widget _buildContent(
+    BuildContext context,
     WidgetRef ref,
     int activeHoleIndex,
     int highestScoredIndex,
@@ -58,10 +59,10 @@ class MiniScorecardOverlay extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Row 1: holes 1–9
-          _buildChipRow(ref, 0, 9, activeHoleIndex, highestScoredIndex, outcomeByHole),
+          _buildChipRow(context, ref, 0, 9, activeHoleIndex, highestScoredIndex, outcomeByHole),
           const SizedBox(height: 4),
           // Row 2: holes 10–18
-          _buildChipRow(ref, 9, 18, activeHoleIndex, highestScoredIndex, outcomeByHole),
+          _buildChipRow(context, ref, 9, 18, activeHoleIndex, highestScoredIndex, outcomeByHole),
           const SizedBox(height: 6),
           // Score summary bar
           _buildScoreBar(runningScore),
@@ -71,6 +72,7 @@ class MiniScorecardOverlay extends ConsumerWidget {
   }
 
   Widget _buildChipRow(
+    BuildContext context,
     WidgetRef ref,
     int startIndex,
     int endIndex,
@@ -82,20 +84,21 @@ class MiniScorecardOverlay extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         for (int i = startIndex; i < endIndex; i++)
-          _buildChip(ref, i, activeHoleIndex, highestScoredIndex, outcomeByHole[i + 1]),
+          _buildChip(context, ref, i, activeHoleIndex, highestScoredIndex, outcomeByHole[i + 1]),
       ],
     );
   }
 
   Widget _buildChip(
+    BuildContext context,
     WidgetRef ref,
     int index,
     int activeHoleIndex,
     int highestScoredIndex,
     String? outcomeName,
   ) {
-    final fillColor = _outcomeToFill(outcomeName);
-    final textColor = _outcomeToTextColor(outcomeName);
+    final fillColor = _outcomeToFill(context, outcomeName);
+    final textColor = _outcomeToTextColor(context, outcomeName);
     final isActive = index == activeHoleIndex;
     final isTappable = index <= highestScoredIndex + 1;
 
@@ -114,7 +117,7 @@ class MiniScorecardOverlay extends ConsumerWidget {
           color: fillColor,
           borderRadius: BorderRadius.circular(4),
           border: isActive
-              ? Border.all(color: BrdyColors.onSurface, width: 2)
+              ? Border.all(color: context.brdyColors.onSurface, width: 2)
               : null,
         ),
         alignment: Alignment.center,
@@ -155,35 +158,35 @@ class MiniScorecardOverlay extends ConsumerWidget {
     );
   }
 
-  static Color _outcomeToFill(String? outcomeName) {
-    if (outcomeName == null) return BrdyColors.surface;
+  static Color _outcomeToFill(BuildContext context, String? outcomeName) {
+    if (outcomeName == null) return context.brdyColors.surface;
     try {
       return switch (HoleOutcome.values.byName(outcomeName)) {
         HoleOutcome.eagle => const Color(0xFFFFD700),
         HoleOutcome.birdie => BrdyColors.accent,
         HoleOutcome.par => const Color(0xFF2563EB),
-        HoleOutcome.bogey => BrdyColors.surface,
+        HoleOutcome.bogey => context.brdyColors.surface,
         HoleOutcome.doubleBogey => BrdyColors.destructive,
         HoleOutcome.pickup => BrdyColors.destructive,
       };
     } catch (_) {
-      return BrdyColors.surface;
+      return context.brdyColors.surface;
     }
   }
 
-  static Color _outcomeToTextColor(String? outcomeName) {
-    if (outcomeName == null) return BrdyColors.onSurface;
+  static Color _outcomeToTextColor(BuildContext context, String? outcomeName) {
+    if (outcomeName == null) return context.brdyColors.onSurface;
     try {
       return switch (HoleOutcome.values.byName(outcomeName)) {
-        HoleOutcome.eagle => BrdyColors.background,
+        HoleOutcome.eagle => context.brdyColors.background,
         HoleOutcome.birdie => BrdyColors.onAccent,
         HoleOutcome.par => const Color(0xFFFFFFFF),
-        HoleOutcome.bogey => BrdyColors.onSurface,
+        HoleOutcome.bogey => context.brdyColors.onSurface,
         HoleOutcome.doubleBogey => BrdyColors.onDestructive,
         HoleOutcome.pickup => BrdyColors.onDestructive,
       };
     } catch (_) {
-      return BrdyColors.onSurface;
+      return context.brdyColors.onSurface;
     }
   }
 }

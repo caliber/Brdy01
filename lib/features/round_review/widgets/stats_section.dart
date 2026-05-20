@@ -54,8 +54,8 @@ class StatsSection extends ConsumerWidget {
     final statsAsync = ref.watch(statsProvider(roundId));
 
     if (statsAsync.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: BrdyColors.accent),
+      return Center(
+        child: CircularProgressIndicator(color: context.brdyColors.accent),
       );
     }
 
@@ -64,7 +64,7 @@ class StatsSection extends ConsumerWidget {
         'Stats unavailable',
         style: GoogleFonts.sometypeMono(
           fontSize: 14,
-          color: BrdyColors.onSurfaceMuted,
+          color: context.brdyColors.onSurfaceMuted,
         ),
       );
     }
@@ -77,7 +77,7 @@ class StatsSection extends ConsumerWidget {
     final sectionHeaderStyle = GoogleFonts.sometypeMono(
       fontSize: 12,
       fontWeight: FontWeight.w700,
-      color: BrdyColors.onSurfaceMuted,
+      color: context.brdyColors.onSurfaceMuted,
       letterSpacing: 1.5,
     );
 

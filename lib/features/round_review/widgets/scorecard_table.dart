@@ -16,8 +16,8 @@ class ScorecardTable extends ConsumerWidget {
     final scorecardAsync = ref.watch(scorecardProvider(roundId));
 
     if (scorecardAsync == null) {
-      return const Center(
-        child: CircularProgressIndicator(color: BrdyColors.accent),
+      return Center(
+        child: CircularProgressIndicator(color: context.brdyColors.accent),
       );
     }
 
@@ -28,10 +28,10 @@ class ScorecardTable extends ConsumerWidget {
     final front9End = total.clamp(0, 9);
     final back9End = total.clamp(9, 18);
     final rows = <TableRow>[
-      ...data.rows.sublist(0, front9End).map(_buildHoleRow),
-      _buildSubtotalRow(data.front9),
-      ...data.rows.sublist(front9End.clamp(0, total), back9End).map(_buildHoleRow),
-      _buildSubtotalRow(data.back9),
+      ...data.rows.sublist(0, front9End).map((r) => _buildHoleRow(context, r)),
+      _buildSubtotalRow(context, data.front9),
+      ...data.rows.sublist(front9End.clamp(0, total), back9End).map((r) => _buildHoleRow(context, r)),
+      _buildSubtotalRow(context, data.back9),
     ];
 
     return Table(
@@ -45,30 +45,30 @@ class ScorecardTable extends ConsumerWidget {
     );
   }
 
-  TableRow _buildHoleRow(HoleRow row) {
+  TableRow _buildHoleRow(BuildContext context, HoleRow row) {
     // Alternate backgrounds: odd hole numbers get surface, even get background.
     final isOdd = row.holeNumber % 2 == 1;
-    final bgColor = isOdd ? BrdyColors.background : BrdyColors.surface;
+    final bgColor = isOdd ? context.brdyColors.background : context.brdyColors.surface;
 
     final numericStyle = GoogleFonts.sometypeMono(
       fontSize: 14,
-      color: BrdyColors.onSurface,
+      color: context.brdyColors.onSurface,
     );
 
     // Outcome text style — coloured, with underline only for bogey (+1).
     final outcomeBogey = row.outcomeAbbr == '+1';
     final outcomeStyle = GoogleFonts.sometypeMono(
       fontSize: 14,
-      color: row.outcomeColor ?? BrdyColors.onSurfaceMuted,
+      color: row.outcomeColor ?? context.brdyColors.onSurfaceMuted,
       decoration: outcomeBogey ? TextDecoration.underline : TextDecoration.none,
-      decorationColor: row.outcomeColor ?? BrdyColors.onSurfaceMuted,
+      decorationColor: row.outcomeColor ?? context.brdyColors.onSurfaceMuted,
     );
 
     return TableRow(
       decoration: BoxDecoration(
         color: bgColor,
-        border: const Border(
-          bottom: BorderSide(color: BrdyColors.divider, width: 0.5),
+        border: Border(
+          bottom: BorderSide(color: context.brdyColors.divider, width: 0.5),
         ),
       ),
       children: [
@@ -86,22 +86,22 @@ class ScorecardTable extends ConsumerWidget {
     );
   }
 
-  TableRow _buildSubtotalRow(ScorecardSubtotal subtotal) {
+  TableRow _buildSubtotalRow(BuildContext context, ScorecardSubtotal subtotal) {
     final labelStyle = GoogleFonts.sometypeMono(
       fontSize: 12,
       fontWeight: FontWeight.w700,
-      color: BrdyColors.onSurfaceMuted,
+      color: context.brdyColors.onSurfaceMuted,
     );
 
     final strokesStyle = GoogleFonts.sometypeMono(
       fontSize: 14,
       fontWeight: FontWeight.w700,
-      color: BrdyColors.onSurface,
+      color: context.brdyColors.onSurface,
     );
 
     final mutedStyle = GoogleFonts.sometypeMono(
       fontSize: 11,
-      color: BrdyColors.onSurfaceMuted,
+      color: context.brdyColors.onSurfaceMuted,
     );
 
     final scoreToParStr = subtotal.scoreToPar == 0
@@ -111,10 +111,10 @@ class ScorecardTable extends ConsumerWidget {
             : '${subtotal.scoreToPar}';
 
     return TableRow(
-      decoration: const BoxDecoration(
-        color: BrdyColors.surface,
+      decoration: BoxDecoration(
+        color: context.brdyColors.surface,
         border: Border(
-          top: BorderSide(color: BrdyColors.divider, width: 1),
+          top: BorderSide(color: context.brdyColors.divider, width: 1),
         ),
       ),
       children: [

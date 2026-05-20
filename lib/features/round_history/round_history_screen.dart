@@ -14,7 +14,7 @@ class RoundHistoryScreen extends ConsumerWidget {
     final roundsAsync = ref.watch(completedRoundsProvider);
 
     return Scaffold(
-      backgroundColor: BrdyColors.background,
+      backgroundColor: context.brdyColors.background,
       appBar: AppBar(
         title: Text(
           'ROUND HISTORY',
@@ -22,18 +22,18 @@ class RoundHistoryScreen extends ConsumerWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
-        backgroundColor: BrdyColors.background,
+        backgroundColor: context.brdyColors.background,
         elevation: 0,
       ),
       body: roundsAsync.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: BrdyColors.accent),
+        loading: () => Center(
+          child: CircularProgressIndicator(color: context.brdyColors.accent),
         ),
         error: (_, __) => Center(
           child: Text(
             'Could not load rounds',
             style: GoogleFonts.sometypeMono(
-              color: BrdyColors.onSurfaceMuted,
+              color: context.brdyColors.onSurfaceMuted,
             ),
           ),
         ),
@@ -43,15 +43,15 @@ class RoundHistoryScreen extends ConsumerWidget {
               child: Text(
                 'NO ROUNDS YET',
                 style: GoogleFonts.sometypeMono(
-                  color: BrdyColors.onSurfaceMuted,
+                  color: context.brdyColors.onSurfaceMuted,
                 ),
               ),
             );
           }
           return ListView.separated(
             itemCount: rounds.length,
-            separatorBuilder: (_, __) => const Divider(
-              color: BrdyColors.divider,
+            separatorBuilder: (_, __) => Divider(
+              color: context.brdyColors.divider,
               height: 1,
               thickness: 1,
             ),

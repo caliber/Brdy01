@@ -26,16 +26,16 @@ class CourseResultTile extends StatelessWidget {
     final locationParts = [city, country].where((s) => s != null && s.isNotEmpty).join(', ');
 
     return Material(
-      color: BrdyColors.surface,
+      color: context.brdyColors.surface,
       child: InkWell(
         splashColor: Colors.white.withOpacity(0.08),
         highlightColor: Colors.white.withOpacity(0.04),
         onTap: onTap,
         child: Container(
           constraints: const BoxConstraints(minHeight: 64),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: BrdyColors.divider, width: 1),
+              bottom: BorderSide(color: context.brdyColors.divider, width: 1),
             ),
           ),
           child: Padding(
@@ -57,7 +57,7 @@ class CourseResultTile extends StatelessWidget {
                         Text(
                           locationParts,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: BrdyColors.onSurfaceMuted,
+                                color: context.brdyColors.onSurfaceMuted,
                               ),
                         ),
                       if (courseRating != null && slope != null)
@@ -65,16 +65,16 @@ class CourseResultTile extends StatelessWidget {
                           'CR $courseRating / SL $slope',
                           style: BrdyTextTheme.textTheme.bodyMedium?.copyWith(
                             fontSize: 12,
-                            color: BrdyColors.onSurfaceMuted,
+                            color: context.brdyColors.onSurfaceMuted,
                           ),
                         ),
                     ],
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.chevron_right,
                   size: 20,
-                  color: BrdyColors.onSurfaceMuted,
+                  color: context.brdyColors.onSurfaceMuted,
                 ),
               ],
             ),

@@ -23,13 +23,13 @@ class TileCacheProgress extends ConsumerWidget {
           style: Theme.of(context)
               .textTheme
               .bodySmall
-              ?.copyWith(color: BrdyColors.onSurfaceMuted),
+              ?.copyWith(color: context.brdyColors.onSurfaceMuted),
         ),
         const Gap(BrdySpacing.xs),
         LinearProgressIndicator(
           value: pct / 100,
-          color: BrdyColors.accent,
-          backgroundColor: BrdyColors.divider,
+          color: context.brdyColors.accent,
+          backgroundColor: context.brdyColors.divider,
           minHeight: 2,
         ),
       ],
