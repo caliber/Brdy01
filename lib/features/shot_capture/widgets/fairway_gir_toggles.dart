@@ -70,9 +70,8 @@ class FairwayGirToggles extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: BrdySpacing.xs),
-            // Middle flex:2 — FAIRWAY on left, empty space on right
+            // Middle flex:1 — FAIRWAY on left, empty space on right
             Expanded(
-              flex: 2,
               child: Row(
                 children: [
                   if (holePar != 3) ...[

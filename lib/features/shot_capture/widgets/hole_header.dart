@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../domain/enums/hole_outcome.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
-import '../../../providers/theme_mode_provider.dart';
+
 import '../providers/active_hole_index_provider.dart';
 import '../providers/course_for_round_provider.dart';
 import '../providers/hole_list_provider.dart';
@@ -101,24 +101,6 @@ class HoleHeader extends ConsumerWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Theme toggle icon
-              Consumer(
-                builder: (context, ref, _) {
-                  final mode = ref.watch(themeModeProvider);
-                  return IconButton(
-                    icon: Icon(
-                      mode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
-                      size: 18,
-                      color: context.brdyColors.onSurfaceMuted,
-                    ),
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-                    onPressed: () => ref.read(themeModeProvider.notifier).state =
-                        mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
-                  );
-                },
-              ),
-              const SizedBox(width: 4),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,37 +212,45 @@ class HoleHeader extends ConsumerWidget {
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          Text(
-                            '$currentHoleShots',
-                            style: GoogleFonts.sometypeMono(
-                              fontSize: 100,
-                              fontWeight: FontWeight.w700,
-                              color: context.brdyColors.onSurface,
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (child, animation) =>
+                                FadeTransition(opacity: animation, child: child),
+                            child: SizedBox(
+                              key: ValueKey(holeIndex),
+                              child: Text(
+                                '$currentHoleShots',
+                                style: GoogleFonts.sometypeMono(
+                                  fontSize: 100,
+                                  fontWeight: FontWeight.w700,
+                                  color: context.brdyColors.onSurface,
+                                ),
+                              )
+                                  // Outcome tint flash
+                                  .animate(key: ValueKey(flashOutcome))
+                                  .tint(
+                                    color: _outcomeFlashColor(flashOutcome),
+                                    end: flashOutcome != null ? 0.4 : 0.0,
+                                    duration: 300.ms,
+                                    curve: Curves.easeOut,
+                                  )
+                                  .then()
+                                  .tint(
+                                    color: _outcomeFlashColor(flashOutcome),
+                                    begin: flashOutcome != null ? 0.4 : 0.0,
+                                    end: 0.0,
+                                    duration: 200.ms,
+                                  )
+                                  .callback(
+                                    callback: (_) {
+                                      ref
+                                          .read(lastScoredOutcomeProvider(roundId)
+                                              .notifier)
+                                          .set(null);
+                                    },
+                                  ),
                             ),
-                          )
-                              // Outcome tint flash
-                              .animate(key: ValueKey(flashOutcome))
-                              .tint(
-                                color: _outcomeFlashColor(flashOutcome),
-                                end: flashOutcome != null ? 0.4 : 0.0,
-                                duration: 300.ms,
-                                curve: Curves.easeOut,
-                              )
-                              .then()
-                              .tint(
-                                color: _outcomeFlashColor(flashOutcome),
-                                begin: flashOutcome != null ? 0.4 : 0.0,
-                                end: 0.0,
-                                duration: 200.ms,
-                              )
-                              .callback(
-                                callback: (_) {
-                                  ref
-                                      .read(lastScoredOutcomeProvider(roundId)
-                                          .notifier)
-                                      .set(null);
-                                },
-                              ),
+                          ),
                           Positioned(
                             right: -30,
                             top: 20,
