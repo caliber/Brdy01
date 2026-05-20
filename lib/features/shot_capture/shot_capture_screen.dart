@@ -112,12 +112,15 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 holeIndex: holeIndex,
                 courseModel: course,
                 highestScoredHoleIndex: highestIndex,
-                overlayOpen: _overlayOpen,
                 onHoleNumberTap: () =>
                     setState(() => _overlayOpen = !_overlayOpen),
-                onOverlayClose: () => setState(() => _overlayOpen = false),
                 onMapTapped: _dropPinAtCurrentPosition,
               ),
+            ),
+            MiniScorecardOverlay(
+              roundId: roundId,
+              isOpen: _overlayOpen,
+              onClose: () => setState(() => _overlayOpen = false),
             ),
             Container(height: 1, color: BrdyColors.divider),
             Expanded(child: ClipRect(child: _BottomZone(
@@ -375,9 +378,7 @@ class _TopZone extends StatelessWidget {
   final int holeIndex;
   final CourseModel? courseModel;
   final int highestScoredHoleIndex;
-  final bool overlayOpen;
   final VoidCallback onHoleNumberTap;
-  final VoidCallback onOverlayClose;
   final VoidCallback onMapTapped;
 
   const _TopZone({
@@ -385,9 +386,7 @@ class _TopZone extends StatelessWidget {
     required this.holeIndex,
     required this.courseModel,
     required this.highestScoredHoleIndex,
-    required this.overlayOpen,
     required this.onHoleNumberTap,
-    required this.onOverlayClose,
     required this.onMapTapped,
   });
 
@@ -412,11 +411,6 @@ class _TopZone extends StatelessWidget {
               roundId: roundId,
               highestScoredHoleIndex: highestScoredHoleIndex,
               onHoleNumberTap: onHoleNumberTap,
-            ),
-            MiniScorecardOverlay(
-              roundId: roundId,
-              isOpen: overlayOpen,
-              onClose: onOverlayClose,
             ),
           ],
         ),

@@ -24,11 +24,13 @@ class ScorecardTable extends ConsumerWidget {
     final data = scorecardAsync;
 
     // Build all TableRows: header, holes 1-9, front9 subtotal, holes 10-18, back9 subtotal.
+    final total = data.rows.length;
+    final front9End = total.clamp(0, 9);
+    final back9End = total.clamp(9, 18);
     final rows = <TableRow>[
-      _buildHeaderRow(),
-      ...data.rows.sublist(0, 9).map(_buildHoleRow),
+      ...data.rows.sublist(0, front9End).map(_buildHoleRow),
       _buildSubtotalRow(data.front9),
-      ...data.rows.sublist(9, 18).map(_buildHoleRow),
+      ...data.rows.sublist(front9End.clamp(0, total), back9End).map(_buildHoleRow),
       _buildSubtotalRow(data.back9),
     ];
 
@@ -67,8 +69,8 @@ class ScorecardTable extends ConsumerWidget {
       child: Align(
         alignment: align == TextAlign.left ? Alignment.centerLeft : Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.sm),
-          child: Text(text, style: style, textAlign: align),
+          padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.xs),
+          child: Text(text, style: style, textAlign: align, softWrap: false, overflow: TextOverflow.clip),
         ),
       ),
     );
@@ -153,7 +155,7 @@ class ScorecardTable extends ConsumerWidget {
             horizontal: BrdySpacing.sm,
             vertical: BrdySpacing.xs,
           ),
-          child: Text(subtotal.label, style: labelStyle),
+          child: Text(subtotal.label, style: labelStyle, softWrap: false, overflow: TextOverflow.clip),
         ),
         // PAR column: empty
         const SizedBox.shrink(),

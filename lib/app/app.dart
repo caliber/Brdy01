@@ -12,6 +12,13 @@ class BrdyApp extends ConsumerWidget {
       title: 'BRDY.01',
       theme: BrdyTheme.themeData,
       routerConfig: ref.watch(routerProvider),
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context),
+          child: child!,
+        );
+      },
     );
   }
 }

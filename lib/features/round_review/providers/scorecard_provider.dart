@@ -91,29 +91,34 @@ ScorecardData? scorecard(Ref ref, int roundId) {
     // Sort by hole number ascending.
     final sorted = [...holes]..sort((a, b) => a.holeNumber.compareTo(b.holeNumber));
 
-    // Build HoleRow list.
-    final rows = sorted.map((h) {
+    // Build a map from hole number to recorded hole.
+    final byNumber = {for (final h in sorted) h.holeNumber: h};
+
+    // Always produce exactly 18 rows — missing holes get par 4 placeholders.
+    final rows = List.generate(18, (i) {
+      final holeNumber = i + 1;
+      final h = byNumber[holeNumber];
+      if (h == null) {
+        return HoleRow(holeNumber: holeNumber, par: 4);
+      }
+
       String? outcomeAbbr;
       Color? outcomeColor;
-
       if (h.outcome != null) {
         try {
           final outcome = HoleOutcome.values.byName(h.outcome!);
           outcomeAbbr = _abbr(outcome);
           outcomeColor = _color(outcome);
-        } catch (_) {
-          // Unknown outcome string — leave abbr/color as null.
-        }
+        } catch (_) {}
       }
-
       return HoleRow(
-        holeNumber: h.holeNumber,
+        holeNumber: holeNumber,
         par: h.par,
         outcomeAbbr: outcomeAbbr,
         outcomeColor: outcomeColor,
         putts: h.putts,
       );
-    }).toList();
+    });
 
     // Helper: compute subtotal for a slice of rows.
     ScorecardSubtotal subtotal(List<HoleRow> slice, String label) {

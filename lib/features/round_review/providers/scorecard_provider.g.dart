@@ -6,7 +6,7 @@ part of 'scorecard_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$scorecardHash() => r'40006794a95a25de84a2087d45c6c24a746fef5d';
+String _$scorecardHash() => r'd3cf17fbb702ef091e55e2679262ce184b430174';
 
 /// Copied from Dart SDK
 class _SystemHash {

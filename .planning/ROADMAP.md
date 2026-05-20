@@ -190,7 +190,7 @@ Plans:
 **Cross-cutting constraints:**
 
 - GPS on-demand only: Geolocator.getCurrentPosition() at pin-tap time — never getPositionStream()
-- No schema version bump — shots table already at v1; adding ShotDao is not a migration
+- No schema version bump — shots table already at v1; adding ShotDao is not a schema change
 - All new providers auto-dispose (@riverpod lowercase)
 - Map must not render before courseForRoundProvider resolves (null LatLng guard required)
 - Voice callback fires AFTER Drift write in VoiceService._recordOutcome — screen handles toast + advance only
@@ -268,7 +268,28 @@ Plans:
   2. Each outcome has a distinct haptic pattern — birdie feels different from bogey
   3. Recording an outcome triggers a brief colour flash/animation on the score counter
 
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+
+**Wave 1**
+
+- [ ] 08-01-PLAN.md — Per-outcome haptic patterns in _handleOutcomeTapped (Haptics.vibrate switch)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 08-02-PLAN.md — lastScoredOutcomeProvider, score counter tint flash in HoleHeader
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 08-03-PLAN.md — MiniScorecardOverlay widget, overlay toggle replacing HoleNavDrawer tap, human-verify
+
+**Cross-cutting constraints:**
+
+- No new packages — haptic_feedback and flutter_animate already in pubspec
+- All new providers auto-dispose (@riverpod lowercase) — never keepAlive
+- Overlay must not expand _TopZone beyond its 36% height — fixed 132dp chip grid only
+- Schema stays at current version — no Drift changes in Phase 8
 
 ## Progress
 
@@ -284,7 +305,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. GPS + Voice Polish | 3/3 | Complete   | 2026-05-19 |
 | 6. Round History | 1/3 | In Progress|  |
 | 7. Stats & Trends | 0/2 | Not started | - |
-| 8. Feel & Polish | 0/TBD | Not started | - |
+| 8. Feel & Polish | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-05-16*
@@ -294,3 +315,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 *Phase 3 planned: 2026-05-18*
 *Phase 5 planned: 2026-05-19*
 *Phase 7 planned: 2026-05-20*
+*Phase 8 planned: 2026-05-20*

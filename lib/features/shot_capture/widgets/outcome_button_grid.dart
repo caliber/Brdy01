@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../domain/enums/hole_outcome.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
 import '../providers/hole_score_notifier.dart';
-import 'fairway_gir_toggles.dart';
 
 class OutcomeButtonGrid extends ConsumerWidget {
   final int roundId;
@@ -47,6 +47,20 @@ class OutcomeButtonGrid extends ConsumerWidget {
     final bool hasOutcome = currentOutcome != null;
     final bool isEagle = currentOutcome == HoleOutcome.eagle;
 
+    // Max putts = total shots for this hole (outcome must be set first).
+    int? maxPutts;
+    if (currentOutcome != null) {
+      final offset = switch (currentOutcome!) {
+        HoleOutcome.eagle => -2,
+        HoleOutcome.birdie => -1,
+        HoleOutcome.par => 0,
+        HoleOutcome.bogey => 1,
+        HoleOutcome.doubleBogey => 2,
+        HoleOutcome.pickup => 2,
+      };
+      maxPutts = holePar + offset;
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -59,9 +73,10 @@ class OutcomeButtonGrid extends ConsumerWidget {
                 abbrev: 'DBL',
                 label: 'DOUBLE',
                 isActive: currentOutcome == HoleOutcome.doubleBogey,
-                activeColor: BrdyColors.destructive,
+                activeColor: const Color(0xFF535150),
                 activeTextColor: Colors.white,
-                dotActiveColor: BrdyColors.destructive,
+                dotActiveColor: const Color(0xFF535150),
+                activeSvg: 'assets/images/btn_charcoal.svg',
                 onTap: () => onOutcomeTapped(
                     HoleOutcome.doubleBogey, holePar, holeStrokeIndex),
               ),
@@ -73,9 +88,10 @@ class OutcomeButtonGrid extends ConsumerWidget {
                 abbrev: 'BGY',
                 label: 'BOGEY',
                 isActive: currentOutcome == HoleOutcome.bogey,
-                activeColor: const Color(0xFFD97706),
+                activeColor: const Color(0xFFF3490E),
                 activeTextColor: Colors.white,
-                dotActiveColor: const Color(0xFFD97706),
+                dotActiveColor: const Color(0xFFF3490E),
+                activeSvg: 'assets/images/btn_charcoal.svg',
                 onTap: () => onOutcomeTapped(
                     HoleOutcome.bogey, holePar, holeStrokeIndex),
               ),
@@ -87,9 +103,10 @@ class OutcomeButtonGrid extends ConsumerWidget {
                 abbrev: 'PAR',
                 label: 'PAR',
                 isActive: currentOutcome == HoleOutcome.par,
-                activeColor: const Color(0xFF2563EB),
+                activeColor: const Color(0xFF1F82B4),
                 activeTextColor: Colors.white,
-                dotActiveColor: const Color(0xFF2563EB),
+                dotActiveColor: const Color(0xFF1F82B4),
+                activeSvg: 'assets/images/btn_par.svg',
                 onTap: () => onOutcomeTapped(
                     HoleOutcome.par, holePar, holeStrokeIndex),
               ),
@@ -108,7 +125,7 @@ class OutcomeButtonGrid extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: BrdySpacing.sm),
+        const SizedBox(height: 20),
         // Row 2: PICKUP, PUTTS, NEXT
         Row(
           children: [
@@ -118,9 +135,10 @@ class OutcomeButtonGrid extends ConsumerWidget {
                 abbrev: 'PKU',
                 label: 'PICKUP',
                 isActive: currentOutcome == HoleOutcome.pickup,
-                activeColor: const Color(0xFF7C3AED),
+                activeColor: const Color(0xFF535150),
                 activeTextColor: Colors.white,
-                dotActiveColor: const Color(0xFF7C3AED),
+                dotActiveColor: const Color(0xFF535150),
+                activeSvg: 'assets/images/btn_charcoal.svg',
                 onTap: () => onOutcomeTapped(
                     HoleOutcome.pickup, holePar, holeStrokeIndex),
               ),
@@ -131,6 +149,7 @@ class OutcomeButtonGrid extends ConsumerWidget {
               flex: 2,
               child: _PuttsCounter(
                 count: currentPutts,
+                maxPutts: maxPutts,
                 onSub: currentPutts > 0
                     ? () {
                         HapticFeedback.selectionClick();
@@ -138,16 +157,18 @@ class OutcomeButtonGrid extends ConsumerWidget {
                             .read(holeScoreNotifierProvider(
                                     roundId, holeIndex)
                                 .notifier)
-                            .setPutts(currentPutts - 1);
+                            .setPutts(currentPutts - 1, par: holePar);
                       }
                     : null,
-                onAdd: () {
-                  HapticFeedback.selectionClick();
-                  ref
-                      .read(holeScoreNotifierProvider(roundId, holeIndex)
-                          .notifier)
-                      .setPutts(currentPutts + 1);
-                },
+                onAdd: (maxPutts != null && currentPutts < maxPutts)
+                    ? () {
+                        HapticFeedback.selectionClick();
+                        ref
+                            .read(holeScoreNotifierProvider(roundId, holeIndex)
+                                .notifier)
+                            .setPutts(currentPutts + 1, par: holePar);
+                      }
+                    : null,
               ),
             ),
             const SizedBox(width: BrdySpacing.xs),
@@ -160,13 +181,7 @@ class OutcomeButtonGrid extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: BrdySpacing.sm),
-        // Bottom toggle strip — fairway/GIR/voice toggles wired to Drift
-        FairwayGirToggles(
-          roundId: roundId,
-          holeIndex: holeIndex,
-          holePar: holePar,
-        ),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -182,6 +197,7 @@ class _ButtonColumn extends StatefulWidget {
   final Color activeTextColor;
   final Color dotActiveColor;
   final VoidCallback? onTap;
+  final String activeSvg;
 
   const _ButtonColumn({
     required this.abbrev,
@@ -191,6 +207,7 @@ class _ButtonColumn extends StatefulWidget {
     required this.activeTextColor,
     required this.dotActiveColor,
     required this.onTap,
+    this.activeSvg = 'assets/images/btn_charcoal.svg',
   });
 
   @override
@@ -205,26 +222,30 @@ class _ButtonColumnState extends State<_ButtonColumn> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          widget.abbrev,
-          style: GoogleFonts.sometypeMono(
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF4A4A4A),
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: BrdySpacing.xs),
-        Container(
-          width: 6,
-          height: 6,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: widget.isActive ? widget.dotActiveColor : Colors.transparent,
-            border: widget.isActive
-                ? null
-                : Border.all(color: widget.dotActiveColor, width: 1),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: widget.isActive ? widget.dotActiveColor : Colors.transparent,
+                border: widget.isActive
+                    ? null
+                    : Border.all(color: widget.dotActiveColor, width: 1),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              widget.abbrev,
+              style: GoogleFonts.sometypeMono(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF4A4A4A),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: BrdySpacing.xs),
         GestureDetector(
@@ -236,11 +257,8 @@ class _ButtonColumnState extends State<_ButtonColumn> {
             highlightColor: Colors.black.withOpacity(0.04),
             onTap: widget.onTap,
             borderRadius: BorderRadius.circular(8),
-            child: Container(
-              constraints:
-                  const BoxConstraints(minWidth: 64, minHeight: 80),
+            child: DecoratedBox(
               decoration: BoxDecoration(
-                color: widget.isActive ? widget.activeColor : BrdyColors.surface,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -250,18 +268,34 @@ class _ButtonColumnState extends State<_ButtonColumn> {
                   ),
                 ],
               ),
-              alignment: Alignment.topCenter,
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                widget.label,
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: widget.isActive
-                      ? widget.activeTextColor
-                      : BrdyColors.onSurface,
+              child: SizedBox(
+                height: 80,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    SvgPicture.asset(
+                      widget.activeSvg,
+                      fit: BoxFit.fill,
+                    ),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          widget.label,
+                          style: GoogleFonts.sometypeMono(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: widget.isActive
+                                ? widget.activeTextColor
+                                : BrdyColors.onSurface,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.center,
               ),
             )
                 .animate(target: _pressing ? 1 : 0)
@@ -283,13 +317,15 @@ class _ButtonColumnState extends State<_ButtonColumn> {
 
 class _PuttsCounter extends StatelessWidget {
   final int count;
+  final int? maxPutts;
   final VoidCallback? onSub;
-  final VoidCallback onAdd;
+  final VoidCallback? onAdd;
 
   const _PuttsCounter({
     required this.count,
     required this.onSub,
     required this.onAdd,
+    this.maxPutts,
   });
 
   @override
@@ -297,20 +333,34 @@ class _PuttsCounter extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'PUTTS',
-          style: GoogleFonts.sometypeMono(
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF4A4A4A),
-          ),
-          textAlign: TextAlign.center,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: count > 0 ? BrdyColors.onSurface : Colors.transparent,
+                border: count > 0
+                    ? null
+                    : Border.all(color: BrdyColors.onSurfaceMuted, width: 1),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              'PUTTS',
+              style: GoogleFonts.sometypeMono(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF4A4A4A),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: BrdySpacing.xs),
-        const SizedBox(height: 6), // dot placeholder to align with ButtonColumn
-        const SizedBox(height: BrdySpacing.xs),
         Container(
-          constraints: const BoxConstraints(minHeight: 80),
+          height: 76,
           decoration: BoxDecoration(
             color: BrdyColors.surface,
             borderRadius: BorderRadius.circular(8),
@@ -512,11 +562,7 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
         : widget.isBirdie
             ? BrdyColors.accent
             : BrdyColors.surface;
-    final Color textColor = widget.isEagle
-        ? BrdyColors.background
-        : widget.isBirdie
-            ? BrdyColors.onAccent
-            : BrdyColors.onSurface;
+    final Color textColor = Colors.white;
     final String abbrev = widget.isEagle ? 'EGL' : 'BIR';
     final String label = widget.isEagle ? 'EAGLE' : 'BIRDY';
     final Color dotColor =
@@ -525,24 +571,28 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          abbrev,
-          style: GoogleFonts.sometypeMono(
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF4A4A4A),
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: BrdySpacing.xs),
-        Container(
-          width: 6,
-          height: 6,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: isActiveAny ? dotColor : Colors.transparent,
-            border: isActiveAny ? null : Border.all(color: dotColor, width: 1),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isActiveAny ? dotColor : Colors.transparent,
+                border: isActiveAny ? null : Border.all(color: dotColor, width: 1),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              abbrev,
+              style: GoogleFonts.sometypeMono(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF4A4A4A),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: BrdySpacing.xs),
         Semantics(
@@ -555,11 +605,8 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
             onTapDown: (_) => setState(() => _pressing = true),
             onTapUp: (_) => setState(() => _pressing = false),
             onTapCancel: () => setState(() => _pressing = false),
-            child: Container(
-              constraints:
-                  const BoxConstraints(minWidth: 64, minHeight: 80),
+            child: DecoratedBox(
               decoration: BoxDecoration(
-                color: fill,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -569,16 +616,32 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
                   ),
                 ],
               ),
-              alignment: Alignment.topCenter,
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                label,
-                style: GoogleFonts.sometypeMono(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: textColor,
+              child: SizedBox(
+                height: 80,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/btn_birdie.svg',
+                      fit: BoxFit.fill,
+                    ),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          label,
+                          style: GoogleFonts.sometypeMono(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: textColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.center,
               ),
             )
                 .animate(target: _pressing ? 1 : 0)
@@ -619,18 +682,31 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'HLE',
-          style: GoogleFonts.sometypeMono(
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF4A4A4A),
-          ),
-          textAlign: TextAlign.center,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: widget.hasOutcome ? BrdyColors.accent : Colors.transparent,
+                border: widget.hasOutcome
+                    ? null
+                    : Border.all(color: BrdyColors.accent, width: 1),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              'HLE',
+              style: GoogleFonts.sometypeMono(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF4A4A4A),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: BrdySpacing.xs),
-        // No dot for NEXT
-        const SizedBox(height: 6),
         const SizedBox(height: BrdySpacing.xs),
         Semantics(
           label: 'ADVANCE TO NEXT HOLE',
@@ -656,11 +732,8 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
               borderRadius: BorderRadius.circular(8),
               child: Opacity(
                 opacity: widget.hasOutcome ? 1.0 : 0.4,
-                child: Container(
-                  constraints:
-                      const BoxConstraints(minWidth: 64, minHeight: 80),
+                child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: BrdyColors.accent,
                     borderRadius: BorderRadius.circular(8),
                     boxShadow: [
                       BoxShadow(
@@ -670,16 +743,32 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
                       ),
                     ],
                   ),
-                  alignment: Alignment.topCenter,
-              padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    'NEXT',
-                    style: GoogleFonts.sometypeMono(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: BrdyColors.onAccent,
+                  child: SizedBox(
+                    height: 80,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/btn_bogey.svg',
+                          fit: BoxFit.fill,
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              'NEXT',
+                              style: GoogleFonts.sometypeMono(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 )
                     .animate(target: _pressing ? 1 : 0)

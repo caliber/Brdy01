@@ -30,7 +30,7 @@ class _CourseCardState extends ConsumerState<CourseCard> {
                 color: BrdyColors.surface,
                 border: Border.all(color: BrdyColors.accent, width: 1),
               ),
-              padding: const EdgeInsets.all(BrdySpacing.md),
+              padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md, vertical: BrdySpacing.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -40,14 +40,13 @@ class _CourseCardState extends ConsumerState<CourseCard> {
                           color: BrdyColors.accent,
                         ),
                   ),
-                  const SizedBox(height: BrdySpacing.xs),
                   Text(
                     'PAR ${course.par}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: BrdyColors.onSurfaceMuted,
                         ),
                   ),
-                  const SizedBox(height: BrdySpacing.sm),
+                  const SizedBox(height: BrdySpacing.xs),
                   Row(
                     children: [
                       Expanded(

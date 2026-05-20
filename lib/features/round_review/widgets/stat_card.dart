@@ -30,6 +30,7 @@ class StatCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             label,
@@ -40,12 +41,14 @@ class StatCard extends StatelessWidget {
               letterSpacing: 1.2,
             ),
           ),
+          const SizedBox(height: 4),
           Text(
             value,
             style: GoogleFonts.sometypeMono(
-              fontSize: 20,
+              fontSize: 48,
               fontWeight: FontWeight.w700,
               color: BrdyColors.onSurface,
+              height: 1.0,
             ),
           ),
         ],
