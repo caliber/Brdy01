@@ -771,22 +771,16 @@ flutter run -d <wearDeviceId> watch/
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Release keystore availability**
-   - What we know: Phone app currently uses debug signing. Data Layer pairing requires matching release keys.
-   - What's unclear: Is a release keystore already created for BRDY.01, or does it need to be generated?
-   - Recommendation: Confirm before writing any Kotlin. If not created: `keytool -genkey -v -keystore brdy01-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias brdy01`. Store outside the git repo.
+1. **Release keystore availability** — RESOLVED
+   - No release keystore exists yet. Plan 04-01 Task 1 documents the `keytool` command and creates `android/key.properties.example`. The developer generates the keystore once before executing the phase. Stored outside the git repo.
 
-2. **Round ID communication to watch**
-   - What we know: `HoleScoreNotifier` takes `roundId` as a parameter. Watch score submissions must include the active `roundId`.
-   - What's unclear: How does the watch know the active `roundId` if the golfer starts a new round while the watch app is in ambient mode?
-   - Recommendation: Phone pushes `roundId` as part of the `/brdy/hole` DataItem. Watch stores last-seen `roundId` in SharedPreferences. On reconnect, phone re-pushes current state.
+2. **Round ID communication to watch** — RESOLVED
+   - Phone pushes `roundId` inside the `/brdy/hole` DataItem on every hole advance and on screen init. Watch stores the last-seen `roundId` in SharedPreferences and includes it in every `/brdy/score` DataItem. On reconnect, `WearDataBridgeService` (phone) re-pushes current hole state. Plan 04-01 Task 3 and Plan 04-04 Task 1 implement this.
 
-3. **Multi-score arrival ordering**
-   - What we know: DataItems with different paths arrive in no guaranteed order.
-   - What's unclear: If the golfer taps BIRDIE on hole 5 then immediately BOGEY on hole 5 (undo flow), which DataItem wins on the phone?
-   - Recommendation: Include `timestamp` in each DataItem. Phone takes the most-recent timestamp for a given holeNumber when multiple score DataItems for the same hole arrive.
+3. **Multi-score arrival ordering** — RESOLVED
+   - Each score DataItem path includes a millisecond timestamp: `/brdy/score/{holeNumber}-{timestamp}`. Phone-side `WearDataBridgeService.onDataChanged()` tracks the highest timestamp per `holeNumber` and drops out-of-order arrivals. Plan 04-01 Task 3a implements this dedup window (2 s).
 
 ---
 

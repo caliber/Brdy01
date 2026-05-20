@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation + Setup** - User can load a course and start a round
 - [x] **Phase 2: Shot Capture** - User can score a full 18-hole round
 - [x] **Phase 3: Round Review** - User can see their scorecard and stats
-- [ ] **Phase 4: Wear OS** - User can score from the watch *(skipped — deferred)*
+- [ ] **Phase 4: Wear OS** - User can score from the watch
 - [x] **Phase 5: GPS + Voice Polish** - GPS pins, voice, and edge-case hardening (completed 2026-05-19)
 - [x] **Phase 6: Round History** - User can browse, view and delete past rounds (completed 2026-05-20)
 - [x] **Phase 7: Stats & Trends** - User can see handicap trend and stats over time (completed 2026-05-20)
@@ -118,7 +118,7 @@ Phases execute in numeric order: 1 → 2 → 3 → (4 deferred) → 5 → 6 → 
 | 1. Foundation + Setup | 5/5 | ✅ Complete | 2026-05-17 |
 | 2. Shot Capture | 3/3 | ✅ Complete | 2026-05-17 |
 | 3. Round Review | 3/3 | ✅ Complete | 2026-05-18 |
-| 4. Wear OS | 0/TBD | ⏸ Deferred | - |
+| 4. Wear OS | 0/4 | 📋 Planned | - |
 | 5. GPS + Voice Polish | 3/3 | ✅ Complete | 2026-05-19 |
 | 6. Round History | 3/3 | ✅ Complete | 2026-05-20 |
 | 7. Stats & Trends | 2/2 | ✅ Complete | 2026-05-20 |
