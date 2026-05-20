@@ -10,6 +10,7 @@ import '../providers/active_hole_index_provider.dart';
 import '../providers/course_for_round_provider.dart';
 import '../providers/hole_list_provider.dart';
 import '../providers/hole_score_notifier.dart';
+import '../providers/last_scored_outcome_provider.dart';
 import 'score_bar.dart';
 
 class HoleHeader extends ConsumerWidget {
@@ -55,17 +56,17 @@ class HoleHeader extends ConsumerWidget {
     final String courseInfoLine1;
     final String courseInfoLine2;
     if (course == null) {
-      courseInfoLine1 = '— PAR —';
-      courseInfoLine2 = 'HCP —';
+      courseInfoLine1 = '—';
+      courseInfoLine2 = 'PAR — · HCP —';
     } else {
-      final name = course.clubName;
-      final truncated = name.length > 16 ? '${name.substring(0, 16)}…' : name;
-      courseInfoLine1 = '$truncated PAR ${course.par}';
-      courseInfoLine2 = 'HCP ${course.slope ?? '—'}';
+      courseInfoLine1 = course.clubName;
+      courseInfoLine2 = 'PAR ${course.par} · HCP ${course.slope ?? '—'}';
     }
 
     final holePar = holeModel?.par;
     final holeSi = holeModel?.strokeIndex;
+
+    final flashOutcome = ref.watch(lastScoredOutcomeProvider(roundId));
 
     final currentHoleState = ref.watch(
       holeScoreNotifierProvider(roundId, holeIndex),
@@ -97,20 +98,35 @@ class HoleHeader extends ConsumerWidget {
         children: [
           // ── Course info row ──────────────────────────────────────
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(courseInfoLine1.toUpperCase(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      courseInfoLine1.toUpperCase(),
                       style: GoogleFonts.sometypeMono(
-                          fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted)),
-                  const SizedBox(height: 2),
-                  Text(courseInfoLine2.toUpperCase(),
-                      style: GoogleFonts.sometypeMono(
-                          fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted)),
-                ],
+                          fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted),
+                      maxLines: 2,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Transform.translate(
+                      offset: const Offset(0, -6),
+                      child: Text(
+                        courseInfoLine2.toUpperCase(),
+                        style: GoogleFonts.sometypeMono(
+                            fontSize: 13, fontWeight: FontWeight.w700, color: BrdyColors.onSurfaceMuted),
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.clip,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: BrdySpacing.md),
               Row(
                 children: [
                   _pill(parLabel),
@@ -194,7 +210,29 @@ class HoleHeader extends ConsumerWidget {
                               fontWeight: FontWeight.w700,
                               color: BrdyColors.onSurface,
                             ),
-                          ),
+                          )
+                              .animate(key: ValueKey(flashOutcome))
+                              .tint(
+                                color: _outcomeFlashColor(flashOutcome),
+                                end: flashOutcome != null ? 0.4 : 0.0,
+                                duration: 300.ms,
+                                curve: Curves.easeOut,
+                              )
+                              .then()
+                              .tint(
+                                color: _outcomeFlashColor(flashOutcome),
+                                begin: flashOutcome != null ? 0.4 : 0.0,
+                                end: 0.0,
+                                duration: 200.ms,
+                              )
+                              .callback(
+                                callback: (_) {
+                                  ref
+                                      .read(lastScoredOutcomeProvider(roundId)
+                                          .notifier)
+                                      .set(null);
+                                },
+                              ),
                           Positioned(
                             right: -30,
                             top: 20,
@@ -243,6 +281,16 @@ class HoleHeader extends ConsumerWidget {
       ),
     );
   }
+
+  static Color _outcomeFlashColor(HoleOutcome? outcome) => switch (outcome) {
+    HoleOutcome.eagle       => const Color(0xFFFFD700),
+    HoleOutcome.birdie      => BrdyColors.accent,
+    HoleOutcome.par         => const Color(0xFF1F82B4),
+    HoleOutcome.bogey       => const Color(0xFFF3490E),
+    HoleOutcome.doubleBogey => BrdyColors.destructive,
+    HoleOutcome.pickup      => BrdyColors.destructive,
+    null                    => Colors.transparent,
+  };
 
   Widget _pill(String text, {double fontSize = 13}) {
     return Container(

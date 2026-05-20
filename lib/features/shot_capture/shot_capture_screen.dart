@@ -15,6 +15,7 @@ import '../../domain/models/course_model.dart';
 import '../../theme/brdy_colors.dart';
 import '../../theme/brdy_spacing.dart';
 import 'providers/active_hole_index_provider.dart';
+import 'providers/last_scored_outcome_provider.dart';
 import 'providers/course_for_round_provider.dart';
 import 'providers/highest_scored_hole_index_provider.dart';
 import 'providers/hole_score_notifier.dart';
@@ -282,6 +283,8 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
           .roundDao
           .completeRound(widget.roundId, DateTime.now());
     }
+
+    ref.read(lastScoredOutcomeProvider(widget.roundId).notifier).set(outcome);
 
     if (!mounted) return;
     _showUndoToast(context, outcome, holeIndex + 1);
