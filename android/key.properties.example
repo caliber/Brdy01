@@ -1,0 +1,22 @@
+# BRDY Release Keystore Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+# Copy this file to key.properties (which is gitignored) and fill in real values.
+#
+# ONE-TIME SETUP — run this command to generate the keystore:
+#
+#   keytool -genkey -v \
+#     -keystore ~/brdy-release.jks \
+#     -keyalg RSA -keysize 2048 \
+#     -validity 10000 \
+#     -alias brdy
+#
+# IMPORTANT: The phone APK and watch APK must be signed by the same key for
+# Wear OS Data Layer pairing to work. Debug signing is insufficient.
+#
+# Store the generated .jks file somewhere safe (NOT inside this repo).
+# ─────────────────────────────────────────────────────────────────────────────
+
+storePassword=<your-keystore-password>
+keyPassword=<your-key-password>
+keyAlias=brdy
+storeFile=/Users/<you>/brdy-release.jks
