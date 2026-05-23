@@ -19,9 +19,9 @@ class CourseSearchField extends ConsumerWidget {
       children: [
         TextField(
           controller: controller,
-          style: Theme.of(context).textTheme.labelLarge,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 16),
           decoration: InputDecoration(
-            labelText: 'SEARCH COURSES',
+            hintText: 'SEARCH FOR NEARBY COURSES',
             prefixIcon: Icon(
               Icons.search,
               size: 20,

@@ -46,7 +46,6 @@ class ScorecardTable extends ConsumerWidget {
   }
 
   TableRow _buildHoleRow(BuildContext context, HoleRow row) {
-    // Alternate backgrounds: odd hole numbers get surface, even get background.
     final isOdd = row.holeNumber % 2 == 1;
     final bgColor = isOdd ? context.brdyColors.background : context.brdyColors.surface;
 
@@ -55,7 +54,6 @@ class ScorecardTable extends ConsumerWidget {
       color: context.brdyColors.onSurface,
     );
 
-    // Outcome text style — coloured, with underline only for bogey (+1).
     final outcomeBogey = row.outcomeAbbr == '+1';
     final outcomeStyle = GoogleFonts.sometypeMono(
       fontSize: 14,
@@ -118,7 +116,6 @@ class ScorecardTable extends ConsumerWidget {
         ),
       ),
       children: [
-        // HOLE column: show label
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: BrdySpacing.sm,
@@ -126,9 +123,7 @@ class ScorecardTable extends ConsumerWidget {
           ),
           child: Text(subtotal.label, style: labelStyle, softWrap: false, overflow: TextOverflow.clip),
         ),
-        // PAR column: empty
         const SizedBox.shrink(),
-        // OUTCOME column: show total strokes + score-to-par suffix
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: BrdySpacing.sm,
@@ -143,7 +138,6 @@ class ScorecardTable extends ConsumerWidget {
             ],
           ),
         ),
-        // PUTTS column: empty
         const SizedBox.shrink(),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,99 +57,211 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Fire haptic + trigger tile pre-cache when a course loads
     ref.listen(selectedCourseProvider, (prev, next) {
       final wasNull = prev?.valueOrNull == null;
       final nowLoaded = next.valueOrNull;
       if (wasNull && nowLoaded != null) {
         HapticFeedback.lightImpact();
-        ref
-            .read(tileCacheProgressProvider.notifier)
-            .start(nowLoaded.holes);
+        ref.read(tileCacheProgressProvider.notifier).start(nowLoaded.holes);
       }
     });
 
     return Scaffold(
-      body: Container(
-        color: Colors.black,
-        child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Gap(BrdySpacing.sm),
-              Transform.translate(
-                offset: const Offset(-19, 0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SvgPicture.asset(
-                    'assets/images/brdy_logo.svg',
-                    height: MediaQuery.of(context).size.height * 0.15,
-                  ),
-                ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background: same gradient + texture used in the score screen bottom zone
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFE5E0DE), Color(0xFF8E8C8A)],
               ),
-              const Gap(BrdySpacing.sm),
-              const HandicapInput(),
-              const Gap(BrdySpacing.md),
-              CourseSearchField(controller: _searchController),
-              const Gap(BrdySpacing.sm),
-              Expanded(
-                child: ref.watch(selectedCourseProvider).maybeWhen(
-                      data: (course) => course != null
-                          ? const CourseCard()
-                          : _SearchResultsList(
+            ),
+          ),
+          SafeArea(
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Gap(50),
+
+                  // ── App icon card ───────────────────────────────────────────
+                  const _AppIconCard(),
+
+                  const Gap(25),
+
+                  // ── BRDY.01: SETUP heading ──────────────────────────────────
+                  Text(
+                    'BRDY.01:  SETUP',
+                    style: GoogleFonts.sometypeMono(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -1.5,
+                      color: const Color(0xFF0A0A0A),
+                    ),
+                  ),
+                  const Gap(8),
+                  const Divider(
+                    color: Color(0x40535150),
+                    thickness: 1,
+                    height: 1,
+                  ),
+
+                  const Gap(BrdySpacing.md),
+
+                  // ── Handicap section ────────────────────────────────────────
+                  const _SectionLabel(
+                    text: 'YOUR HANDICAP',
+                    dotColor: BrdyColors.accent,
+                  ),
+                  const Gap(BrdySpacing.xs),
+                  const HandicapInput(),
+
+                  const Gap(BrdySpacing.md),
+
+                  // ── Course section ──────────────────────────────────────────
+                  _SectionLabel(
+                    text: 'LOAD COURSE',
+                    dotColor: context.brdyColors.onSurfaceMuted,
+                  ),
+                  const Gap(BrdySpacing.xs),
+                  CourseSearchField(controller: _searchController),
+
+                  const Gap(BrdySpacing.sm),
+
+                  // ── Course results / card ───────────────────────────────────
+                  ref.watch(selectedCourseProvider).maybeWhen(
+                    data: (course) => course != null
+                        ? const CourseCard()
+                        : ConstrainedBox(
+                            constraints: const BoxConstraints(maxHeight: 220),
+                            child: _SearchResultsList(
                               searchController: _searchController,
                             ),
-                      orElse: () => _SearchResultsList(
+                          ),
+                    orElse: () => ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 220),
+                      child: _SearchResultsList(
                         searchController: _searchController,
                       ),
                     ),
-              ),
-              const TileCacheProgress(),
-              const Gap(BrdySpacing.md),
-              const _StartRoundButton(),
-              const Gap(BrdySpacing.sm),
-              OutlinedButton(
-                onPressed: () => context.push('/stats'),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: context.brdyColors.divider),
-                  minimumSize: const Size.fromHeight(48),
-                ),
-                child: Text(
-                  'STATS',
-                  style: GoogleFonts.sometypeMono(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: context.brdyColors.onSurfaceMuted,
                   ),
-                ),
-              ),
-              const Gap(BrdySpacing.sm),
-              OutlinedButton(
-                onPressed: () => context.push('/round-history'),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: context.brdyColors.divider),
-                  minimumSize: const Size.fromHeight(48),
-                ),
-                child: Text(
-                  'ROUND HISTORY',
-                  style: GoogleFonts.sometypeMono(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: context.brdyColors.onSurfaceMuted,
+
+                  const TileCacheProgress(),
+                  const Gap(40),
+
+                  // ── Action row: STATS · ROUND HISTORY · START ROUND ─────────
+                  _ActionRow(
+                    onStatsTap: () => context.push('/stats'),
+                    onHistoryTap: () => context.push('/round-history'),
                   ),
-                ),
+
+                  const Gap(BrdySpacing.sm),
+                ],
               ),
-              const Gap(BrdySpacing.sm),
-            ],
+            ),
+            ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── App icon card ──────────────────────────────────────────────────────────────
+
+class _AppIconCard extends StatelessWidget {
+  const _AppIconCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: 90,
+        height: 90,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
         ),
+        child: Stack(
+          children: [
+            // B — always perfectly centred, unaffected by 01
+            Center(
+              child: Text(
+                'B',
+                style: GoogleFonts.sometypeMono(
+                  fontSize: 68,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black,
+                  height: 1.0,
+                ),
+              ),
+            ),
+            // 01 — independent position, tight kerning
+            const Positioned(
+              top: 18,
+              right: 11,
+              child: Text(
+                '01',
+                style: TextStyle(
+                  fontFamily: 'SometypeMono',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: -1.0,
+                  color: BrdyColors.accent,
+                  height: 1.0,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+// ── Section label with coloured dot ───────────────────────────────────────────
+
+class _SectionLabel extends StatelessWidget {
+  final String text;
+  final Color dotColor;
+
+  const _SectionLabel({required this.text, required this.dotColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: dotColor,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: GoogleFonts.sometypeMono(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+            color: const Color(0xFF535150),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Search results list ────────────────────────────────────────────────────────
 
 class _SearchResultsList extends ConsumerWidget {
   final TextEditingController searchController;
@@ -203,104 +316,195 @@ class _SearchResultsList extends ConsumerWidget {
   }
 }
 
-class _StartRoundButton extends ConsumerWidget {
-  const _StartRoundButton();
+// ── Action row: STATS · ROUND HISTORY · START ROUND ───────────────────────────
+
+class _ActionRow extends ConsumerWidget {
+  final VoidCallback onStatsTap;
+  final VoidCallback onHistoryTap;
+
+  const _ActionRow({required this.onStatsTap, required this.onHistoryTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final course = ref.watch(selectedCourseProvider).valueOrNull;
     final roundSetupAsync = ref.watch(roundSetupNotifierProvider);
     final isLoading = roundSetupAsync.isLoading;
-    final isEnabled = course != null && !isLoading;
+    final isStartEnabled = course != null && !isLoading;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: FractionallySizedBox(
-            widthFactor: 0.25,
-            child: Opacity(
-          opacity: isEnabled ? 1.0 : 0.4,
-          child: GestureDetector(
-            onTap: isEnabled
-                ? () async {
-                    await HapticFeedback.mediumImpact();
-                    final handicap =
-                        ref.read(hivePlayerPrefsProvider).handicapIndex ?? 0.0;
-                    try {
-                      final roundId = await ref
-                          .read(roundSetupNotifierProvider.notifier)
-                          .createRound(course, handicap);
-                      if (!context.mounted) return;
-                      context.go('/shot-capture/$roundId');
-                    } catch (e) {
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
-                              'Could not load course details. Tap to retry.'),
-                          backgroundColor: context.brdyColors.surface,
-                          duration: const Duration(seconds: 6),
-                        ),
-                      );
-                    }
-                  }
-                : null,
-            child: SizedBox(
-              height: 80,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/btn_bogey.svg',
-                    fit: BoxFit.fill,
-                  ),
-                  isLoading
-                      ? const Center(
-                          child: SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
-                      : Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                              'LOAD',
-                              style: GoogleFonts.sometypeMono(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            // Match NEXT button: 1/4 of row width, square (SVG is 81×81)
+            final btnWidth = (constraints.maxWidth - 3 * BrdySpacing.xs) / 4;
+            return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: btnWidth,
+              child: _ActionButton(
+                label: 'STATS',
+                svg: 'assets/images/btn_charcoal.svg',
+                height: btnWidth,
+                onTap: onStatsTap,
               ),
             ),
-          ),
-          ),
-          ),
+            const SizedBox(width: BrdySpacing.xs),
+            SizedBox(
+              width: btnWidth,
+              child: _ActionButton(
+                label: 'HISTORY',
+                svg: 'assets/images/btn_charcoal.svg',
+                height: btnWidth,
+                onTap: onHistoryTap,
+              ),
+            ),
+            const SizedBox(width: BrdySpacing.xs),
+            // START — orange (same as bogey/next)
+            SizedBox(
+              width: btnWidth,
+              child: Opacity(
+                opacity: isStartEnabled ? 1.0 : 0.35,
+                child: _ActionButton(
+                  label: isLoading ? '' : 'START',
+                  svg: 'assets/images/btn_bogey.svg',
+                  height: btnWidth,
+                  onTap: isStartEnabled
+                      ? () async {
+                          await HapticFeedback.mediumImpact();
+                          final handicap = ref
+                                  .read(hivePlayerPrefsProvider)
+                                  .handicapIndex ??
+                              0.0;
+                          try {
+                            final roundId = await ref
+                                .read(roundSetupNotifierProvider.notifier)
+                                .createRound(course, handicap);
+                            if (!context.mounted) return;
+                            context.go('/shot-capture/$roundId');
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text(
+                                    'Could not load course details. Tap to retry.'),
+                                backgroundColor: context.brdyColors.surface,
+                                duration: const Duration(seconds: 6),
+                              ),
+                            );
+                          }
+                        }
+                      : null,
+                  loadingChild: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            ),
+          ],
+            );
+          },
         ),
         if (course == null) ...[
           const Gap(BrdySpacing.xs),
           Text(
             'Search and select a course to start',
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: context.brdyColors.onSurfaceMuted),
+            style: GoogleFonts.sometypeMono(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF535150),
+            ),
             textAlign: TextAlign.center,
           ),
         ],
       ],
+    );
+  }
+}
+
+// ── Shared action button — matches score screen _ButtonColumn exactly ──────────
+
+class _ActionButton extends StatefulWidget {
+  final String label;
+  final String svg;
+  final double height;
+  final VoidCallback? onTap;
+  final Widget? loadingChild;
+
+  const _ActionButton({
+    required this.label,
+    required this.svg,
+    this.height = 80,
+    this.onTap,
+    this.loadingChild,
+  });
+
+  @override
+  State<_ActionButton> createState() => _ActionButtonState();
+}
+
+class _ActionButtonState extends State<_ActionButton> {
+  bool _pressing = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressing = true),
+      onTapUp: (_) {
+        setState(() => _pressing = false);
+        widget.onTap?.call();
+      },
+      onTapCancel: () => setState(() => _pressing = false),
+      child: AnimatedScale(
+        scale: _pressing ? 0.95 : 1.0,
+        duration: const Duration(milliseconds: 80),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.4),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: SizedBox(
+            height: widget.height,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                SvgPicture.asset(widget.svg, fit: BoxFit.fill),
+                widget.loadingChild != null
+                    ? Center(child: widget.loadingChild)
+                    : Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            widget.label,
+                            style: GoogleFonts.sometypeMono(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

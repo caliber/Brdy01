@@ -129,7 +129,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
       if (prev != next) _pushCurrentHoleState();
     });
 
-    final topHeight = MediaQuery.of(context).size.height * 0.36;
+    final topHeight = MediaQuery.of(context).size.height * 0.36 - 40;
 
     return Scaffold(
       backgroundColor: context.brdyColors.background,
@@ -141,7 +141,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
               top: 0,
               left: 0,
               right: 0,
-              height: topHeight + 133 + 1, // top zone + max overlay + divider
+              height: topHeight + 91 + 1, // top zone + max overlay + divider
               child: SvgPicture.asset(
                 'assets/images/DisplayBK.svg',
                 fit: BoxFit.fill,
@@ -179,6 +179,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                 onOutcomeTapped: _handleOutcomeTapped,
                 onNextTapped: _handleNext,
                 onVoiceTapped: _voiceAvailable ? _toggleVoice : null,
+                onExitTapped: _handleExitRound,
               ))),
           ],
         ),
@@ -359,6 +360,55 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
     // matching the tap-scoring behavior in OutcomeButtonGrid.
   }
 
+  Future<void> _handleExitRound() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: context.brdyColors.surface,
+        title: Text(
+          'EXIT ROUND',
+          style: GoogleFonts.sometypeMono(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: context.brdyColors.onSurface,
+          ),
+        ),
+        content: Text(
+          'Your progress is saved. You can resume this round later.',
+          style: GoogleFonts.sometypeMono(
+            fontSize: 13,
+            color: context.brdyColors.onSurfaceMuted,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(
+              'CANCEL',
+              style: GoogleFonts.sometypeMono(
+                color: context.brdyColors.onSurfaceMuted,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(
+              'EXIT',
+              style: GoogleFonts.sometypeMono(
+                color: context.brdyColors.destructive,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && mounted) {
+      context.go('/round-review/${widget.roundId}');
+    }
+  }
+
   Future<void> _handleNext() async {
     await HapticFeedback.lightImpact();
     final hi = ref.read(activeHoleIndexProvider);
@@ -484,6 +534,7 @@ class _BottomZone extends StatelessWidget {
   final void Function(HoleOutcome, int, int?) onOutcomeTapped;
   final void Function() onNextTapped;
   final void Function()? onVoiceTapped;
+  final void Function()? onExitTapped;
 
   const _BottomZone({
     required this.roundId,
@@ -495,6 +546,7 @@ class _BottomZone extends StatelessWidget {
     required this.onOutcomeTapped,
     required this.onNextTapped,
     this.onVoiceTapped,
+    this.onExitTapped,
   });
 
   @override
@@ -513,16 +565,21 @@ class _BottomZone extends StatelessWidget {
           // Background image on top of gradient
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bk.png',
+              'assets/images/bk.jpg',
               fit: BoxFit.cover,
             ),
           ),
-          Padding(
-        padding: const EdgeInsets.fromLTRB(BrdySpacing.md, 0, BrdySpacing.md, BrdySpacing.sm),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+            Expanded(
+              child: Padding(
+              padding: const EdgeInsets.fromLTRB(BrdySpacing.md, 0, BrdySpacing.md, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
             const Gap(BrdySpacing.sm + 15),
             // BRDY.01 wordmark rule
             Row(
@@ -602,16 +659,23 @@ class _BottomZone extends StatelessWidget {
               onNextTapped: onNextTapped,
             ),
             const Gap(BrdySpacing.md),
-            FairwayGirToggles(
-              roundId: roundId,
-              holeIndex: holeIndex,
-              holePar: holePar,
-              onVoiceTapped: onVoiceTapped,
-              voicePartialText: voicePartialText,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: FairwayGirToggles(
+                roundId: roundId,
+                holeIndex: holeIndex,
+                holePar: holePar,
+                onVoiceTapped: onVoiceTapped,
+                onExitTapped: onExitTapped,
+                voicePartialText: voicePartialText,
+              ),
+            ),
+                ],
+              ),
+            ),
             ),
           ],
         ),
-      ),
         ],
       ),
     );

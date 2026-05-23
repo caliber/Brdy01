@@ -35,11 +35,15 @@ abstract final class BrdyTheme {
       filled: true,
       fillColor: c.surface,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.zero,
+        borderRadius: BorderRadius.circular(4),
+        borderSide: BorderSide(color: c.divider, width: 1),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
         borderSide: BorderSide(color: c.divider, width: 1),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.zero,
+        borderRadius: BorderRadius.circular(4),
         borderSide: BorderSide(color: c.accent, width: 2),
       ),
     ),

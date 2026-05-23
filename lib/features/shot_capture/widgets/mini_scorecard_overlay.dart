@@ -38,7 +38,7 @@ class MiniScorecardOverlay extends ConsumerWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
-      height: isOpen ? 132 : 0,
+      height: isOpen ? 90 : 0,
       color: context.brdyColors.surface,
       child: isOpen ? _buildContent(context, ref, activeHoleIndex, highestScoredIndex, outcomeByHole) : const SizedBox.shrink(),
     );

@@ -52,9 +52,12 @@ class _RoundReviewScreenState extends ConsumerState<RoundReviewScreen> {
                 delegate: _ScorecardHeaderDelegate(),
               ),
               SliverToBoxAdapter(
-                child: RepaintBoundary(
-                  key: _screenshotKey,
-                  child: ScorecardTable(roundId: widget.roundId),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md),
+                  child: RepaintBoundary(
+                    key: _screenshotKey,
+                    child: ScorecardTable(roundId: widget.roundId),
+                  ),
                 ),
               ),
               SliverToBoxAdapter(
@@ -103,6 +106,7 @@ class _ScorecardHeaderDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       height: _height,
       color: context.brdyColors.surface,
+      padding: const EdgeInsets.symmetric(horizontal: BrdySpacing.md),
       child: Table(
         columnWidths: const {
           0: FixedColumnWidth(48), // HOLE

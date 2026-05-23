@@ -48,9 +48,8 @@ class _HandicapInputState extends ConsumerState<HandicapInput> {
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'^\d{0,2}(\.\d{0,1})?$')),
       ],
-      style: Theme.of(context).textTheme.labelLarge,
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 16),
       decoration: InputDecoration(
-        labelText: 'HANDICAP INDEX',
         hintText: '0.0',
         hintStyle: Theme.of(context)
             .textTheme

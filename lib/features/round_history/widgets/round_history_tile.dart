@@ -97,7 +97,7 @@ class RoundHistoryTile extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      round.courseName,
+                      round.courseName.toUpperCase(),
                       style: GoogleFonts.sometypeMono(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,

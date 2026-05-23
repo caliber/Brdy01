@@ -557,7 +557,7 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
   @override
   Widget build(BuildContext context) {
     final bool isActiveAny = widget.isEagle || widget.isBirdie;
-    final Color textColor = Colors.white;
+    const Color textColor = Colors.white;
     final String abbrev = widget.isEagle ? 'EGL' : 'BIR';
     final String label = widget.isEagle ? 'EAGLE' : 'BIRDY';
     final Color dotColor =
