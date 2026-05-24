@@ -8,6 +8,7 @@ import '../../../domain/enums/hole_outcome.dart';
 import '../../../theme/brdy_colors.dart';
 import '../../../theme/brdy_spacing.dart';
 import '../providers/hole_score_notifier.dart';
+import 'fairway_gir_toggles.dart';
 
 class OutcomeButtonGrid extends ConsumerWidget {
   final int roundId;
@@ -16,6 +17,9 @@ class OutcomeButtonGrid extends ConsumerWidget {
   final int? holeStrokeIndex;
   final void Function(HoleOutcome outcome, int par, int? si) onOutcomeTapped;
   final void Function() onNextTapped;
+  final void Function()? onVoiceTapped;
+  final void Function()? onExitTapped;
+  final String voicePartialText;
 
   const OutcomeButtonGrid({
     super.key,
@@ -25,6 +29,9 @@ class OutcomeButtonGrid extends ConsumerWidget {
     required this.holeStrokeIndex,
     required this.onOutcomeTapped,
     required this.onNextTapped,
+    this.onVoiceTapped,
+    this.onExitTapped,
+    this.voicePartialText = '',
   });
 
   @override
@@ -181,7 +188,15 @@ class OutcomeButtonGrid extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 80),
+        FairwayGirToggles(
+          roundId: roundId,
+          holeIndex: holeIndex,
+          holePar: holePar,
+          onVoiceTapped: onVoiceTapped,
+          onExitTapped: onExitTapped,
+          voicePartialText: voicePartialText,
+        ),
       ],
     );
   }

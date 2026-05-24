@@ -94,8 +94,8 @@ class VoiceService {
           _setListening(false);
         }
       },
-      listenFor: const Duration(seconds: 10),
-      pauseFor: const Duration(seconds: 2),
+      listenFor: const Duration(seconds: 30),
+      pauseFor: const Duration(seconds: 5),
       localeId: 'en_AU', // Closest to NZ accent, better match than en_US
       listenOptions: SpeechListenOptions(cancelOnError: false), // Don't cancel on no_match
     );

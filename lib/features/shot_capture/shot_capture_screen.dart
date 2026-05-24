@@ -24,8 +24,9 @@ import 'providers/round_complete_provider.dart';
 import 'providers/voice_listening_provider.dart';
 import 'services/voice_service.dart';
 import 'services/wear_bridge_service.dart';
-import 'widgets/fairway_gir_toggles.dart';
+import 'widgets/fairway_gir_alternatives.dart';
 import 'widgets/hole_header.dart';
+import 'widgets/shot_slider_test.dart';
 import 'widgets/mini_scorecard_overlay.dart';
 import 'widgets/outcome_button_grid.dart';
 
@@ -524,7 +525,7 @@ class _TopZone extends StatelessWidget {
 
 // ── _BottomZone ────────────────────────────────────────────────────────────────
 
-class _BottomZone extends StatelessWidget {
+class _BottomZone extends StatefulWidget {
   final int roundId;
   final int holeIndex;
   final int holePar;
@@ -550,7 +551,49 @@ class _BottomZone extends StatelessWidget {
   });
 
   @override
+  State<_BottomZone> createState() => _BottomZoneState();
+}
+
+class _BottomZoneState extends State<_BottomZone> {
+  late final PageController _pageController;
+  late final ValueNotifier<int> _pageNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _pageNotifier = ValueNotifier(0);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _pageNotifier.dispose();
+    super.dispose();
+  }
+
+  Widget _altLabel(BuildContext context, String text) => Text(
+    text,
+    style: GoogleFonts.sometypeMono(
+      fontSize: 9,
+      fontWeight: FontWeight.w700,
+      color: context.brdyColors.onSurfaceMuted,
+      letterSpacing: 0.5,
+    ),
+  );
+
+  @override
   Widget build(BuildContext context) {
+    final roundId = widget.roundId;
+    final holeIndex = widget.holeIndex;
+    final holePar = widget.holePar;
+    final holeStrokeIndex = widget.holeStrokeIndex;
+    final voiceAvailable = widget.voiceAvailable;
+    final voicePartialText = widget.voicePartialText;
+    final onOutcomeTapped = widget.onOutcomeTapped;
+    final onNextTapped = widget.onNextTapped;
+    final onVoiceTapped = widget.onVoiceTapped;
+    final onExitTapped = widget.onExitTapped;
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -650,24 +693,77 @@ class _BottomZone extends StatelessWidget {
                   ),
                 ),
               ),
-            OutcomeButtonGrid(
-              roundId: roundId,
-              holeIndex: holeIndex,
-              holePar: holePar,
-              holeStrokeIndex: holeStrokeIndex,
-              onOutcomeTapped: onOutcomeTapped,
-              onNextTapped: onNextTapped,
+            // ── Swipeable pages ─────────────────────────────────────────
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (i) => _pageNotifier.value = i,
+                children: [
+                  // Page 1: Classic outcome buttons (toggles embedded inside)
+                  SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: OutcomeButtonGrid(
+                      roundId: roundId,
+                      holeIndex: holeIndex,
+                      holePar: holePar,
+                      holeStrokeIndex: holeStrokeIndex,
+                      onOutcomeTapped: onOutcomeTapped,
+                      onNextTapped: onNextTapped,
+                      onVoiceTapped: onVoiceTapped,
+                      onExitTapped: onExitTapped,
+                      voicePartialText: voicePartialText,
+                    ),
+                  ),
+                  // Page 2: Stepper interface + 4 alternative controls
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ScoreVsParSlider(
+                          holePar: holePar,
+                          holeStrokeIndex: holeStrokeIndex,
+                          onOutcomeTapped: onOutcomeTapped,
+                        ),
+                        const Gap(BrdySpacing.sm),
+                        PuttStepper(
+                          roundId: roundId,
+                          holeIndex: holeIndex,
+                          holePar: holePar,
+                        ),
+                        const Gap(BrdySpacing.md),
+                        // ── Alt 1: Toggle switches
+                        _altLabel(context, '1 · TOGGLE SWITCHES'),
+                        const Gap(BrdySpacing.xs),
+                        FairwayToggleSwitches(
+                          roundId: roundId, holeIndex: holeIndex, holePar: holePar,
+                          onVoiceTapped: onVoiceTapped, onExitTapped: onExitTapped,
+                        ),
+                        const Gap(BrdySpacing.md),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const Gap(BrdySpacing.md),
+            // ── Page indicator ──────────────────────────────────────────
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2),
-              child: FairwayGirToggles(
-                roundId: roundId,
-                holeIndex: holeIndex,
-                holePar: holePar,
-                onVoiceTapped: onVoiceTapped,
-                onExitTapped: onExitTapped,
-                voicePartialText: voicePartialText,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: ValueListenableBuilder<int>(
+                valueListenable: _pageNotifier,
+                builder: (context, page, _) => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(2, (i) => AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    width: page == i ? 16 : 6,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: page == i
+                          ? context.brdyColors.onSurface
+                          : const Color(0xFFDDDDDD),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  )),
+                ),
               ),
             ),
                 ],
