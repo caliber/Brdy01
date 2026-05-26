@@ -133,22 +133,26 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
       if (prev != next) _pushCurrentHoleState();
     });
 
-    final topHeight = MediaQuery.of(context).size.height * 0.36 - 40;
+    final topHeight = MediaQuery.of(context).size.height * 0.34 - 50;
 
     return Scaffold(
       backgroundColor: context.brdyColors.background,
       body: SafeArea(
         child: Stack(
           children: [
-            // DisplayBK fills the entire dark top area (top zone + overlay + divider)
+            // DisplayBK fills the entire dark top area (top zone + overlay + divider).
+            // Solid colour behind the SVG covers the transparent zone in its viewBox.
             Positioned(
               top: 0,
               left: 0,
               right: 0,
               height: topHeight + 91 + 1, // top zone + max overlay + divider
-              child: SvgPicture.asset(
-                'assets/images/DisplayBK.svg',
-                fit: BoxFit.fill,
+              child: Container(
+                color: const Color(0xFF1A1A1A),
+                child: SvgPicture.asset(
+                  'assets/images/DisplayBK.svg',
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             // Main content column on top of the background
@@ -158,7 +162,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
                   child: SizedBox(
                     height: topHeight,
                     child: OverflowBox(
-                      maxHeight: topHeight + 30,
+                      maxHeight: topHeight + 50,
                       alignment: Alignment.topCenter,
                       child: _TopZone(
                         roundId: roundId,

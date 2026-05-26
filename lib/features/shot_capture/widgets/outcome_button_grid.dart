@@ -302,7 +302,7 @@ class _ButtonColumnState extends State<_ButtonColumn> {
                           child: Text(
                             widget.label,
                             style: GoogleFonts.sometypeMono(
-                              fontSize: 13,
+                              fontSize: 11,
                               fontWeight: FontWeight.w700,
                               color: widget.isActive
                                   ? widget.activeTextColor
@@ -526,7 +526,7 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
               child: Text(
                 widget.label,
                 style: GoogleFonts.sometypeMono(
-                  fontSize: 13,
+                  fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: widget.isEnabled
                       ? context.brdyColors.onSurface
@@ -645,7 +645,7 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
                           child: Text(
                             label,
                             style: GoogleFonts.sometypeMono(
-                              fontSize: 13,
+                              fontSize: 11,
                               fontWeight: FontWeight.w700,
                               color: textColor,
                             ),
@@ -772,7 +772,7 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
                               child: Text(
                                 'NEXT',
                                 style: GoogleFonts.sometypeMono(
-                                  fontSize: 13,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
                                 ),

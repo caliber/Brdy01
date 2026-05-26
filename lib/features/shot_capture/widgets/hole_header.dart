@@ -228,6 +228,7 @@ class HoleHeader extends ConsumerWidget {
                                 style: GoogleFonts.sometypeMono(
                                   fontSize: 100,
                                   fontWeight: FontWeight.w700,
+                                  height: 1.0,
                                   color: context.brdyColors.onSurface,
                                 ),
                               )
@@ -287,9 +288,7 @@ class HoleHeader extends ConsumerWidget {
                   ),
 
                   // SHOTS TAKEN total
-                  Transform.translate(
-                    offset: const Offset(0, -30),
-                    child: Text(
+                  Text(
                     'TOTAL SHOTS $totalShots',
                     style: GoogleFonts.sometypeMono(
                       fontSize: 20,
@@ -297,7 +296,6 @@ class HoleHeader extends ConsumerWidget {
                       color: context.brdyColors.onSurface,
                     ),
                     textAlign: TextAlign.center,
-                  ),
                   ),
                   // Voice partial text — shown below TOTAL SHOTS
                   if (voicePartialText.isNotEmpty)

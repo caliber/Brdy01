@@ -179,7 +179,7 @@ class _CtrlButton extends StatelessWidget {
                       child: Text(
                         stateLabel,
                         style: GoogleFonts.sometypeMono(
-                          fontSize: 12,
+                          fontSize: 10,
                           fontWeight: FontWeight.w700,
                           color: context.brdyColors.onSurface,
                         ),
