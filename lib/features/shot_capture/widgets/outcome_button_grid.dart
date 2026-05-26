@@ -188,14 +188,17 @@ class OutcomeButtonGrid extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: 80),
-        FairwayGirToggles(
-          roundId: roundId,
-          holeIndex: holeIndex,
-          holePar: holePar,
-          onVoiceTapped: onVoiceTapped,
-          onExitTapped: onExitTapped,
-          voicePartialText: voicePartialText,
+        const SizedBox(height: BrdySpacing.md),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: FairwayGirToggles(
+            roundId: roundId,
+            holeIndex: holeIndex,
+            holePar: holePar,
+            onVoiceTapped: onVoiceTapped,
+            onExitTapped: onExitTapped,
+            voicePartialText: voicePartialText,
+          ),
         ),
       ],
     );
@@ -273,43 +276,44 @@ class _ButtonColumnState extends State<_ButtonColumn> {
             onTap: widget.onTap,
             borderRadius: BorderRadius.circular(8),
             child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.4),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: SizedBox(
-                height: 80,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    SvgPicture.asset(
-                      widget.activeSvg,
-                      fit: BoxFit.fill,
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          widget.label,
-                          style: GoogleFonts.sometypeMono(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: widget.isActive
-                                ? widget.activeTextColor
-                                : context.brdyColors.onSurface,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x4D000000),
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
                     ),
                   ],
+                ),
+                child: SizedBox(
+                  height: 80,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      SvgPicture.asset(
+                        widget.activeSvg,
+                        fit: BoxFit.fill,
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            widget.label,
+                            style: GoogleFonts.sometypeMono(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: widget.isActive
+                                  ? widget.activeTextColor
+                                  : context.brdyColors.onSurface,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )
@@ -321,7 +325,6 @@ class _ButtonColumnState extends State<_ButtonColumn> {
                 )
                 .then()
                 .scale(end: const Offset(1, 1), duration: 80.ms),
-          ),
         ),
       ],
     );
@@ -381,7 +384,7 @@ class _PuttsCounter extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.4),
+                color: const Color(0x4D000000),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -512,7 +515,7 @@ class _PuttsButtonColumnState extends State<_PuttsButtonColumn> {
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.4),
+                    color: const Color(0x4D000000),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -616,43 +619,43 @@ class _BirdyButtonColumnState extends State<_BirdyButtonColumn> {
             onTapUp: (_) => setState(() => _pressing = false),
             onTapCancel: () => setState(() => _pressing = false),
             child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.4),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: SizedBox(
-                height: 80,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/btn_birdie.svg',
-                      fit: BoxFit.fill,
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          label,
-                          style: GoogleFonts.sometypeMono(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: textColor,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x4D000000),
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
                     ),
                   ],
                 ),
-              ),
+                child: SizedBox(
+                  height: 80,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/btn_birdie.svg',
+                        fit: BoxFit.fill,
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            label,
+                            style: GoogleFonts.sometypeMono(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: textColor,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             )
                 .animate(target: _pressing ? 1 : 0)
                 .scale(
@@ -743,44 +746,44 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
               child: Opacity(
                 opacity: widget.hasOutcome ? 1.0 : 0.4,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.4),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
+                        color: Color(0x4D000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
                       ),
                     ],
                   ),
                   child: SizedBox(
-                    height: 80,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/btn_bogey.svg',
-                          fit: BoxFit.fill,
-                        ),
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                              'NEXT',
-                              style: GoogleFonts.sometypeMono(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
+                      height: 80,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/btn_bogey.svg',
+                            fit: BoxFit.fill,
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                'NEXT',
+                                style: GoogleFonts.sometypeMono(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                )
+                  )
                     .animate(target: _pressing ? 1 : 0)
                     .scale(
                       begin: const Offset(1, 1),
@@ -797,5 +800,3 @@ class _NextButtonColumnState extends State<_NextButtonColumn> {
     );
   }
 }
-
-

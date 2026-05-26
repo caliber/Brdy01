@@ -487,7 +487,7 @@ class _CheckRow extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(label, style: GoogleFonts.sometypeMono(
-                fontSize: 11, fontWeight: FontWeight.w600,
+                fontSize: 11, fontWeight: FontWeight.w700,
                 color: value ? context.brdyColors.onSurface : context.brdyColors.onSurfaceMuted,
               )),
             ],

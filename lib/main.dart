@@ -9,20 +9,20 @@ import 'app/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Pre-load SometypeMono so it renders correctly on the splash screen
-  await GoogleFonts.pendingFonts([
-    GoogleFonts.sometypeMono(),
-  ]);
+  // Use locally bundled fonts only — never fetch from Google CDN at runtime.
+  // SometypeMono is registered in pubspec.yaml assets/fonts/
+  GoogleFonts.config.allowRuntimeFetching = false;
   await Hive.initFlutter();
   await Hive.openBox(AppConstants.playerPrefsBox);
   await Hive.openBox(AppConstants.courseCacheBox);
-  try {
-    await FMTCObjectBoxBackend().initialise();
-    await const FMTCStore(AppConstants.tileCacheStoreName).manage.create();
-  } catch (e) {
-    // P-03: store may already exist on re-launch — non-blocking
-    Logger().w('FMTC init: $e');
-  }
+  // FMTC tile cache init deferred — map overlay not active in current build
+  // TODO: re-enable when GPS/map features are restored
+  // try {
+  //   await FMTCObjectBoxBackend().initialise();
+  //   await const FMTCStore(AppConstants.tileCacheStoreName).manage.create();
+  // } catch (e) {
+  //   Logger().w('FMTC init: $e');
+  // }
   runApp(
     const ProviderScope(
       child: BrdyApp(),

@@ -100,12 +100,12 @@ class _StatRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final labelStyle = GoogleFonts.sometypeMono(
       fontSize: 16,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w400,
       color: const Color(0xFF0A0A0A),
     );
     final valueStyle = GoogleFonts.sometypeMono(
       fontSize: 16,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w700,
       color: const Color(0xFF0A0A0A),
     );
 

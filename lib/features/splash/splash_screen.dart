@@ -51,8 +51,8 @@ class _IconCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 18,
-            right: 11,
+            top: 13,
+            right: 7,
             child: Text(
               '01',
               style: TextStyle(

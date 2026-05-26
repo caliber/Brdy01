@@ -101,6 +101,9 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
 
   @override
   void dispose() {
+    // Fire-and-forget: _voiceService.dispose() is async but dispose() is sync.
+    // _disposed flag is set synchronously at the top of VoiceService.dispose(),
+    // so all ref.read() calls are guarded before any await completes.
     _voiceService.dispose();
     super.dispose();
   }
@@ -151,17 +154,23 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
             // Main content column on top of the background
             Column(
               children: [
-                SizedBox(
-                  height: topHeight,
-                  child: _TopZone(
-                    roundId: roundId,
-                    holeIndex: holeIndex,
-                    courseModel: course,
-                    highestScoredHoleIndex: highestIndex,
-                    onHoleNumberTap: () =>
-                        setState(() => _overlayOpen = !_overlayOpen),
-                    onMapTapped: _dropPinAtCurrentPosition,
-                    voicePartialText: _voicePartialText,
+                ClipRect(
+                  child: SizedBox(
+                    height: topHeight,
+                    child: OverflowBox(
+                      maxHeight: topHeight + 30,
+                      alignment: Alignment.topCenter,
+                      child: _TopZone(
+                        roundId: roundId,
+                        holeIndex: holeIndex,
+                        courseModel: course,
+                        highestScoredHoleIndex: highestIndex,
+                        onHoleNumberTap: () =>
+                            setState(() => _overlayOpen = !_overlayOpen),
+                        onMapTapped: _dropPinAtCurrentPosition,
+                        voicePartialText: _voicePartialText,
+                      ),
+                    ),
                   ),
                 ),
                 MiniScorecardOverlay(
@@ -406,12 +415,14 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
       ),
     );
     if (confirmed == true && mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
       context.go('/round-review/${widget.roundId}');
     }
   }
 
   Future<void> _handleNext() async {
     await HapticFeedback.lightImpact();
+    if (mounted) ScaffoldMessenger.of(context).clearSnackBars();
     final hi = ref.read(activeHoleIndexProvider);
     if (hi < 17) {
       ref.read(activeHoleIndexProvider.notifier).set(hi + 1);
@@ -433,7 +444,7 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
         outcome.name.toUpperCase();
 
     ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
+      ..clearSnackBars()
       ..showSnackBar(
         SnackBar(
           content: Text(
@@ -459,12 +470,15 @@ class _ShotCaptureScreenState extends ConsumerState<ShotCaptureScreen> {
   }
 
   Future<void> _handleUndo() async {
+    if (!mounted) return;
     final last = _lastScoredHoleIndex;
     if (last == null) return;
     await HapticFeedback.lightImpact();
+    if (!mounted) return;
     await ref
         .read(holeScoreNotifierProvider(widget.roundId, last).notifier)
         .undoOutcome();
+    if (!mounted) return;
     ref.read(activeHoleIndexProvider.notifier).set(last);
     setState(() => _lastScoredHoleIndex = null);
   }
@@ -509,7 +523,6 @@ class _TopZone extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 10),
             HoleHeader(
               roundId: roundId,
               highestScoredHoleIndex: highestScoredHoleIndex,
@@ -688,7 +701,7 @@ class _BottomZoneState extends State<_BottomZone> {
                   'VOICE UNAVAILABLE',
                   style: GoogleFonts.sometypeMono(
                     fontSize: 11,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     color: context.brdyColors.onSurfaceMuted,
                   ),
                 ),
@@ -697,11 +710,11 @@ class _BottomZoneState extends State<_BottomZone> {
             Expanded(
               child: PageView(
                 controller: _pageController,
+                clipBehavior: Clip.none,
                 onPageChanged: (i) => _pageNotifier.value = i,
                 children: [
                   // Page 1: Classic outcome buttons (toggles embedded inside)
                   SingleChildScrollView(
-                    physics: const NeverScrollableScrollPhysics(),
                     child: OutcomeButtonGrid(
                       roundId: roundId,
                       holeIndex: holeIndex,

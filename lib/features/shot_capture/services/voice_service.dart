@@ -19,6 +19,7 @@ class VoiceService {
   bool _available = false;
   bool _listening = false;
   bool _handled = false;           // prevents double-fire between onResult + onStatus
+  bool _disposed = false;          // guards all _ref.read() calls after widget disposal
   void Function(bool)? _onListeningChanged;
   void Function(String)? _onHeard;
   void Function(HoleOutcome outcome, int holeIndex)? onOutcomeRecorded;
@@ -64,6 +65,7 @@ class VoiceService {
   }
 
   void _setListening(bool value) {
+    if (_disposed) return;
     _listening = value;
     _onListeningChanged?.call(value);
   }
@@ -111,7 +113,7 @@ class VoiceService {
   }
 
   void _handleResult(String text) {
-    if (text.isEmpty) return;
+    if (_disposed || text.isEmpty) return;
     debugPrint('🎙️ Handling: "$text"');
     HapticFeedback.mediumImpact();
     final command = VoiceCommandParser.parse(text);
@@ -186,6 +188,10 @@ class VoiceService {
   }
 
   Future<void> dispose() async {
+    _disposed = true;
+    _onListeningChanged = null;
+    _onHeard = null;
+    onOutcomeRecorded = null;
     await _stt.stop();
     await _tts.stop();
   }

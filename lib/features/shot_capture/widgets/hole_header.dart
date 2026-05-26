@@ -130,24 +130,27 @@ class HoleHeader extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: BrdySpacing.md),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: onHoleNumberTap != null
-                        ? () {
-                            HapticFeedback.selectionClick();
-                            onHoleNumberTap!();
-                          }
-                        : null,
-                    child: _pill(context, 'HOLE ${holeIndex + 1}'),
-                  ),
-                  const SizedBox(width: BrdySpacing.xs),
-                  _pill(context, parLabel),
-                  if (siLabel != null) ...[
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: onHoleNumberTap != null
+                          ? () {
+                              HapticFeedback.selectionClick();
+                              onHoleNumberTap!();
+                            }
+                          : null,
+                      child: _pill(context, 'HOLE ${holeIndex + 1}'),
+                    ),
                     const SizedBox(width: BrdySpacing.xs),
-                    _pill(context, siLabel, fontSize: 11),
+                    _pill(context, parLabel),
+                    if (siLabel != null) ...[
+                      const SizedBox(width: BrdySpacing.xs),
+                      _pill(context, siLabel, fontSize: 11),
+                    ],
                   ],
-                ],
+                ),
               ),
             ],
           ),
@@ -290,7 +293,7 @@ class HoleHeader extends ConsumerWidget {
                     'TOTAL SHOTS $totalShots',
                     style: GoogleFonts.sometypeMono(
                       fontSize: 20,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       color: context.brdyColors.onSurface,
                     ),
                     textAlign: TextAlign.center,
@@ -302,7 +305,7 @@ class HoleHeader extends ConsumerWidget {
                       voicePartialText.toUpperCase(),
                       style: GoogleFonts.sometypeMono(
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         color: context.brdyColors.onSurfaceMuted,
                       ),
                       textAlign: TextAlign.center,

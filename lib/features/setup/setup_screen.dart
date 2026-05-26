@@ -197,16 +197,16 @@ class _AppIconCard extends StatelessWidget {
                 'B',
                 style: GoogleFonts.sometypeMono(
                   fontSize: 68,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w700,
                   color: Colors.black,
                   height: 1.0,
                 ),
               ),
             ),
-            // 01 — independent position, tight kerning
+            // o1 — independent position, tight kerning
             const Positioned(
-              top: 18,
-              right: 11,
+              top: 13,
+              right: 7,
               child: Text(
                 '01',
                 style: TextStyle(
@@ -251,7 +251,7 @@ class _SectionLabel extends StatelessWidget {
           text,
           style: GoogleFonts.sometypeMono(
             fontSize: 11,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
             letterSpacing: 0.5,
             color: const Color(0xFF535150),
           ),
@@ -419,7 +419,7 @@ class _ActionRow extends ConsumerWidget {
             'Search and select a course to start',
             style: GoogleFonts.sometypeMono(
               fontSize: 11,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w400,
               color: const Color(0xFF535150),
             ),
             textAlign: TextAlign.center,

@@ -155,27 +155,39 @@ class _CtrlButton extends StatelessWidget {
             ),
             const SizedBox(height: BrdySpacing.xs),
             // SVG button with state text inside
-            SizedBox(
-              width: double.infinity,
-              height: 44,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Positioned.fill(
-                    child: SvgPicture.asset(svg, fit: BoxFit.fill),
-                  ),
-                  Center(
-                    child: Text(
-                      stateLabel,
-                      style: GoogleFonts.sometypeMono(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: context.brdyColors.onSurface,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+            DecoratedBox(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x4D000000),
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
                   ),
                 ],
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 44,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Positioned.fill(
+                      child: SvgPicture.asset(svg, fit: BoxFit.fill),
+                    ),
+                    Center(
+                      child: Text(
+                        stateLabel,
+                        style: GoogleFonts.sometypeMono(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: context.brdyColors.onSurface,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

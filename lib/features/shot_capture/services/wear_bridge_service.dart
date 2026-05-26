@@ -57,6 +57,9 @@ class WearBridgeService {
         if (si != null) 'si': si,
       });
       return true;
+    } on MissingPluginException {
+      // Wear OS channel only exists on Android — silently no-op on iOS.
+      return false;
     } on PlatformException catch (e) {
       developer.log(
         'WearBridgeService.pushHoleState failed: ${e.code} — ${e.message}',
@@ -73,6 +76,8 @@ class WearBridgeService {
       final result =
           await _methodChannel.invokeMethod<bool>('connectionStatus', {});
       return result ?? false;
+    } on MissingPluginException {
+      return false;
     } on PlatformException catch (e) {
       developer.log(
         'WearBridgeService.isPhoneConnectedToWatch failed: ${e.code}',
